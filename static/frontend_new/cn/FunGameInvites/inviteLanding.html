@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="pragma" content="no-cache">
+		<meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
+		<meta http-equiv="expires" content="Wed, 26 Feb 1997 08:21:57 GMT">
+		<meta http-equiv="expires" content="0">
+		<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,initial-scale=1.0,user-scalable=no,minimal-ui">
+		<title></title>
+		<link rel="stylesheet" href="css/landing.css" />
+		<script type="text/javascript" src="js/http.js"></script>
+		<script type="text/javascript" src="js/common.js"></script>
+		<script type="text/javascript" src="js/jquery.min.js" ></script>
+		<script> 
+		var _hmt = _hmt || [];
+		(function() {
+		  var hm = document.createElement("script");
+		  hm.src = "https://hm.baidu.com/hm.js?5cdb21c3076903f417805017878c128d";
+		  var s = document.getElementsByTagName("script")[0]; 
+		  s.parentNode.insertBefore(hm, s);
+		})();
+		</script>
+		<script>
+			C.setInitFontSize();
+			var timeStamp = Math.floor(Math.random() * (3 * 60 * 60)) + (16 * 60 * 60);
+		</script>
+	</head>
+
+	<body>
+		<div class="scroll" id="scroll">
+			<img class="circle1" src="img/inviteLanding/circle1.png">
+			<img class="circle2" src="img/inviteLanding/circle2.png">
+			<img class="circle3" src="img/inviteLanding/circle3.png">
+			<img class="circle4" src="img/inviteLanding/circle4.png">
+			<img class="circle5" src="img/inviteLanding/circle5.png">
+			<img class="circle6" src="img/inviteLanding/circle6.png">
+			<img class="logoImg" src="img/inviteLanding/word.png">
+			<div class="award">
+				<div class="iniviteId">
+					<font id="copyId"></font>
+					<button id="copyBtn" data-clipboard-target="#copyId" data-clipboard-action="copy"></button>
+				</div>
+				<div id="copyInfo">复制成功</div>
+				
+				<!--<div class="time">
+					<font>奖励过期:</font>
+					<div id="hours">00</div>
+					<font>:</font>
+					<div id="minutes">00</div>
+					<font>:</font>
+					<div id="seconds">00</div>
+				</div>-->
+			</div>
+			<div class="handFoot">
+				<img class="footLogo" src="img/inviteLanding/logo.png">
+				<img class="downBtn" onclick="downLoad();" src="img/inviteLanding/download.png">
+			</div>
+		</div>
+		
+		<script type="text/javascript" src="js/clipboard.min.js"></script>
+		<script type="text/javascript" src="https://res.wx.qq.com/open/js/jweixin-1.4.0.js" ></script>
+		<script type="text/javascript" src="https://res2.wx.qq.com/open/js/jweixin-1.4.0.js" ></script>
+		<script>
+			//C.setTime(timeStamp);
+			C.copyCode();
+			G.token();
+			//记录是否阻止滚动
+        	var disableScroll = false;
+ 
+       		//如果弹出对话框时，底层的视图就不让滚动了
+        	document.addEventListener('touchmove', function(e) {
+          		if(disableScroll){
+            		e.preventDefault();
+          		}
+        	}, {passive:false});
+
+//			var info = document.getElementById("toOther");
+//			var scroll = document.getElementById("scroll"); 
+			function down() {
+//				var ua = navigator.userAgent.toLocaleLowerCase();
+//				if(ua.match(/MicroMessenger/i) == "micromessenger"){
+//					disableScroll = true;
+//					info.style.display = "block"; //显
+//				}else{
+//					disableScroll = false;
+					window.location = "https://a.app.qq.com/o/simple.jsp?pkgname=com.kaixin.instantgame";
+//				}
+				//G.landDown();
+			}
+			function downLoad() {
+				var type=GetQueryString('from');
+				var u = navigator.userAgent;
+				var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
+				var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+				if(isiOS==true){
+					alert("IOS版本正在开发中，敬请期待....");
+				}else{
+					if(type=='h5'){
+						window.open(" //mgres.kaixin001.com.cn/xyx/static/downLoad/android/toptcad/topeffects_wz_h5.apk");
+					}else{
+						window.open(" //mgres.kaixin001.com.cn/xyx/static/downLoad/android/toptcad/topeffects_wz.apk");
+					}
+					
+				}
+			}
+			C.setCodeAndName();
+			function GetQueryString(name)
+			{
+			     var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+			     var r = window.location.search.substr(1).match(reg);
+			     if(r!=null)return  unescape(r[2]); return null;
+			}
+			/*var userAvatar = document.getElementById("userAvatar");
+			userAvatar.setAttribute('src',GetQueryString('avatar'));*/
+			var memo = "{'name':"+ C.name + "'code':"+ C.inviteCode+ "}";
+			//G.getInviteLog(C.token,1,memo);
+			if (/from=[^&$?]{1,}(&|$)/.test(location.search) || /isappinstalled=[^&$?]{1,}(&|$)/.test(location.search)) {
+			  var newSearch = location.search.replace(/from=[^&$?]{1,}(&|$)/, '').replace(/isappinstalled=[^&$?]{1,}(&|$)/, '').replace(/&$|\?$/, '');
+			  var newUrl = location.origin + location.pathname + newSearch + location.hash;
+			  location.replace(newUrl);
+			}
+			var Surl=encodeURIComponent(location.href.split('#')[0]);
+			//G.wxShare(Surl);
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link rel="stylesheet" href="#HTTP_PROTOCOL#://#STATIC_URL#/frontend_new/home/css/gameCenter.css" />
+		<link rel="stylesheet" href="#HTTP_PROTOCOL#://#STATIC_URL#/frontend_new/home/css/swiper-3.3.1.min.css" />
+		<title>玩赚小游戏</title>
+	</head>
+	<body>
+		<div class="scroll">
+			<div class="head">
+				<div class="header">
+					<a class="logoBox" href="#HTTP_PROTOCOL#://#STATIC_URL#/frontend_new/home/index.html" title="开心小游戏">
+						<img class="logo_m" src="#HTTP_PROTOCOL#://#STATIC_URL#/frontend_new/home/img/logo.png" alt="开心小游戏" />
+						<dl>
+							<dt>玩赚小游戏</dt>
+							<dd>赚钱和玩儿一样</dd>
+						</dl>
+					</a>
+					<ul class="nav">
+						<li class="active"><a href="#HTTP_PROTOCOL#://#STATIC_URL#/frontend_new/home/index.html">首页</a></li>
+						<!--<li><a href="gameCenter.html">下载</a></li>-->
+						<li id="contact"><a>联系</a></li>
+					</ul>
+				</div>
+				<!--<div class="m_navBtn"></div>
+				<div class="m_navBox">
+					<div class="winBg"></div>
+					<ul class="m_navUl">
+						<li class="active"><a href="index.html">首页</a></li>
+						<li><a href="gameCenter.html">游戏列表</a></li>
+					</ul>
+				</div>-->
+			</div>
+			<div class="paddingTop"></div>
+			<ul class="gameList">
+				<!--<li>
+					<a href="#"></a>
+					<img class="gameHome" src="img/gameIndex.png">
+					<div class="bottom">
+						<img class="gameIcon" src="img/game_icon.png"  />
+						<div class="fr">
+							<p>六角碎片</p>
+							<span><em></em><em></em><em></em><em></em><em></em></span>
+						</div>
+					</div>
+				</li>
+				-->
+			</ul>
+			<div class="fixDown">
+				<img class="fixDownLogo" src="#HTTP_PROTOCOL#://#STATIC_URL#/frontend_new/home/img/logo.png">
+				<span>免费下载</span>
+				<div class="downBox">
+					<img src="#HTTP_PROTOCOL#://#STATIC_URL#/frontend_new/home/img/qrCode.png">
+					<p>扫描二维码下载</p>
+					<span>玩赚小游戏手机版</span>
+				</div>
+			</div>
+			<div class="outBox" id="contact">
+				<dl class="contact">
+					<dt>
+						<p>关注我们</p>
+						<p>联系我们</p>
+						<p>商务洽谈</p>
+					</dt>
+					<dd>
+						<span>
+							<em>公众号：开心网开心小游戏</em>
+						</span>
+						<span>
+							<em>联系客服：kxxyx-kefu@kaixin-inc.com</em>
+							<em>侵权投诉：kxxyx-fawu@kaixin-inc.com</em>
+						</span>
+						<span>邮箱：kxxyx-shangwu@kaixin-inc.com</span>
+					</dd>
+				</dl>
+				<div class="scan">
+					<img src="#HTTP_PROTOCOL#://#STATIC_URL#/frontend_new/home/img/qrCode.png" />
+					<span>扫描二维码下载</span>
+				</div>
+				<!--<div class="foot">
+					北京开心人信息技术有限公司： 京网文[2018]10698-965号 京ICP证080482号 京公网安备11010802014447号 (京)-非经营性-2014-0010 未成年家长监护
+				</div>-->
+				<div class="foot-m">
+					<div class="logoBox">
+						<img class="logo_m" src="#HTTP_PROTOCOL#://#STATIC_URL#/frontend_new/home/img/logo.png" />
+						<dl>
+							<dt>玩赚小游戏</dt>
+							<dd>赚钱和玩儿一样</dd>
+						</dl>
+					</div>
+					<div onclick="downLoad()" class="btn-download">下载</div>
+				</div>
+			</div>
+			<div class="gameWin">
+				<div class="gameWinBg"></div>
+				<div class="more">
+					<img class="moreBtn" src="#HTTP_PROTOCOL#://#STATIC_URL#/frontend_new/home/img/more.png">
+					<ul class="contrlUl">
+						<li class="copyGame" data-clipboard-text="" aria-label="复制成功！">复制游戏链接</li>
+					</ul>
+				</div>
+				<img class="gameWinClose" src="#HTTP_PROTOCOL#://#STATIC_URL#/frontend_new/home/img/closeBtn.png">
+				<div class="verticalScreen">
+					<iframe src="" width="100%" height="100%" frameborder="0"></iframe>
+					<div class="fixDown">
+						<img class="fixDownLogo" src="#HTTP_PROTOCOL#://#STATIC_URL#/frontend_new/home/img/logo.png">
+						<span>免费下载</span>
+						<div class="downBox">
+							<img src="#HTTP_PROTOCOL#://#STATIC_URL#/frontend_new/home/img/qrCode.png">
+							<p>扫描二维码下载</p>
+							<span>玩赚小游戏手机版</span>
+						</div>
+					</div>
+				</div>
+				<div class="horizontalScreen">
+					<iframe src=""  width="100%" height="100%" frameborder="0"></iframe>
+					<div class="fixDown">
+						<img class="fixDownLogo" src="#HTTP_PROTOCOL#://#STATIC_URL#/frontend_new/home/img/logo.png">
+						<span>免费下载</span>
+						<div class="downBox">
+							<img src="#HTTP_PROTOCOL#://#STATIC_URL#/frontend_new/home/img/qrCode.png">
+							<p>扫描二维码下载</p>
+							<span>玩赚小游戏手机版</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<input class="mytxt" id="xmid" value="13521423628" readonly="readonly" unselectable="on" style="    visibility: hidden;position: fixed;left: 100%;"></input>
+		<script type="text/javascript" src="#HTTP_PROTOCOL#://#STATIC_URL#/frontend_new/home/js/jquery-1.12.4.min.js"></script>
+		<script type="text/javascript" src="#HTTP_PROTOCOL#://#STATIC_URL#/frontend_new/home/js/jquery.lazyload.js" ></script>
+		<script type="text/javascript" src="#HTTP_PROTOCOL#://#STATIC_URL#/frontend_new/home/js/gameCenter.js" ></script>
+		<script type="text/javascript" src="#HTTP_PROTOCOL#://#STATIC_URL#/frontend_new/home/js/clipboard.min.js" ></script>
+	</body>
+
+</html>

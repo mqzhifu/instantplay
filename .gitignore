@@ -1,0 +1,8 @@
+view_c
+storage/*
+.idea
+*/config/env.php
+*/config/env/local/*
+*/config/env/dev/*
+*/config/env/release/*
+kernel/plugins/structure/testData

@@ -1,0 +1,598 @@
+body,
+button,
+input,
+select,
+textarea {
+	font: 100%/1 "Helvetica Neue", Helvetica, STHeiTi, "Microsoft YaHei";
+	border-radius: 0;
+}
+
+select {
+	appearance: none;
+	-moz-appearance: none;
+	-webkit-appearance: none;
+}
+
+a,
+input,
+textarea {
+	-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+	tap-highlight-color: rgba(0, 0, 0, 0);
+	outline: none;
+	-webkit-font-smoothing: antialiased
+}
+
+input[type="submit"],
+input[type="reset"],
+input[type="button"],
+input[type="text"],
+textarea,
+button {
+	-webkit-appearance: none;
+	border-radius: 0;
+}
+
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+dl,
+dt,
+dd,
+ul,
+ol,
+li,
+th,
+td,
+p,
+blockquote,
+pre,
+form,
+fieldset,
+legend,
+input,
+button,
+textarea,
+article,
+aside,
+footer,
+header,
+hgroup,
+nav,
+section,
+menu {
+	margin: 0;
+	padding: 0;
+	-webkit-text-size-adjust: 100%;
+}
+
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+em,
+i,
+strong {
+	font-style: normal;
+	font-weight: normal;
+}
+
+li {
+	list-style: none;
+}
+
+img {
+	border: 0;
+}
+
+input,
+img {
+	vertical-align: middle;
+}
+
+article,
+aside,
+footer,
+header,
+hgroup,
+nav,
+section,
+menu {
+	display: block;
+}
+
+a {
+	text-decoration: none;
+}
+
+.clearfix:after {
+	content: "";
+	display: block;
+	height: 0;
+	clear: both;
+	visibility: hidden;
+}
+
+html,
+body {
+	-webkit-text-size-adjust: 100%;
+	-webkit-font-smoothing: antialiased;
+	color: #333;
+	/*min-width: 320px;*/
+	margin: auto;
+	padding: 0px;
+	background-color: #fff;
+	font-size: 9.25925926vw;/*对应1080px设计图*/
+	background-color: #e85812;
+}
+
+a,
+input,
+textarea {
+	-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+	tap-highlight-color: rgba(0, 0, 0, 0);
+	outline: none;
+	-webkit-font-smoothing: antialiased
+}
+
+input[type="submit"],
+input[type="reset"],
+input[type="button"],
+input[type="text"],
+button {
+	-webkit-appearance: none;
+}
+
+.hide {
+	display: none;
+}
+
+.strong {
+	font-weight: bold;
+}
+
+*,
+:after,
+:before {
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-o-box-sizing: border-box;
+	-ms-box-sizing: border-box;
+	box-sizing: border-box;
+}
+/*@media (min-width: 560px) {
+  	html {
+    	font-size: 54px;
+  	}	
+}*/
+.envelopeGame{
+	display: block;
+	width: 100%;
+	height: 100vh;
+	position: relative;
+	background:#e85812 url(../img/benefitsBJ.png) no-repeat center top/100%;
+}
+.envelopeGame .envelopeOutBox{
+	display: block;
+	width: 100%;
+	height: 19.2rem;
+	overflow: hidden;
+	position: relative;
+}
+.envelopeTop{
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+}
+.envelopeUl{
+	position: absolute;
+	left: 0;
+	top: 6.83rem;
+	width: 100%;
+	height: 11.82rem;
+	background: url(../img/benefitsUl.png) no-repeat center top;
+	background-size: 100%;
+}
+.envelopeUl p{
+	display: block;
+	width: 100%;
+	color: #F74300;
+	font-size: 0.44rem;
+	text-align: center;
+	height: 1.7rem;
+	line-height: 1.7rem;
+	position: absolute;
+	left: 0;
+	bottom: 0.3rem;
+}
+.envelopeUl .envelopeList{
+	position: absolute;
+	left: 1.29rem;
+	top: 1.48rem;
+	display: block;
+	width: 8.24rem;
+}
+.envelopeUl .envelopeList li{
+	display: block;
+	width: 2.14rem;
+	height: 3.2rem;
+	float: left;
+	margin: 0 0.3rem 0.98rem;
+	background: url(../img/envelope.png) no-repeat center;
+	background-size: 100%;
+}
+.envelopeUl .envelopeList li.canUse{
+	background-image: url(../img/envelope-open.png);
+	-webkit-animation: Updown 2s ease-in-out infinite;
+}
+.envelopeUl .envelopeList li.userD{
+	background-image: url(../img/enveloped.png);
+}
+@keyframes Updown{
+    0% {
+        -webkit-transform: translate(0px, 0px) rotate(0deg)
+    }
+    4% {
+        -webkit-transform: translate(0px, 0px) rotate(-5.5deg)
+    }
+    8% {
+        -webkit-transform: translate(0px, 0px) rotate(5.5deg)
+    }
+    12% {
+        -webkit-transform: translate(0px, 0px) rotate(-5.5deg)
+    }
+    16% {
+        -webkit-transform: translate(0px, 0px) rotate(5.5deg)
+    }
+    20% {
+        -webkit-transform: translate(0px, 0px) rotate(-5.5deg)
+    }
+    24% {
+        -webkit-transform: translate(0px, 0px) rotate(5.5deg)
+    }
+    28% {
+        -webkit-transform: translate(0px, 0px) rotate(-5.5deg)
+    }
+    32% {
+        -webkit-transform: translate(0px, 0px) rotate(5.5deg)
+    }
+    36% {
+        -webkit-transform: translate(0px, 0px) rotate(-5.5deg)
+    }
+    40% {
+        -webkit-transform: translate(0px, 0px) rotate(5.5deg)
+    }
+    44% {
+        -webkit-transform: translate(0px, 0px) rotate(-5.5deg)
+    }
+    48% {
+        -webkit-transform: translate(0px, 0px) rotate(5.5deg)
+    }
+    52% {
+        -webkit-transform: translate(0px, 0px) rotate(0deg)
+    }
+    
+    100%{
+    	-webkit-transform: translate(0px, 0px) rotate(0deg)
+    }
+}
+@-moz-keyframes Updown{
+  	0% {
+        -webkit-transform: translate(0px, 0px) rotate(0deg)
+    }
+    4% {
+        -webkit-transform: translate(0px, 0px) rotate(-5.5deg)
+    }
+    8% {
+        -webkit-transform: translate(0px, 0px) rotate(5.5deg)
+    }
+    12% {
+        -webkit-transform: translate(0px, 0px) rotate(-5.5deg)
+    }
+    16% {
+        -webkit-transform: translate(0px, 0px) rotate(5.5deg)
+    }
+    20% {
+        -webkit-transform: translate(0px, 0px) rotate(-5.5deg)
+    }
+    24% {
+        -webkit-transform: translate(0px, 0px) rotate(5.5deg)
+    }
+    28% {
+        -webkit-transform: translate(0px, 0px) rotate(-5.5deg)
+    }
+    32% {
+        -webkit-transform: translate(0px, 0px) rotate(5.5deg)
+    }
+    36% {
+        -webkit-transform: translate(0px, 0px) rotate(-5.5deg)
+    }
+    40% {
+        -webkit-transform: translate(0px, 0px) rotate(5.5deg)
+    }
+    44% {
+        -webkit-transform: translate(0px, 0px) rotate(-5.5deg)
+    }
+    48% {
+        -webkit-transform: translate(0px, 0px) rotate(5.5deg)
+    }
+    52% {
+        -webkit-transform: translate(0px, 0px) rotate(0deg)
+    }
+    
+    100%{
+    	-webkit-transform: translate(0px, 0px) rotate(0deg)
+    }
+}
+@-webkit-keyframes Updown{
+   	0% {
+        -webkit-transform: translate(0px, 0px) rotate(0deg)
+    }
+    4% {
+        -webkit-transform: translate(0px, 0px) rotate(-5.5deg)
+    }
+    8% {
+        -webkit-transform: translate(0px, 0px) rotate(5.5deg)
+    }
+    12% {
+        -webkit-transform: translate(0px, 0px) rotate(-5.5deg)
+    }
+    16% {
+        -webkit-transform: translate(0px, 0px) rotate(5.5deg)
+    }
+    20% {
+        -webkit-transform: translate(0px, 0px) rotate(-5.5deg)
+    }
+    24% {
+        -webkit-transform: translate(0px, 0px) rotate(5.5deg)
+    }
+    28% {
+        -webkit-transform: translate(0px, 0px) rotate(-5.5deg)
+    }
+    32% {
+        -webkit-transform: translate(0px, 0px) rotate(5.5deg)
+    }
+    36% {
+        -webkit-transform: translate(0px, 0px) rotate(-5.5deg)
+    }
+    40% {
+        -webkit-transform: translate(0px, 0px) rotate(5.5deg)
+    }
+    44% {
+        -webkit-transform: translate(0px, 0px) rotate(-5.5deg)
+    }
+    48% {
+        -webkit-transform: translate(0px, 0px) rotate(5.5deg)
+    }
+    52% {
+        -webkit-transform: translate(0px, 0px) rotate(0deg)
+    }
+    
+    100%{
+    	-webkit-transform: translate(0px, 0px) rotate(0deg)
+    }
+}
+@-o-keyframes Updown{
+    0% {
+        -webkit-transform: translate(0px, 0px) rotate(0deg)
+    }
+    4% {
+        -webkit-transform: translate(0px, 0px) rotate(-5.5deg)
+    }
+    8% {
+        -webkit-transform: translate(0px, 0px) rotate(5.5deg)
+    }
+    12% {
+        -webkit-transform: translate(0px, 0px) rotate(-5.5deg)
+    }
+    16% {
+        -webkit-transform: translate(0px, 0px) rotate(5.5deg)
+    }
+    20% {
+        -webkit-transform: translate(0px, 0px) rotate(-5.5deg)
+    }
+    24% {
+        -webkit-transform: translate(0px, 0px) rotate(5.5deg)
+    }
+    28% {
+        -webkit-transform: translate(0px, 0px) rotate(-5.5deg)
+    }
+    32% {
+        -webkit-transform: translate(0px, 0px) rotate(5.5deg)
+    }
+    36% {
+        -webkit-transform: translate(0px, 0px) rotate(-5.5deg)
+    }
+    40% {
+        -webkit-transform: translate(0px, 0px) rotate(5.5deg)
+    }
+    44% {
+        -webkit-transform: translate(0px, 0px) rotate(-5.5deg)
+    }
+    48% {
+        -webkit-transform: translate(0px, 0px) rotate(5.5deg)
+    }
+    52% {
+        -webkit-transform: translate(0px, 0px) rotate(0deg)
+    }
+    
+    100%{
+    	-webkit-transform: translate(0px, 0px) rotate(0deg)
+    }
+}
+.envelopeUl .envelopeList li .top{
+	display: block;
+	width: 100%;
+	height: 1.8rem;
+}
+.envelopeUl .envelopeList li .bottom{
+	display: block;
+	
+	width: 100%;
+	height: 1.4rem;
+	line-height: 1.4rem;
+	text-align: center;
+	font-size: 0.44rem;
+	color: #fff;
+}
+.envelopeUl .envelopeList li .top .iconClub{
+	display: none;
+	width: 100%;
+	height: 1.8rem;
+	line-height: 1.8rem;
+	text-align: center;
+	font-size: 0.44rem;
+	color: #BA261D;
+	font-weight: bold;
+}
+.envelopeUl .envelopeList li.userD .iconClub{
+	display: block;
+}
+.envelopeUl .envelopeList li .top .iconClub img{
+	display: inline-block;
+	vertical-align: middle;
+	width: 0.5rem;
+	margin: 0 5px 3px 0;
+}
+.envelopeOutBox .timeBox{
+	position: absolute;
+	left: 0;
+	top: 5.5rem;
+	display: block;
+	width: 100%;
+}
+.envelopeOutBox .timeBox .timeProgress{
+	position: absolute;
+	width: 9.47rem;
+	left: 0.65rem;
+	height: 0.1rem;
+	background-color: #972F00;
+	border-radius: 0.05rem;
+	overflow: hidden;
+}
+.envelopeOutBox .timeBox .timeProgress span{
+	display: block;
+	width: 0;
+	height: 0.1rem;
+	background-color: #fff;
+}
+.envelopeOutBox .timeBox .squareDiv{
+	position: absolute;
+    height: 0.42rem;
+    padding: 0;
+    border: none;
+    width: 9.47rem;
+    left: 0.65rem;
+    top: -0.1rem;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: box;
+    display: flexbox;
+    display: flex;
+    flex-direction: row-reverse;
+    
+}
+.envelopeOutBox .timeBox .squareDiv>input {
+    position: absolute;
+    margin-right: -100%;
+    opacity: 0;
+}
+.envelopeOutBox .timeBox .squareDiv>label {
+    position: absolute;
+    width: 0.3rem;
+    height: 0.3rem;
+    cursor: pointer;
+    background-color: #972F00;
+    transform:rotate(45deg);
+	-ms-transform:rotate(45deg); 	/* IE 9 */
+	-moz-transform:rotate(45deg); 	/* Firefox */
+	-webkit-transform:rotate(45deg); /* Safari 和 Chrome */
+	-o-transform:rotate(45deg); 	/* Opera */
+	transform-origin:50% 50%;
+	top: 0;
+}
+.envelopeOutBox .timeBox .squareDiv>label:nth-of-type(2){
+	right: 1.8rem;
+}
+.envelopeOutBox .timeBox .squareDiv>label:nth-of-type(3){
+	right: 3.7rem;
+}
+.envelopeOutBox .timeBox .squareDiv>label:nth-of-type(4){
+	right: 5.6rem;
+}
+.envelopeOutBox .timeBox .squareDiv>label:nth-of-type(5){
+	right: 7.5rem;
+}
+.envelopeOutBox .timeBox .squareDiv>label:nth-of-type(6){
+	right: 8.5rem;
+}
+.envelopeOutBox .timeBox .squareDiv input:checked~label {
+    background-color: #fff;
+}
+.envelopeOutBox .timeBox .timesDiv{
+	position: absolute;
+    height: 0.42rem;
+    padding: 0;
+    border: none;
+    width: 10.15rem;
+    right: 0;
+    top: 0.39rem;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: box;
+    display: flexbox;
+    display: flex;
+    flex-direction: row-reverse;
+}
+.envelopeOutBox .timeBox .timesDiv>input {
+    position: absolute;
+    margin-right: -100%;
+    opacity: 0;
+}
+.envelopeOutBox .timeBox .timesDiv>label {
+    position: absolute;
+    height: 0.4rem;
+    color: transparent;
+    cursor: pointer;
+    color:  #972F00;
+    font-size: 0.38rem;
+    color: #972F00;
+    top: 0;
+    text-align: center;
+}
+.envelopeOutBox .timeBox .timesDiv>label:nth-of-type(1){
+	width: 1.7rem;
+	right: 0;
+}
+.envelopeOutBox .timeBox .timesDiv>label:nth-of-type(2){
+	width: 1.7rem;
+	right: 1.85rem;
+}
+.envelopeOutBox .timeBox .timesDiv>label:nth-of-type(3){
+	width: 1.7rem;
+	right: 3.68rem;
+}
+.envelopeOutBox .timeBox .timesDiv>label:nth-of-type(4){
+	width: 1.7rem;
+	right: 5.62rem;
+}
+.envelopeOutBox .timeBox .timesDiv>label:nth-of-type(5){
+	width: 1.7rem;
+	right: 7.44rem;
+}
+.envelopeOutBox .timeBox .timesDiv>label:nth-of-type(6){
+	width: auto;
+	right: 8.9rem;
+}
+.envelopeOutBox .timeBox .timesDiv input:checked~label {
+    color: #fff;
+}
