@@ -386,6 +386,8 @@ class BankCtrl extends BaseCtrl {
         $notify->Queryorder();
     }
 
+
+
     function aliPayCallback(){
         include_once PLUGIN ."/alipay/AopSdk.php";
         $aop = new AopClient;
@@ -520,6 +522,21 @@ class BankCtrl extends BaseCtrl {
         $rs = $this->bankService->getMoneyOsInfo($this->uid, $elementId, $payPalAddr);
         return $this->out($rs['code'],$rs['msg']);
     }
+
+    //      //加减金币
+//    function abcd($uid = '', $num = 0){
+//        define('AC',$this->ac);// 定义AC常量;
+//        $rs = $this->userService->addGoldcoin($uid, $num, GoldcoinLogModel::$_type_play_games,1);// 110710,200000
+//        $this->out(200,$rs);
+//    }
+//
+//    function dcba($uid = '', $num = 0){
+//        $rs = $this->userService->lessGoldcoin($uid, $num, GoldcoinLogModel::$_type_play_games,'d',"a","b",1);// 110710,200000
+//        $this->out(200,$rs);
+//    }
+//    function goldcoinExchangeRMB(){
+//        return $this->out(200,$GLOBALS['main']['goldcoinExchangeRMB']);
+//    }
 
 
 }

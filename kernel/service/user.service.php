@@ -20,7 +20,6 @@ class UserService{
                 }
             }
 
-
             if(!$type){
                 $type = $this->calcTypeByUname($name);
             }else{
@@ -28,7 +27,6 @@ class UserService{
                     return out_pc(8103);
                 }
             }
-
 
             if($type == UserModel::$_type_cellphone || $type == UserModel::$_type_cellphone_ps){
                 $uniq = $this->getCellphoneUnique($name);
@@ -819,6 +817,21 @@ class UserService{
         return out_pc(200,$rs);
 
     }
+
+    function getDayActiveUser($uid ,$day = ''){
+//        $key = RedisPHPLib::getAppKeyById($GLOBALS['rediskey']['day_active_user']['key'],$uid,IS_NAME);
+//        if(!$day){
+//            return RedisPHPLib::getServerConnFD()->hGetAll($key);
+//        }
+    }
+
+    function setDayActiveUser($uid){
+//        $key = RedisPHPLib::getAppKeyById($GLOBALS['rediskey']['day_active_user']['key'],$uid,IS_NAME);
+//        $file =  date("Ymd");
+//        return RedisPHPLib::getServerConnFD()->hSetNx($key,$file,time());
+    }
+
+
     //获取用户连续活跃天数
     function getActiveContinue($uid){
         $game = new GamesService();

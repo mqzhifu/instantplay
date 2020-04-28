@@ -17,13 +17,13 @@ function autoload($class){
         $class = lcfirst($class);
         $file = APP_DIR .DS .C_DIR_NAME .DS . $class .C_EXT;
         include_once $file ;
-//    }elseif( strpos($class,S_CLASS) !== false){
-//
-//        $l = strpos($class,S_CLASS);
-//        $class = substr($class, 0,$l);
-//        $class = lcfirst($class);
-//
-//        include_once BASE_DIR .DS . S_DIR_NAME .DS . $class .S_EXT;
+    }elseif( strpos($class,S_CLASS) !== false){
+
+        $l = strpos($class,S_CLASS);
+        $class = substr($class, 0,$l);
+        $class = lcfirst($class);
+
+        include_once BASE_DIR .DS .KERNEL_NAME.DS. S_DIR_NAME .DS . $class .S_EXT;
     }elseif( strpos($class,LIB_CLASS) !== false){
         $l = strpos($class,LIB_CLASS);
         $class = substr($class, 0,$l);

@@ -27,15 +27,6 @@ class UserCtrl extends BaseCtrl   {
         return $this->out($rs['code'],$rs['msg']);
     }
 
-    function getCouponList(){
-        $nearMonth = strtotime(date('Y-m-1').'-2 month');
-        // $list = UserMoneyCouponModel::db()->getAll(" a_time >= $nearMonth and uid = ".$this->uid . " order by id desc");
-        // 提现券重复使用BUG，修复 modify by XiaHB time:2019/06/01 Begin;
-        $list = UserMoneyCouponModel::db()->getAll(" a_time >= $nearMonth AND use_time = 0 and uid = ".$this->uid . " order by id desc");
-        // 提现券重复使用BUG，修复 modify by XiaHB time:2019/06/01   End;
-        return $this->out(200,$list);
-    }
-
     function isBind($type,$unicode){
         if(!$type){
             return $this->out(8004);
@@ -85,13 +76,6 @@ class UserCtrl extends BaseCtrl   {
 
     //uid:存在，代表看别人，否则是自己
     function getOne($toUid = 0 ){
-
-//        foreach($this->uinfo as $k=>$v){
-//            if(!$v){
-//                $this->uinfo[$k] = 0;
-//            }
-//        }
-
         $user = $this->uinfo;
         if($toUid){
             $user = $this->userService->getUinfoById($toUid);

@@ -3,15 +3,14 @@ class BaseCtrl {
     public $uid = 0;
     public $uinfo = null;
 
-    public $router = null;
+    public $request = null;
 
     public $userService = null;
     public $imSevice =null;
     public $systemService =null;
 
-    function __construct($router){
-        $this->router = $router;
-        LogLib::appWriteFileHash(null, (array)$this->router);
+    function __construct($request){
+        $this->request = $request;
 //        if($clientFrame){
 //            if(RUN_ENV == 'WEBSOCKET'){
 //                LogLib::wsWriteFileHash(["clientFrame",$clientFrame]);
@@ -38,34 +37,33 @@ class BaseCtrl {
 
 
 //        //实例化 用户 服务 控制器
-//        $this->userService = new UserService();
+        $this->userService = new UserService();
 //        $this->imSevice = new ImService();
 //        $this->systemService = new SystemService();
 //
-//        $tokenRs = $this->initUserLoginInfoByToken();
-//        LogLib::appWriteFileHash(["initUserLoginInfoByToken",$tokenRs]);
-//
-//        if($tokenRs['code'] != 200){
-//            return $this->out($tokenRs['code'],$tokenRs['msg']);
-//        }
-//
-//        if(arrKeyIssetAndExist($this->uinfo,'id')){
-//            if(RUN_ENV != 'WEBSOCKET'){
-//                $rs = $this->checkIfUserBlocked($this->uid);
-//                if($rs){
-//                    return $this->out(6004);
-//                }
-//            }
-//        }
-//
-//        if(arrKeyIssetAndExist($this->uinfo,'status')){
-//            return $this->out(4009);
-//        }
-//
-//        if($this->uid){
-//            $this->gamesService->setDayActiveUser($this->uid);
-//        }
+        $tokenRs = $this->initUserLoginInfoByToken();
+        if($tokenRs['code'] != 200){
+            return $this->out($tokenRs['code'],$tokenRs['msg']);
+        }
 
+        if(arrKeyIssetAndExist($this->uinfo,'id')){
+            if(RUN_ENV != 'WEBSOCKET'){
+                $rs = $this->checkIfUserBlocked($this->uid);
+                if($rs){
+                    return $this->out(6004);
+                }
+            }
+        }
+
+        if(arrKeyIssetAndExist($this->uinfo,'status')){
+            return $this->out(4009);
+        }
+
+        if($this->uid){
+            $this->userService->setDayActiveUser($this->uid);
+        }
+
+        //有些接口必须，得登陆后，才能访问
 //        $check = $this->loginAPIExcept();
 //        if(!$check){
 //            if(!$this->uinfo){
@@ -123,7 +121,7 @@ class BaseCtrl {
         }
 
 
-        $arr = $GLOBALS['main']['loginAPIExcept'];
+        $arr = $GLOBALS[APP_NAME]['main']['loginAPIExcept'];
 
         foreach($arr as $k=>$v){
             if($v[0] == $ctrl && $v[1] == $ac){

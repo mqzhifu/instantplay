@@ -16,7 +16,7 @@ class TokenLib {
     }
 
     static function getUid($str){
-        $secret = $GLOBALS['main']['tokenSecret'];
+        $secret = $GLOBALS[APP_NAME]['main']['tokenSecret'];
 
 //        $data =  intval(self::crypt($str, $secret, 'decode'));
         $data =  self::crypt($str, $secret, 'decode');
@@ -113,7 +113,7 @@ class TokenLib {
 
     static function checkSign($data,$sign,$key){
         if(!$data){
-            return false;
+            exit("check sign data is null");
         }
 
         $reData=[];

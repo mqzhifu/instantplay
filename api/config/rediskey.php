@@ -87,5 +87,5 @@ $key = array(
     //    'cntIPReq'=>array('key'=>'cntIPReq','expire'=>0),
 
 );
-$GLOBALS['rediskey'] = $key;
+$GLOBALS[APP_NAME]['rediskey'] = $key;
 

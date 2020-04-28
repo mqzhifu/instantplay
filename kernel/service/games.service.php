@@ -788,18 +788,7 @@ class GamesService
         return RedisPHPLib::getServerConnFD()->del($key);
     }
 
-    function getDayActiveUser($uid ,$day = ''){
-        $key = RedisPHPLib::getAppKeyById($GLOBALS['rediskey']['day_active_user']['key'],$uid,IS_NAME);
-        if(!$day){
-            return RedisPHPLib::getServerConnFD()->hGetAll($key);
-        }
-    }
 
-    function setDayActiveUser($uid){
-        $key = RedisPHPLib::getAppKeyById($GLOBALS['rediskey']['day_active_user']['key'],$uid,IS_NAME);
-        $file =  date("Ymd");
-        return RedisPHPLib::getServerConnFD()->hSetNx($key,$file,time());
-    }
 
     function delDayActiveUser($uid ){
         $key = RedisPHPLib::getAppKeyById($GLOBALS['rediskey']['day_active_user']['key'],$uid,IS_NAME);

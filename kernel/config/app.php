@@ -1,6 +1,6 @@
 <?php
 $arr = array(
-    'instantplay'=>array(
+    'api'=>array(
         'id'=>1,
         'status'=>'open',
         'desc'=>'带贷平台',

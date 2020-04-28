@@ -240,7 +240,7 @@ class Z{
         if(!in_array(COUNTRY,$country) ){
             self::outError(9117);
         }
-
+        
         if(!defined('APP_NAME'))
             self::outError(9103);
 
