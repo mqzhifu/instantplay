@@ -23,6 +23,17 @@ class BaseCtrl {
 //            }
 //        }
 
+//            $sign = _g('sign');
+//            if(!$sign){
+//                return out_pc(9205,KERNEL_NAME);
+//            }
+
+//            $checkSign = TokenLib::checkSign($this->para , $sign,$this->app['apiSecret']);
+//            if(!$checkSign){
+//                return out_pc(9206,KERNEL_NAME);
+//            }
+
+
         //接口配置信息
         include_once APP_CONFIG_DIR.DS."api.php";
         //所有错误码

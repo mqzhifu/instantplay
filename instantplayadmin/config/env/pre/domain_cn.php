@@ -1,5 +1,5 @@
 <?php
 //网站域名
-define('DOMAIN_URL', "is-test.feidou.com");
+define('DOMAIN_URL', "local.z-a.com");
 //静态文件域名
-define ('STATIC_URL', "mgres.kaixin001.com.cn");
+define ('STATIC_URL', "local.z-s.com");

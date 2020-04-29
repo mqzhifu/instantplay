@@ -1,24 +1,28 @@
 <?php
 
-//包含项目配置文件信息
-include_once BASE_DIR ."/". APP_NAME."/". "config/env.php";
-include_once BASE_DIR."/kernel/config/constant.php";
-
-defined('LANG') or define('LANG',Z::countryMapLang(COUNTRY));
-
-//常量检查
-Z::checkConst();
-Z::checkExt();
-//加载语言包
-
-
-//===========类库==================
-
 //初始分有为2个部分，1公共部分，专属部分
 //专属部分：1 WB端，2指令行端，3 API调用
 class Z{
 
 	static function init(){
+        //包含项目配置文件信息 ENV
+        include_once BASE_DIR ."/". APP_NAME."/". "config/env.php";
+        //所有框架需要的 常量
+        include_once BASE_DIR."/kernel/config/constant.php";
+
+//        include_once KERNEL_DIR.DS."env".DS.ENV."/domain_".LANG.".php";
+        include_once KERNEL_CONFIG . DS . "env" . DS . ENV . "/redis_" . LANG . ".php";//kernel
+        include_once KERNEL_CONFIG . DS . "env" . DS . ENV . "/mysql_" . LANG . ".php";//kernel
+
+        include_once KERNEL_CONFIG . DS . "api_err_code.php";//kernel 错误码
+        include_once KERNEL_CONFIG . DS . "app.php";//kernel 应用程序配置信息
+        include_once KERNEL_CONFIG . DS . "main.php";//kernel 主配置文件，主要是网关限制
+        include_once KERNEL_CONFIG . DS . "rediskey.php";//kernel redis KEY 配置信息，主要是网关限制
+
+        //常量检查
+        Z::checkConst();
+        Z::checkExt();
+
         include_once FUNC_DIR.DS.'sys.php';//公共函数 - 系统
 		include_once FUNC_DIR.DS.'datetime.php';//公共函数 - 时间日期
 		include_once FUNC_DIR.DS.'path_file.php';//公共函数 -
@@ -65,7 +69,7 @@ class Z{
 	static function runConsoleApp(){
 		defined('STDIN') or define('STDIN', fopen('php://stdin', 'r'));
 
-		define("APP_SHELL_DIR",APP_DIR .DS. "shell");
+//		define("APP_SHELL_DIR",APP_DIR .DS. "shell");
 //		set_include_path(get_include_path() . PATH_SEPARATOR .  APP_DIR . DS .'/shell');
 		$Cmd = new CmdlineLib();
 
@@ -89,50 +93,34 @@ class Z{
         self::checkWebConst();
 
 		//****************session***************************
-
-		//前台用户登陆SEESION_KEY
-		//defined('SESS_USER_KEY') or define('SESS_USER_KEY','userInfo');
-		//后台用户登陆SEESION_KEY
-		//defined('SESS_ADMIN_KEY') or define('SESS_ADMIN_KEY','adminuserInfo');
-
-		//session存储类型
-		defined('SESS_TYPE') or define('SESS_TYPE','FILE');
-		//session 失效时间
-		defined('SESS_EXPIRE') or define('SESS_EXPIRE',60 * 60 * 3);
 		if(SESS_TYPE == 'DB'){
 			if(ini_get('session.save_handler') != 'user')
 				ini_set('session.save_handler', 'user');
-		}
-		$sessionDir = STORAGE_DIR.DS."session".DS.APP_NAME;
-        session_save_path($sessionDir);
-        if(!file_exists($sessionDir)) {
-            mkdir($sessionDir, 0777, true);
+		}else{
+            session_save_path(APP_SESS_STORE_DIR);
+            if(!file_exists(APP_SESS_STORE_DIR)) {
+                mkdir(APP_SESS_STORE_DIR, 0777, true);
+            }
         }
         //****************session***************************
-		//控制器 参数名称
-		defined('PARA_CTRL') or define('PARA_CTRL', 'ctrl');
-		//控制器 方法参数名称
-		defined('PARA_AC') or define('PARA_AC', 'ac');
-		// 获取请求地址：/project2/point/index.php
-		$script_path = $script_file = _get_script_url();
-		if(arrKeyIssetAndExist($_SERVER,'QUERY_STRING'))
-            $script_file = $script_path . "?" .  $_SERVER['QUERY_STRING'];
-
-		//请求文件的名称
-		define('SCRIPT_NAME',$script_file);
+		//控制器 参数名
+		define('PARA_CTRL', 'ctrl');
+		//方法    参数名
+		define('PARA_AC', 'ac');
+//		$script_path = $script_file = _get_script_url();
+//		if(arrKeyIssetAndExist($_SERVER,'QUERY_STRING'))
+//            $script_file = $script_path . "?" .  $_SERVER['QUERY_STRING'];
+//
+//		//请求文件的名称
+//		define('SCRIPT_NAME',$script_file);
 		//初始化SESSION
-		$Session = new SessionLib();
-
+		new SessionLib();
 		//初始化路由
-//        if(APP_NAME =='instantplayadmin' || APP_NAME == 'mgadmin' || APP_NAME == 'gameadmin' || APP_NAME == 'instantplayadminnew' || APP_NAME =='adsystemadmin'){
-//            $Dispath = new DispathAdminLib();
-//        }else{
-            $router = new RouterLib();
-//        }
-
-//        LogLib::accessWrite();
+        $router = new RouterLib();
+        //获取redis 实例，并缓存到容器里.主要是给kernel 网关 过滤数据
         $kernelRedisObj = new RedisPHPLib($GLOBALS[KERNEL_NAME]['redis']['instantplay']);
         ContainerLib::set("kernelRedisObj",$kernelRedisObj);
+
         try{
             $rs = $router->check();
             if($rs['code'] != 200){
@@ -141,25 +129,23 @@ class Z{
             }
 
             $returnData = $router->action();
+            if(OUT_TYPE == 'json'){
+                $returnData =  json_encode($returnData);
+            }
 
-            if(RUN_ENV != 'WEBSOCKET'){
-                if(OUT_TYPE == 'json'){
-                    $returnData =  json_encode($returnData);
+            $exec_time = $GLOBALS['start_time'] - microtime(TRUE);
+            $logData = $exec_time;
+            if( $returnData ){
+                if( strlen( $returnData ) >1000){
+                    $returnData = substr( $returnData,0,1000);
                 }
 
-                $exec_time = $GLOBALS['start_time'] - microtime(TRUE);
-                $logData = $exec_time;
-                if( $returnData ){
-                    if( strlen( $returnData ) >1000){
-                        $returnData = substr( $returnData,0,1000);
-                    }
-
-                    $logData .= $returnData;
-                }
-                LogLib::inc()->response($logData);
-                if(OUT_TYPE == 'json'){
-                    echo $returnData;
-                }
+                $logData .= $returnData;
+            }
+            LogLib::inc()->response($logData);
+            if(OUT_TYPE == 'json'){
+                echo $returnData;
+            }
 //                $accessData = array(
 //                    'uid'=>$this->uid,
 //                    'return_info'=>$msg,
@@ -173,7 +159,6 @@ class Z{
 //                    }
 //
 //                }
-            }
             exit;
 
         }catch (Exception $e){
@@ -188,14 +173,14 @@ class Z{
 	    return array('CLI','WEB','WEBSOCKET');
     }
 
-    static function getCountry(){
-        return array('cn','user','en');
-    }
+//    static function getCountry(){
+//        return array('cn','user','en');
+//    }
 
-    static function countryMapLang($COUNTRY){
-	    $arr =  array("cn"=>'cn','en'=>'en','user'=>'en');
-	    return $arr[$COUNTRY];
-    }
+//    static function countryMapLang($COUNTRY){
+//	    $arr =  array("cn"=>'cn','en'=>'en','user'=>'en');
+//	    return $arr[$COUNTRY];
+//    }
 
     static function outError($code){
         echo $code.":".$GLOBALS['kernel']['api_err_code'][$code];
@@ -205,82 +190,66 @@ class Z{
     static function getEnv(){
 	    return array("local",'pre','dev','release');
     }
-
-	static function checkConst(){//初始化的常量值，必埴项检查
-        if(!defined('KERNEL_DIR'))
+    //初始化的常量值，必埴项检查
+	static function checkConst(){
+        if (!defined('KERNEL_DIR'))
             exit('常量未定义：KERNEL_DIR');
-        if(!is_dir(KERNEL_DIR)){
-            exit("KERNEL_DIR is not dir.".KERNEL_DIR);
+
+        if (!is_dir(KERNEL_DIR)) {
+            exit("KERNEL_DIR is not dir." . KERNEL_DIR);
         }
 
-
-//        include_once KERNEL_DIR.DS."env".DS.ENV."/mysql_".LANG.".php";
-//        include_once KERNEL_DIR.DS."env".DS.ENV."/redis_".LANG.".php";
-//        include_once KERNEL_DIR.DS."env".DS.ENV."/domain_".LANG.".php";
-
-        include_once KERNEL_CONFIG.DS."env".DS.ENV."/redis_".LANG.".php";
-        include_once KERNEL_CONFIG.DS."env".DS.ENV."/mysql_".LANG.".php";
-
-        include_once KERNEL_CONFIG.DS ."api_err_code.php";
-        include_once KERNEL_CONFIG.DS ."app.php";
-        include_once KERNEL_CONFIG.DS ."main.php";
-        include_once KERNEL_CONFIG.DS ."rediskey.php";
-
-
-		if(!defined('BASE_DIR'))
+        if (!defined('BASE_DIR'))
             self::outError(9101);
 
-		if(!is_dir(BASE_DIR)){
+        if (!is_dir(BASE_DIR)) {
             self::outError(9113);
         }
 
-        if(!defined('RUN_ENV'))
+        if (!defined('RUN_ENV'))
             self::outError(9102);
 
         $run_env = self::getRunEnv();
-        if(!in_array(RUN_ENV,$run_env) ){
+        if (!in_array(RUN_ENV, $run_env)) {
             self::outError(9114);
         }
 
-        if(!defined('COUNTRY'))
-            self::outError(9116);
+//        if (!defined('COUNTRY'))
+//            self::outError(9116);
+//
+//        $country = self::getCountry();
+//        if (!in_array(COUNTRY, $country)) {
+//            self::outError(9117);
+//        }
 
-        $country = self::getCountry();
-        if(!in_array(COUNTRY,$country) ){
-            self::outError(9117);
-        }
-        
-        if(!defined('APP_NAME'))
+        if (!defined('APP_NAME'))
             self::outError(9103);
 
-        if(!defined('DEF_DB_CONN'))
-            self::outError(9104);
-
-        if(!defined('DEF_REDIS_CONN'))
-            self::outError(9105);
-
-        if(!is_dir(APP_DIR))
+        if (!is_dir(APP_DIR))
             self::outError(9115);
 
-        if(!defined('ENV'))
+//        if (!defined('DEF_DB_CONN'))
+//            self::outError(9104);
+//
+//        if (!defined('DEF_REDIS_CONN'))
+//            self::outError(9105);
+
+        if (!defined('ENV'))
             self::outError(9108);
 
         $env = self::getEnv();
-        if(!in_array(ENV,$env) ){
+        if (!in_array(ENV, $env)) {
             self::outError(9120);
         }
 
-        if(!in_array(APP_NAME,array_keys($GLOBALS['kernel']['app']) )){
+        if (!in_array(APP_NAME, array_keys($GLOBALS['kernel']['app']))) {
             self::outError(9121);
         }
 
-        if(  $GLOBALS['kernel']['app'][APP_NAME]['status'] != 'open' ){
+        if ($GLOBALS['kernel']['app'][APP_NAME]['status'] != 'open') {
             self::outError(9001);
         }
-        if(CLOSE_KERNEL){
-            self::outError(9000);
-        }
-	}
+    }
 
     static function checkWebConst(){
         if(!defined('DOMAIN_URL'))

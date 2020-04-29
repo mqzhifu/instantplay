@@ -5,11 +5,8 @@ define('DEF_DB_CONN', 'instantplay');
 define('DEF_REDIS_CONN', 'sanguo');
 
 
-define("DEBUG",1);
-define("MYSQL_DEBUG",1);
-
 //当前环境 local 本地 开发 dev  线上
-define("ENV","pre");
+define("ENV","local");
 //国外版的APP
 define("PCK_AREA",'cn');
 

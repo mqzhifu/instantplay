@@ -15,4 +15,4 @@ $redis  = array(
     ),
 );
 
-$GLOBALS['redis'] = $redis;
+$GLOBALS[APP_NAME]['redis'] = $redis;

@@ -33,18 +33,6 @@ class RouterLib{
 
         $this->initPara();
 
-        if(IS_API){
-//            $sign = _g('sign');
-//            if(!$sign){
-//                return out_pc(9205,KERNEL_NAME);
-//            }
-
-//            $checkSign = TokenLib::checkSign($this->para , $sign,$this->app['apiSecret']);
-//            if(!$checkSign){
-//                return out_pc(9206,KERNEL_NAME);
-//            }
-        }
-
         $this->clientHeader = get_client_info();
 
         return out_pc(200,null,KERNEL_NAME);

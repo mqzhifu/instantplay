@@ -2,7 +2,6 @@
 class AccesslogModel {
 	static $_table = 'access_log';
 	static $_pk = 'id';
-	static $_db_key = DEF_DB_CONN;
 	static $_db = null;
 
 	static function db(){

@@ -3,16 +3,17 @@
 define('VERSION','1.0');
 //路径中的返斜杠:/
 define ('DS', "/");
-//项目目录
-define ('APP_DIR', BASE_DIR .DS . APP_NAME);
 //框架名称
 define("KERNEL_NAME","kernel");
 //框架目录
 define ('KERNEL_DIR', BASE_DIR .DS .KERNEL_NAME);
 //框架配置目录
 define ('KERNEL_CONFIG',KERNEL_DIR .DS ."config");
-//包含框架错误码信息
-define("CLOSE_KERNEL",0);
+//总（配置）目录
+//define("CONFIG_DIR",KERNEL_DIR.DS."config");
+define("STORAGE_DIR",BASE_DIR.DS."storage");
+define("FUNC_DIR",KERNEL_DIR.DS."functions");
+
 
 //===========控制器==================
 defined('C_EXT') or define('C_EXT', '.ctrl.php');//文件的后缀
@@ -48,21 +49,28 @@ defined('DEF_CTRL') or define('DEF_CTRL','index');
 defined('DEF_AC') or define('DEF_AC','index');
 //插件
 defined('PLUGIN') or define(  'PLUGIN',KERNEL_DIR . '/plugins/');
-//总（配置）目录
-define("CONFIG_DIR",KERNEL_DIR.DS."config");
-define("STORAGE_DIR",BASE_DIR.DS."storage");
-define("FUNC_DIR",KERNEL_DIR.DS."functions");
 
-
-define("PHPUNIT",1);
 
 //总日志目录
-defined('LOG_PATH') or define('LOG_PATH', STORAGE_DIR.DS."log");
+define('LOG_PATH', STORAGE_DIR.DS."log");
+//图片上传路径
+define('IMG_UPLOAD', STORAGE_DIR . '/upload');
+
+//session存储类型
+defined('SESS_TYPE') or define('SESS_TYPE','FILE');
+//session 失效时间
+defined('SESS_EXPIRE') or define('SESS_EXPIRE',60 * 60 * 3);
+//session 存储位置
+defined('SESS_STORE_DIR') or define('SESS_STORE_DIR',STORAGE_DIR.DS."session");
+//app session 存储位置
+defined('APP_SESS_STORE_DIR') or define('APP_SESS_STORE_DIR',SESS_STORE_DIR.DS.APP_NAME);
+//语言包
+defined('LANG') or define('LANG',"cn");
+
+//项目目录
+define ('APP_DIR', BASE_DIR .DS . APP_NAME);
 //项目配置文件目录
 define("APP_CONFIG_DIR",APP_DIR.DS."config");
-
-//图片上传路径
-defined('IMG_UPLOAD') or define('IMG_UPLOAD', BASE_DIR . '/www/upload/'.APP_NAME);
 
 
 ////头像-相对路径 不分应用

@@ -47,4 +47,4 @@ $db_config =  array(
             ),
         ),
 );
-$GLOBALS['db_config'] = $db_config;
+$GLOBALS[KERNEL_NAME]['db_config'] = $db_config;
