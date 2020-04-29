@@ -9,6 +9,8 @@ define ('APP_DIR', BASE_DIR .DS . APP_NAME);
 define("KERNEL_NAME","kernel");
 //框架目录
 define ('KERNEL_DIR', BASE_DIR .DS .KERNEL_NAME);
+//框架配置目录
+define ('KERNEL_CONFIG',KERNEL_DIR .DS ."config");
 //包含框架错误码信息
 define("CLOSE_KERNEL",0);
 

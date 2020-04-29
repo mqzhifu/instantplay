@@ -2,12 +2,12 @@
 class IndexCtrl extends BaseCtrl  {
 
     function index(){
-        $this->out(200,"PING OK !");
+        return $this->out(200,"PING OK !");
     }
 
     function getUserTypeDesc(){
         $rs = UserModel::getTypeDesc();
-        $this->out(200,$rs);
+        return $this->out(200,$rs);
     }
     //    $keyword:目前仅支持UID
     function search($keyword){

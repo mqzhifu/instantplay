@@ -34,15 +34,15 @@ class RouterLib{
         $this->initPara();
 
         if(IS_API){
-            $sign = _g('sign');
-            if(!$sign){
-                return out_pc(9205,KERNEL_NAME);
-            }
+//            $sign = _g('sign');
+//            if(!$sign){
+//                return out_pc(9205,KERNEL_NAME);
+//            }
 
-            $checkSign = TokenLib::checkSign($this->para , $sign,$this->app['apiSecret']);
-            if(!$checkSign){
-                return out_pc(9206,KERNEL_NAME);
-            }
+//            $checkSign = TokenLib::checkSign($this->para , $sign,$this->app['apiSecret']);
+//            if(!$checkSign){
+//                return out_pc(9206,KERNEL_NAME);
+//            }
         }
 
         $this->clientHeader = get_client_info();
@@ -188,6 +188,7 @@ class RouterLib{
 	function action(){
         $rid = $this->getRequestId();
         $this->requestId = $rid;
+        $this->para['request_id'] = $rid;
 
         $this->logRequest();
 
@@ -195,10 +196,12 @@ class RouterLib{
         $ctrl = $this->ctrl .C_CLASS;
         $class = new $ctrl($this->para);
 
-        $reflection = new ReflectionClass($ctrl);
-        $me = $reflection->getMethod($this->ac);
-        //调用实际执行方法
-        return $me->invokeArgs($class,$this->para);
+//        $reflection = new ReflectionClass($ctrl);
+//        $me = $reflection->getMethod($this->ac);
+//        //调用实际执行方法
+//        $rs = $me->invokeArgs($class,'aaa');
+        $rs = call_user_func(array($class,$this->ac),$this->para);
+        return $rs;
     }
 
     function getRequestId(){

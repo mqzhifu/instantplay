@@ -3,11 +3,14 @@
 //包含项目配置文件信息
 include_once BASE_DIR ."/". APP_NAME."/". "config/env.php";
 include_once BASE_DIR."/kernel/config/constant.php";
+
+defined('LANG') or define('LANG',Z::countryMapLang(COUNTRY));
+
 //常量检查
 Z::checkConst();
 Z::checkExt();
 //加载语言包
-defined('LANG') or define('LANG',Z::countryMapLang(COUNTRY));
+
 
 //===========类库==================
 
@@ -139,7 +142,11 @@ class Z{
 
             $returnData = $router->action();
 
-//            if(RUN_ENV != 'WEBSOCKET'){
+            if(RUN_ENV != 'WEBSOCKET'){
+                if(OUT_TYPE == 'json'){
+                    $returnData =  json_encode($returnData);
+                }
+
                 $exec_time = $GLOBALS['start_time'] - microtime(TRUE);
                 $logData = $exec_time;
                 if( $returnData ){
@@ -150,6 +157,9 @@ class Z{
                     $logData .= $returnData;
                 }
                 LogLib::inc()->response($logData);
+                if(OUT_TYPE == 'json'){
+                    echo $returnData;
+                }
 //                $accessData = array(
 //                    'uid'=>$this->uid,
 //                    'return_info'=>$msg,
@@ -163,11 +173,8 @@ class Z{
 //                    }
 //
 //                }
-//            }
-            if(OUT_TYPE == 'json'){
-                echo json_encode($returnData);
-                exit;
             }
+            exit;
 
         }catch (Exception $e){
             ExceptionFrameLib::throwCatch($e);
@@ -206,16 +213,18 @@ class Z{
             exit("KERNEL_DIR is not dir.".KERNEL_DIR);
         }
 
-        include KERNEL_DIR .DS ."config".DS ."env.php";
 
-        include_once KERNEL_DIR.DS."config/env".DS.ENV."/mysql.php";
-        include_once KERNEL_DIR.DS."config/env".DS.ENV."/redis.php";
-//        include_once KERNEL_DIR.DS."config/env".DS.ENV."/domain.php";
+//        include_once KERNEL_DIR.DS."env".DS.ENV."/mysql_".LANG.".php";
+//        include_once KERNEL_DIR.DS."env".DS.ENV."/redis_".LANG.".php";
+//        include_once KERNEL_DIR.DS."env".DS.ENV."/domain_".LANG.".php";
 
-        include_once KERNEL_DIR.DS ."config".DS ."api_err_code.php";
-        include_once KERNEL_DIR.DS ."config".DS ."app.php";
-        include_once KERNEL_DIR.DS ."config".DS ."main.php";
-        include_once KERNEL_DIR.DS ."config".DS ."rediskey.php";
+        include_once KERNEL_CONFIG.DS."env".DS.ENV."/redis_".LANG.".php";
+        include_once KERNEL_CONFIG.DS."env".DS.ENV."/mysql_".LANG.".php";
+
+        include_once KERNEL_CONFIG.DS ."api_err_code.php";
+        include_once KERNEL_CONFIG.DS ."app.php";
+        include_once KERNEL_CONFIG.DS ."main.php";
+        include_once KERNEL_CONFIG.DS ."rediskey.php";
 
 
 		if(!defined('BASE_DIR'))

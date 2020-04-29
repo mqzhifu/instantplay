@@ -91,25 +91,23 @@ class BaseCtrl {
             }
 
             $apiMethod = null;
-            if(isset($GLOBALS[APP_NAME]['api'][$this->router->ctrl][$this->router->ac])){
-                $apiMethod = $GLOBALS[APP_NAME]['api'][$this->router->ctrl][$this->router->ac];
+            if(isset($GLOBALS[APP_NAME]['api'][$this->request['ctrl']][$this->request['ac']])){
+                $apiMethod =$GLOBALS[APP_NAME]['api'][$this->request['ctrl']][$this->request['ac']];
             }
 
-            if(!$apiMethod){
-                LogLib::appWriteFileHash("apimethod");
-            }
+//            if(!$apiMethod){
+//                LogLib::appWriteFileHash("apimethod");
+//            }
             if($apiMethod && arrKeyIssetAndExist($apiMethod,'return')){
                 $msg = FilterLib::apiReturnDataCheckInit($apiMethod['return'],$msg);
             }
         }
 
         $data = array('code'=>$code,"msg"=>$msg);
-
         if(RUN_ENV == 'WEBSOCKET'){
             return $data;
         }else{
-            $echo =json_encode($data);
-            return $echo;
+            return $data;
         }
     }
 

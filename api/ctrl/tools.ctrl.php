@@ -1,9 +1,20 @@
 <?php
 class ToolsCtrl {
+    public $request = null;
 
-    function __construct(){
+    function __construct($request){
+        $this->request = $request;
         //接口配置信息
-        include_once CONFIG_DIR.DS.IS_NAME."/api.php";
+        include_once APP_CONFIG_DIR.DS."api.php";
+        //所有错误码
+        include_once APP_CONFIG_DIR.DS."api_err_code.php";
+        //主-配置文件
+        include_once APP_CONFIG_DIR.DS."main.php";
+        //redis所有key的配置文件
+        include_once APP_CONFIG_DIR.DS."rediskey.php";
+
+        include_once APP_CONFIG_DIR.DS."lang".DS .LANG.DS ."err.php";
+        include_once APP_CONFIG_DIR.DS."lang".DS .LANG.DS ."desc.php";
     }
 
     function index(){echo "im index";}
@@ -173,7 +184,7 @@ class ToolsCtrl {
         }
 
 
-        $arr = $GLOBALS['main']['loginAPIExcept'];
+        $arr = $GLOBALS[APP_NAME]['main']['loginAPIExcept'];
 
         foreach($arr as $k=>$v){
             if($v[0] == $ctrl && $v[1] == $ac){
@@ -184,18 +195,18 @@ class ToolsCtrl {
         return 0;
     }
 
-    function apilist($code = 0){
-        if(!$code){
+    function apilist(){
+        if(!$this->request['code']){
             exit("code err1");
         }
 
-        if($code != 'mqzhifu'){
+        if($this->request['code'] != 'mqzhifu'){
             exit("code err2");
         }
 
         $st = getAppSmarty();
 
-        $api =$GLOBALS['api'];
+        $api =$GLOBALS[APP_NAME]['api'];
 
         $moduleCnt = 0;
         $methodCnt = 0;
@@ -218,6 +229,7 @@ class ToolsCtrl {
         $index_html = $st->compile("apilist.html");
 
         include $index_html;
+        exit;
     }
 
     function tdd($module = ''){
