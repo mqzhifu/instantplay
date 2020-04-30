@@ -1,6 +1,9 @@
-view_c
-storage/*
 .idea
+storage/log/*
+storage/session/*
+storage/view_c/*
+
+
 */config/env.php
 */config/env/local/*
 */config/env/dev/*
