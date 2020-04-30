@@ -2,23 +2,44 @@
 
 //初始分有为2个部分，1公共部分，专属部分
 //专属部分：1 WB端，2指令行端，3 API调用
+class ConfigCenter{
+    static $_dir =BASE_DIR ."/configcenter";
+    static $_configPool = null;
+    static function get($appName ,$file){
+        if(isset(self::$_configPool[$appName][$file])  && self::$_configPool["env"][ENV][$appName][$file] ){
+            return self::$_configPool[$appName][$file];
+        }
+        $dir = self::$_dir ."/$appName/$file.php";
+        self::$_configPool[$appName][$file] = include_once $dir;
+        return self::$_configPool[$appName][$file];
+    }
+
+    static function getEnv($appName ,$file){
+        if(isset(self::$_configPool["env"][ENV][$appName][$file]) && self::$_configPool["env"][ENV][$appName][$file] ){
+            return self::$_configPool["env"][ENV][$appName][$file];
+        }
+        $dir = self::$_dir ."/$appName/env/".ENV."/$file.php";
+        self::$_configPool[$appName][$file] = include_once $dir;
+        return self::$_configPool[$appName][$file];
+    }
+
+}
 class Z{
 
 	static function init(){
         //包含项目配置文件信息 ENV
-        include_once BASE_DIR ."/". APP_NAME."/". "config/env.php";
+        include_once BASE_DIR ."/". APP_NAME."/env.php";
         //所有框架需要的 常量
-        include_once BASE_DIR."/kernel/config/constant.php";
+        ConfigCenter::get("kernel","constant");
 
-//        include_once KERNEL_DIR.DS."env".DS.ENV."/domain_".LANG.".php";
-        include_once KERNEL_CONFIG . DS . "env" . DS . ENV . "/redis_" . LANG . ".php";//kernel
-        include_once KERNEL_CONFIG . DS . "env" . DS . ENV . "/mysql_" . LANG . ".php";//kernel
+        ConfigCenter::get("kernel","api_err_code");//kernel 错误码
+        ConfigCenter::get("kernel","app");//kernel 应用程序配置信息
+        ConfigCenter::get("kernel","main");//kernel 主配置文件，主要是网关限制
+        ConfigCenter::get("kernel","rediskey");//kernel redis KEY 配置信息，主要是网关限制
 
-        include_once KERNEL_CONFIG . DS . "api_err_code.php";//kernel 错误码
-        include_once KERNEL_CONFIG . DS . "app.php";//kernel 应用程序配置信息
-        include_once KERNEL_CONFIG . DS . "main.php";//kernel 主配置文件，主要是网关限制
-        include_once KERNEL_CONFIG . DS . "rediskey.php";//kernel redis KEY 配置信息，主要是网关限制
-
+        ConfigCenter::getEnv("kernel","domain_".LANG);
+        ConfigCenter::getEnv("kernel","mysql_".LANG);
+        ConfigCenter::getEnv("kernel","redis_".LANG);
         //常量检查
         Z::checkConst();
         Z::checkExt();
@@ -61,9 +82,10 @@ class Z{
 			ini_set('memory_limit', '256m');
 		}
 		//===========内存信息==================
-        include_once APP_CONFIG_DIR.DS."env".DS.ENV."/mysql_".LANG.".php";
-        include_once APP_CONFIG_DIR.DS."env".DS.ENV."/redis_".LANG.".php";
-        include_once APP_CONFIG_DIR.DS."env".DS.ENV."/domain_".LANG.".php";
+
+        ConfigCenter::getEnv(APP_NAME,"domain_".LANG);
+        ConfigCenter::getEnv(APP_NAME,"mysql_".LANG);
+        ConfigCenter::getEnv(APP_NAME,"redis_".LANG);
 	}
 	//指令行方式运行RUN_ENV
 	static function runConsoleApp(){

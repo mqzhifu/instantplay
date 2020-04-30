@@ -34,17 +34,23 @@ class BaseCtrl {
 //            }
 
 
-        //接口配置信息
-        include_once APP_CONFIG_DIR.DS."api.php";
-        //所有错误码
-        include_once APP_CONFIG_DIR.DS."api_err_code.php";
-        //主-配置文件
-        include_once APP_CONFIG_DIR.DS."main.php";
-        //redis所有key的配置文件
-        include_once APP_CONFIG_DIR.DS."rediskey.php";
+        ConfigCenter::get(APP_NAME,"api");
+        ConfigCenter::get(APP_NAME,"api_err_code");
+        ConfigCenter::get(APP_NAME,"main");
+        ConfigCenter::get(APP_NAME,"rediskey");
 
-        include_once APP_CONFIG_DIR.DS."lang".DS .LANG.DS ."err.php";
-        include_once APP_CONFIG_DIR.DS."lang".DS .LANG.DS ."desc.php";
+
+//        //接口配置信息
+//        include_once APP_CONFIG_DIR.DS."api.php";
+//        //所有错误码
+//        include_once APP_CONFIG_DIR.DS."api_err_code.php";
+//        //主-配置文件
+//        include_once APP_CONFIG_DIR.DS."main.php";
+//        //redis所有key的配置文件
+//        include_once APP_CONFIG_DIR.DS."rediskey.php";
+
+//        include_once APP_CONFIG_DIR.DS."lang".DS .LANG.DS ."err.php";
+//        include_once APP_CONFIG_DIR.DS."lang".DS .LANG.DS ."desc.php";
 
 
 //        //实例化 用户 服务 控制器

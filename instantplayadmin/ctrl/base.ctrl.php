@@ -38,9 +38,8 @@ class BaseCtrl{
         define("ACCESS_ID",$id);
 
 
-
-        include_once APP_CONFIG_DIR.DS."code.php";
-        include_once APP_CONFIG_DIR.DS."rediskey.php";
+        ConfigCenter::get(APP_NAME,"code");
+        ConfigCenter::get(APP_NAME,"rediskey");
 
         if ($this->_adminid) {
             $role_id = AdminUserModel::db()->getRowById($this->_adminid)['role_id'];

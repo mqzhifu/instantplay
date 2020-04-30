@@ -8,7 +8,7 @@ define("KERNEL_NAME","kernel");
 //框架目录
 define ('KERNEL_DIR', BASE_DIR .DS .KERNEL_NAME);
 //框架配置目录
-define ('KERNEL_CONFIG',KERNEL_DIR .DS ."config");
+//define ('KERNEL_CONFIG',KERNEL_DIR .DS ."config");
 //总（配置）目录
 //define("CONFIG_DIR",KERNEL_DIR.DS."config");
 define("STORAGE_DIR",BASE_DIR.DS."storage");
@@ -70,7 +70,7 @@ defined('LANG') or define('LANG',"cn");
 //项目目录
 define ('APP_DIR', BASE_DIR .DS . APP_NAME);
 //项目配置文件目录
-define("APP_CONFIG_DIR",APP_DIR.DS."config");
+//define("APP_CONFIG_DIR",APP_DIR.DS."config");
 //APP 生成 模板 编译后的文件位置 s
 define("APP_SMARTY_COMPILE_DIR",STORAGE_DIR.DS."view_c".DS.APP_NAME.DS );
 
@@ -78,3 +78,5 @@ define("APP_SMARTY_COMPILE_DIR",STORAGE_DIR.DS."view_c".DS.APP_NAME.DS );
 //defined('USER_AVATAR_IMG_VIRTUAL') or define('USER_AVATAR_IMG_VIRTUAL', 'avatar/user/');
 ////头像上传路径
 //defined('USER_AVATAR_IMG_UPLOAD') or define('USER_AVATAR_IMG_UPLOAD', BASE_DIR ."/www/" . USER_AVATAR_IMG_VIRTUAL);
+
+return 1;
