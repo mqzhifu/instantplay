@@ -38,7 +38,7 @@ class BaseCtrl{
         define("ACCESS_ID",$id);
 
 
-        ConfigCenter::get(APP_NAME,"code");
+        ConfigCenter::get(APP_NAME,"err_code");
         ConfigCenter::get(APP_NAME,"rediskey");
 
         if ($this->_adminid) {

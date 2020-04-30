@@ -9,7 +9,5 @@ define("IS_ADMIN",0);
 define("OUT_TYPE",'json');
 
 include BASE_DIR . '/kernel/z.class.php';
-
-z::init();
-z::runWebApp();
+z::run();
 

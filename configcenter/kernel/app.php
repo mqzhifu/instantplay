@@ -1,5 +1,5 @@
 <?php
-$arr = array(
+return array(
     'api'=>array(
         'id'=>1,
         'status'=>'open',
@@ -13,5 +13,3 @@ $arr = array(
         'apiSecret'=>'e10adc3949ba59abbe56e057f20f883e',
     ),
 );
-
-$GLOBALS[KERNEL_NAME]['app'] = $arr;

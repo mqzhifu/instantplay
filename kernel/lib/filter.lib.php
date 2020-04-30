@@ -159,7 +159,7 @@ class FilterLib {
 
     static function checkIPRequest($ip = null) {
 	    if(!$GLOBALS[KERNEL_NAME]['main']['ipCntLimit']){
-            return ture;
+            return true;
         }
 
 	    if(!$ip){

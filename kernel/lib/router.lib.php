@@ -41,16 +41,14 @@ class RouterLib{
 
     function checkApp(){
         if(!arrKeyIssetAndExist($GLOBALS[KERNEL_NAME]['app'],APP_NAME)){
-            return out_pc(9207,null,KERNEL_NAME);
+            z::outError(9207);
         }
-
         $app = $GLOBALS[KERNEL_NAME]['app'][APP_NAME];
         if($app['status'] != 'open'){
-            return out_pc(9208,null,KERNEL_NAME);
+            z::outError(9208);
         }
 
         $this->app = $app;
-
         return out_pc(200,null,KERNEL_NAME);
     }
 
@@ -75,7 +73,7 @@ class RouterLib{
                 return out_pc(9200,null,KERNEL_NAME);
         }
 
-		
+
 		if(!$ac){
             if(defined('DEF_AC'))
                 $ac = DEF_AC;
@@ -106,6 +104,7 @@ class RouterLib{
 
 		if(! method_exists($ctrl.C_CLASS,$ac))
             return out_pc(9204,'ac方法不存在:'.$ac,KERNEL_NAME);
+
 
         $this->ctrl = $ctrl;
         $this->ac = $ac;

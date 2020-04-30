@@ -2,29 +2,12 @@
 
 //初始分有为2个部分，1公共部分，专属部分
 //专属部分：1 WB端，2指令行端，3 API调用
-class ConfigCenter{
-    static $_dir =BASE_DIR ."/configcenter";
-    static $_configPool = null;
-    static function get($appName ,$file){
-        if(isset(self::$_configPool[$appName][$file])  && self::$_configPool["env"][ENV][$appName][$file] ){
-            return self::$_configPool[$appName][$file];
-        }
-        $dir = self::$_dir ."/$appName/$file.php";
-        self::$_configPool[$appName][$file] = include_once $dir;
-        return self::$_configPool[$appName][$file];
-    }
-
-    static function getEnv($appName ,$file){
-        if(isset(self::$_configPool["env"][ENV][$appName][$file]) && self::$_configPool["env"][ENV][$appName][$file] ){
-            return self::$_configPool["env"][ENV][$appName][$file];
-        }
-        $dir = self::$_dir ."/$appName/env/".ENV."/$file.php";
-        self::$_configPool[$appName][$file] = include_once $dir;
-        return self::$_configPool[$appName][$file];
-    }
-
-}
 class Z{
+
+    static function run(){
+        self::init();
+        self::runWebApp();
+    }
 
 	static function init(){
         //包含项目配置文件信息 ENV
@@ -32,14 +15,14 @@ class Z{
         //所有框架需要的 常量
         ConfigCenter::get("kernel","constant");
 
-        ConfigCenter::get("kernel","api_err_code");//kernel 错误码
-        ConfigCenter::get("kernel","app");//kernel 应用程序配置信息
-        ConfigCenter::get("kernel","main");//kernel 主配置文件，主要是网关限制
-        ConfigCenter::get("kernel","rediskey");//kernel redis KEY 配置信息，主要是网关限制
+        ConfigCenter::get(KERNEL_NAME,"err_code");//kernel 错误码
+        ConfigCenter::get(KERNEL_NAME,"app");//kernel 应用程序配置信息
+        ConfigCenter::get(KERNEL_NAME,"main");//kernel 主配置文件，主要是网关限制
+        ConfigCenter::get(KERNEL_NAME,"rediskey");//kernel redis KEY 配置信息，主要是网关限制
 
-        ConfigCenter::getEnv("kernel","domain_".LANG);
-        ConfigCenter::getEnv("kernel","mysql_".LANG);
-        ConfigCenter::getEnv("kernel","redis_".LANG);
+        ConfigCenter::getEnv(KERNEL_NAME,"domain_".LANG);
+        ConfigCenter::getEnv(KERNEL_NAME,"mysql_".LANG);
+        ConfigCenter::getEnv(KERNEL_NAME,"redis_".LANG);
         //常量检查
         Z::checkConst();
         Z::checkExt();
@@ -150,6 +133,7 @@ class Z{
                 ExceptionFrameLib::throwCatch($msg,'dispath');
             }
 
+
             $returnData = $router->action();
             if(OUT_TYPE == 'json'){
                 $returnData =  json_encode($returnData);
@@ -204,8 +188,8 @@ class Z{
 //	    return $arr[$COUNTRY];
 //    }
 
-    static function outError($code){
-        echo $code.":".$GLOBALS['kernel']['api_err_code'][$code];
+    static function outError($code,$replace){
+        ThrowErr::unknow(KERNEL_NAME,$code,$replace);
         exit;
     }
 
@@ -215,10 +199,10 @@ class Z{
     //初始化的常量值，必埴项检查
 	static function checkConst(){
         if (!defined('KERNEL_DIR'))
-            exit('常量未定义：KERNEL_DIR');
+            self::outError(9118);
 
         if (!is_dir(KERNEL_DIR)) {
-            exit("KERNEL_DIR is not dir." . KERNEL_DIR);
+            self::outError(9119);
         }
 
         if (!defined('BASE_DIR'))
@@ -236,25 +220,11 @@ class Z{
             self::outError(9114);
         }
 
-//        if (!defined('COUNTRY'))
-//            self::outError(9116);
-//
-//        $country = self::getCountry();
-//        if (!in_array(COUNTRY, $country)) {
-//            self::outError(9117);
-//        }
-
         if (!defined('APP_NAME'))
             self::outError(9103);
 
         if (!is_dir(APP_DIR))
             self::outError(9115);
-
-//        if (!defined('DEF_DB_CONN'))
-//            self::outError(9104);
-//
-//        if (!defined('DEF_REDIS_CONN'))
-//            self::outError(9105);
 
         if (!defined('ENV'))
             self::outError(9108);
@@ -264,13 +234,25 @@ class Z{
             self::outError(9120);
         }
 
-        if (!in_array(APP_NAME, array_keys($GLOBALS['kernel']['app']))) {
+        if (!in_array(APP_NAME, array_keys($GLOBALS[KERNEL_NAME]['app']))) {
             self::outError(9121);
         }
 
-        if ($GLOBALS['kernel']['app'][APP_NAME]['status'] != 'open') {
+        if ($GLOBALS[KERNEL_NAME]['app'][APP_NAME]['status'] != 'open') {
             self::outError(9001);
         }
+//        if (!defined('COUNTRY'))
+//            self::outError(9116);
+//
+//        $country = self::getCountry();
+//        if (!in_array(COUNTRY, $country)) {
+//            self::outError(9117);
+//        }
+//        if (!defined('DEF_DB_CONN'))
+//            self::outError(9104);
+//
+//        if (!defined('DEF_REDIS_CONN'))
+//            self::outError(9105);
     }
 
     static function checkWebConst(){
@@ -294,21 +276,82 @@ class Z{
 
 	    foreach ($arr as $k=>$v) {
             $rs = extension_loaded($v);
-
             if(!$rs){
-                var_dump($v);
-                self::outError(9300);
+                self::outError(9300,array($v));
             }
 	    }
     }
 }
-//self::initLanguageConst();
-//语言包常量
-//static function initLanguageConst(){
-//    $data = ConstModel::db()->getAll();
-//    if($data){
-//        foreach($data as $k=>$v){
-//            $GLOBALS['LANG'][$v['key']] = $v['content'];
+
+class ConfigCenter{
+    static $_dir =BASE_DIR ."/configcenter";
+    static $_configPool = null;
+    static function get($appName ,$file){
+        if(isset(self::$_configPool[$appName][$file])  && self::$_configPool[$appName][$file] ){
+            return self::$_configPool[$appName][$file];
+        }
+        $dir = self::$_dir ."/$appName/$file.php";
+        self::$_configPool[$appName][$file] = include_once $dir;
+        $GLOBALS[$appName][$file] = self::$_configPool[$appName][$file];
+        return self::$_configPool[$appName][$file];
+    }
+
+    static function getEnv($appName ,$file){
+//        if(isset(self::$_configPool["env"][ENV][$appName][$file]) && self::$_configPool["env"][ENV][$appName][$file] ){
+//            return self::$_configPool["env"][ENV][$appName][$file];
 //        }
-//    }
-//}
+        if(isset(self::$_configPool[$appName][$file])  && self::$_configPool[$appName][$file] ){
+            return self::$_configPool[$appName][$file];
+        }
+        $dir = self::$_dir ."/$appName/env/".ENV."/$file.php";
+        self::$_configPool[$appName][$file] = include_once $dir;
+        $GLOBALS[$appName][$file] = self::$_configPool[$appName][$file];
+        return self::$_configPool[$appName][$file];
+    }
+}
+
+class ThrowErr {
+    static $_CODE = [];
+    static function initCode($appName){
+        self::$_CODE[$appName] = ConfigCenter::get($appName,'err_code');
+    }
+
+    static function unknow($appName ,$code = null,array $replace = []){
+        self::initCode($appName);
+        self::process(1,$appName,$code,$replace);
+    }
+
+    static function exception($appName ,$code = null,array $replace = []){
+        self::initCode($appName);
+        self::process(2,$appName,$code,$replace);
+    }
+
+    static function process($type ,$appName , $code,$replace = []){
+        if(!$code && $code !== 0 ){
+            $msg = self::$_CODE[$appName][9995];
+        }elseif(isset(self::$_CODE[$appName][$code])){
+            $msg = self::$_CODE[$appName][9994];
+            $msg = self::replaceMsg($msg,array($code));
+        }else{
+            $msg = self::$_CODE[$appName][$code];
+            if($replace){
+                $msg = self::replaceMsg($msg,$replace);
+            }
+        }
+
+        if($type == 1){
+            echo $msg;
+            exit;
+        }else{
+            throw new Exception($msg,$code);
+            exit(" doing something...");
+        }
+    }
+
+    static function replaceMsg($message,$replace = array()){
+        foreach ($replace as $key => $v) {
+            $message = str_replace("{" . $key ."}", $v,$message);
+        }
+        return $message;
+    }
+}

@@ -285,8 +285,8 @@ function checkrobot($useragent = '') {
 function out_pc($code = 200,$msg = '',$appKey = APP_NAME){
     if(!$msg){
         if($msg === '' || $msg === null){//弱类型，防止0或者空数组被忽略
-            if(arrKeyIssetAndExist($GLOBALS[$appKey]['api_err_code'],$code)){
-                $msg = $GLOBALS[$appKey]['api_err_code'][$code];
+            if(arrKeyIssetAndExist($GLOBALS[$appKey]['err_code'],$code)){
+                $msg = $GLOBALS[$appKey]['err_code'][$code];
             }
         }
     }
