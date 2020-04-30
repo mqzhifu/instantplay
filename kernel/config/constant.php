@@ -71,7 +71,8 @@ defined('LANG') or define('LANG',"cn");
 define ('APP_DIR', BASE_DIR .DS . APP_NAME);
 //项目配置文件目录
 define("APP_CONFIG_DIR",APP_DIR.DS."config");
-
+//APP 生成 模板 编译后的文件位置 s
+define("APP_SMARTY_COMPILE_DIR",STORAGE_DIR.DS.APP_NAME.DS ."view_c");
 
 ////头像-相对路径 不分应用
 //defined('USER_AVATAR_IMG_VIRTUAL') or define('USER_AVATAR_IMG_VIRTUAL', 'avatar/user/');

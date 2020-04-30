@@ -454,7 +454,7 @@ function send_http_status($code) {
 function getAppSmarty($path = ''){
 	$Template = get_instance_of('TemplateLib');
 	$Template->setPath(APP_DIR."/view/");
-	$Template->setCompilePath( APP_DIR."/view_c/");
+	$Template->setCompilePath( APP_SMARTY_COMPILE_DIR);
 	return $Template;
 }
 
