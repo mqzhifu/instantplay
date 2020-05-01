@@ -1,12 +1,15 @@
 <?php
-set_time_limit(600);
-header("Content-type:text/html;charset=utf-8");
-class VerifiercodeCtrl extends BaseCtrl{
+class ProductCtrl extends BaseCtrl{
     function index(){
         if(_g("getlist")){
             $this->getList();
         }
-        $this->display("/system/verifiercode_list.html");
+
+
+        $statusSelectOptionHtml = ProductModel::getStatusSelectOptionHtml();
+        $this->assign("statusSelectOptionHtml",$statusSelectOptionHtml);
+        $this->assign("categoryOptions", ProductCategoryModel::getSelectOptionHtml());
+        $this->display("/product/product_list.html");
     }
 
 
@@ -44,7 +47,7 @@ class VerifiercodeCtrl extends BaseCtrl{
 
         $where = $this->getDataListTableWhere();
 
-        $cnt = VerifiercodeModel::db()->getCount($where);
+        $cnt = ProductModel::db()->getCount($where);
 
         $iTotalRecords = $cnt;//DB中总记录数
         if ($iTotalRecords){
@@ -78,22 +81,34 @@ class VerifiercodeCtrl extends BaseCtrl{
             $end = $iDisplayStart + $iDisplayLength;
             $end = $end > $iTotalRecords ? $iTotalRecords : $end;
 
-            $data = VerifiercodeModel::db()->getAll($where . $order);
+            $data = ProductModel::db()->getAll($where . $order);
 
             foreach($data as $k=>$v){
+                $statusBnt = "上架";
+                if($v['status'] == ProductModel::STATUS_ON){
+                    $statusBnt = "下架";
+                }
                 $row = array(
                     '<input type="checkbox" name="id[]" value="'.$v['id'].'">',
                     $v['id'],
-                    $v['code'],
-                    $v['status'],
-                    $v['type'],
-                    $v['uid'],
-                    $v['expire_time'],
-                    $v['rule_id'],
-
+                    $v['title'],
+//                    $v['subtitle'],
+                    $v['desc'],
+                    $v['brand'],
+                    $v['attribute'],
+//                    $v['notice'],
+                    ProductCategoryModel::getNameById($v['category_id']),
+//                    $v['status'],
+                    ProductModel::getStatusDescById( $v['status']),
+                    $v['lables'],
+//                    $v['is_search'],
+                    $v['admin_id'],
+                    $v['pv'],
+                    $v['uv'],
+                    $v['recommend'],
                     get_default_date($v['a_time']),
-
-                    "",
+                    '<button class="btn btn-xs default red delone" data-id="'.$v['id'].'" onclick="recover2(this)">'.$statusBnt.'</button>'.
+                    '<button class="btn btn-xs default blue delone" data-id="'.$v['id'].'" onclick="recover2(this)">添加商品</button>',
                 );
 
                 $records["data"][] = $row;

@@ -2,6 +2,7 @@
 class IndexCtrl extends BaseCtrl  {
 
     function index(){
+
         return $this->out(200,"PING OK !");
     }
 

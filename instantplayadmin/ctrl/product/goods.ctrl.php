@@ -1,12 +1,10 @@
 <?php
-set_time_limit(600);
-header("Content-type:text/html;charset=utf-8");
-class VerifiercodeCtrl extends BaseCtrl{
+class GoodsCtrl extends BaseCtrl{
     function index(){
         if(_g("getlist")){
             $this->getList();
         }
-        $this->display("/system/verifiercode_list.html");
+        $this->display("/product/goods_list.html");
     }
 
 
@@ -44,7 +42,7 @@ class VerifiercodeCtrl extends BaseCtrl{
 
         $where = $this->getDataListTableWhere();
 
-        $cnt = VerifiercodeModel::db()->getCount($where);
+        $cnt = GoodsModel::db()->getCount($where);
 
         $iTotalRecords = $cnt;//DB中总记录数
         if ($iTotalRecords){
@@ -78,21 +76,25 @@ class VerifiercodeCtrl extends BaseCtrl{
             $end = $iDisplayStart + $iDisplayLength;
             $end = $end > $iTotalRecords ? $iTotalRecords : $end;
 
-            $data = VerifiercodeModel::db()->getAll($where . $order);
+            $data = GoodsModel::db()->getAll($where . $order);
 
             foreach($data as $k=>$v){
                 $row = array(
                     '<input type="checkbox" name="id[]" value="'.$v['id'].'">',
                     $v['id'],
-                    $v['code'],
-                    $v['status'],
+                    $v['pid'],
                     $v['type'],
-                    $v['uid'],
-                    $v['expire_time'],
-                    $v['rule_id'],
-
+                    $v['status'],
+                    $v['product_arrt_ids'],
+                    $v['stock'],
+                    $v['sale_price'],
+                    $v['original_price'],
+                    $v['pay_type'],
+                    $v['admin_id'],
+                    $v['is_search'],
+                    $v['sort'],
+                    $v['haulage'],
                     get_default_date($v['a_time']),
-
                     "",
                 );
 

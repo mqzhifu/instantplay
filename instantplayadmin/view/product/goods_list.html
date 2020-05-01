@@ -61,27 +61,51 @@
                                             ID
                                         </th>
                                         <th width="5%">
-                                            code
+                                            pid
                                         </th>
                                         <th width="10%">
-                                            状态
+                                            type
                                         </th>
                                         <th width="10%">
-                                            类型
+                                            status
                                         </th>
 
 
                                         <th width="5%">
-                                            uid
+                                            product_arrt_ids
                                         </th>
 
 
                                         <th width="5%">
-                                            失效时间
+                                            stock
                                         </th>
 
                                         <th width="5%">
-                                            rule_id
+                                            sale_price
+                                        </th>
+
+                                        <th width="5%">
+                                            original_price
+                                        </th>
+
+                                        <th width="5%">
+                                            pay_type
+                                        </th>
+
+                                        <th width="5%">
+                                            admin_id
+                                        </th>
+
+                                        <th width="5%">
+                                            is_search
+                                        </th>
+
+                                        <th width="5%">
+                                            sort
+                                        </th>
+
+                                        <th width="5%">
+                                            haulage
                                         </th>
 
                                         <th width="5%">
@@ -113,7 +137,6 @@
                                         </td>
 
                                         <td></td>
-                                        <td></td>
 
                                         <td>
                                             <div class="input-group date form_datetime margin-bottom-5">
@@ -133,6 +156,14 @@
                                                 </span>
                                             </div>
                                         </td>
+
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
 
                                         <td>
                                             <div class="margin-bottom-5">
@@ -199,7 +230,7 @@
                     ],
                     "pageLength": 10, // default record count per page
                     "ajax": {
-                        "url": "/system/no/verifiercode/getlist/" // ajax sourcedelBat
+                        "url": "/product/no/goods/getlist/" // ajax sourcedelBat
                     },
                     "aoColumnDefs" : [{  // define columns sorting options(by default all columns are sortable extept the first checkbox column)
                         'bSortable' : false,

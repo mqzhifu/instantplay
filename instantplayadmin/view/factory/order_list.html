@@ -61,31 +61,45 @@
                                             ID
                                         </th>
                                         <th width="5%">
-                                            code
+                                            编号
                                         </th>
                                         <th width="10%">
-                                            状态
+                                            pid
                                         </th>
                                         <th width="10%">
-                                            类型
+                                            goods_id
                                         </th>
 
+                                        <th width="5%">
+                                            price
+                                        </th>
+
+                                        <th width="5%">
+                                            pay_type
+                                        </th>
+
+                                        <th width="5%">
+                                            status
+                                        </th>
 
                                         <th width="5%">
                                             uid
                                         </th>
 
-
                                         <th width="5%">
-                                            失效时间
+                                            agent_uid
                                         </th>
 
                                         <th width="5%">
-                                            rule_id
+                                            address_agent
                                         </th>
 
                                         <th width="5%">
                                             a_time
+                                        </th>
+
+                                        <th width="5%">
+                                            pay_time
                                         </th>
 
                                         <th width="5%">
@@ -112,8 +126,6 @@
                                         <td>
                                         </td>
 
-                                        <td></td>
-                                        <td></td>
 
                                         <td>
                                             <div class="input-group date form_datetime margin-bottom-5">
@@ -133,6 +145,13 @@
                                                 </span>
                                             </div>
                                         </td>
+
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
 
                                         <td>
                                             <div class="margin-bottom-5">
@@ -199,7 +218,7 @@
                     ],
                     "pageLength": 10, // default record count per page
                     "ajax": {
-                        "url": "/system/no/verifiercode/getlist/" // ajax sourcedelBat
+                        "url": "/factory/no/order/getlist/" // ajax sourcedelBat
                     },
                     "aoColumnDefs" : [{  // define columns sorting options(by default all columns are sortable extept the first checkbox column)
                         'bSortable' : false,

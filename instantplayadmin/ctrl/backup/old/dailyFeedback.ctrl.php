@@ -1,12 +1,13 @@
 <?php
 set_time_limit(600);
 header("Content-type:text/html;charset=utf-8");
-class VerifiercodeCtrl extends BaseCtrl{
+class DailyFeedbackCtrl extends BaseCtrl{
     function index(){
         if(_g("getlist")){
             $this->getList();
         }
-        $this->display("/system/verifiercode_list.html");
+
+        $this->display("daily/feedback_list.html");
     }
 
 
@@ -44,7 +45,7 @@ class VerifiercodeCtrl extends BaseCtrl{
 
         $where = $this->getDataListTableWhere();
 
-        $cnt = VerifiercodeModel::db()->getCount($where);
+        $cnt = FeedbackModel::db()->getCount($where);
 
         $iTotalRecords = $cnt;//DB中总记录数
         if ($iTotalRecords){
@@ -78,19 +79,17 @@ class VerifiercodeCtrl extends BaseCtrl{
             $end = $iDisplayStart + $iDisplayLength;
             $end = $end > $iTotalRecords ? $iTotalRecords : $end;
 
-            $data = VerifiercodeModel::db()->getAll($where . $order);
+            $data = FeedbackModel::db()->getAll($where . $order);
 
             foreach($data as $k=>$v){
                 $row = array(
                     '<input type="checkbox" name="id[]" value="'.$v['id'].'">',
                     $v['id'],
-                    $v['code'],
-                    $v['status'],
-                    $v['type'],
                     $v['uid'],
-                    $v['expire_time'],
-                    $v['rule_id'],
-
+                    $v['type'],
+                    $v['contact'],
+                    $v['content'],
+                    $v['status'],
                     get_default_date($v['a_time']),
 
                     "",

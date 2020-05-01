@@ -1,12 +1,12 @@
 <?php
 set_time_limit(600);
 header("Content-type:text/html;charset=utf-8");
-class VerifiercodeCtrl extends BaseCtrl{
+class MsgCtrl extends BaseCtrl{
     function index(){
         if(_g("getlist")){
             $this->getList();
         }
-        $this->display("/system/verifiercode_list.html");
+        $this->display("/system/msg_list.html");
     }
 
 
@@ -44,7 +44,7 @@ class VerifiercodeCtrl extends BaseCtrl{
 
         $where = $this->getDataListTableWhere();
 
-        $cnt = VerifiercodeModel::db()->getCount($where);
+        $cnt = MsgModel::db()->getCount($where);
 
         $iTotalRecords = $cnt;//DB中总记录数
         if ($iTotalRecords){
@@ -78,21 +78,22 @@ class VerifiercodeCtrl extends BaseCtrl{
             $end = $iDisplayStart + $iDisplayLength;
             $end = $end > $iTotalRecords ? $iTotalRecords : $end;
 
-            $data = VerifiercodeModel::db()->getAll($where . $order);
+            $data = MsgModel::db()->getAll($where . $order);
 
             foreach($data as $k=>$v){
                 $row = array(
                     '<input type="checkbox" name="id[]" value="'.$v['id'].'">',
                     $v['id'],
-                    $v['code'],
-                    $v['status'],
+                    $v['from_uid'],
+                    $v['to_uid'],
+                    $v['title'],
                     $v['type'],
-                    $v['uid'],
-                    $v['expire_time'],
-                    $v['rule_id'],
-
+                    $v['content'],
                     get_default_date($v['a_time']),
-
+                    $v['to_del'],
+                    $v['from_del'],
+                    $v['is_read'],
+                    $v['category'],
                     "",
                 );
 

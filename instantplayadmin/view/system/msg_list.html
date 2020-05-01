@@ -61,31 +61,38 @@
                                             ID
                                         </th>
                                         <th width="5%">
-                                            code
+                                            from_uid
                                         </th>
                                         <th width="10%">
-                                            状态
+                                            to_uid
                                         </th>
                                         <th width="10%">
-                                            类型
+                                            title
                                         </th>
 
 
                                         <th width="5%">
-                                            uid
-                                        </th>
-
-
-                                        <th width="5%">
-                                            失效时间
-                                        </th>
-
-                                        <th width="5%">
-                                            rule_id
+                                            content
                                         </th>
 
                                         <th width="5%">
                                             a_time
+                                        </th>
+
+                                        <th width="5%">
+                                            to_del
+                                        </th>
+
+                                        <th width="5%">
+                                            from_del
+                                        </th>
+
+                                        <th width="5%">
+                                            is_read
+                                        </th>
+
+                                        <th width="5%">
+                                            category
                                         </th>
 
                                         <th width="5%">
@@ -115,24 +122,6 @@
                                         <td></td>
                                         <td></td>
 
-                                        <td>
-                                            <div class="input-group date form_datetime margin-bottom-5">
-                                                <input type="text" class="form-control form-filter input-sm" style="height: 34px" readonly name="from" id="from" placeholder="From">
-                                                <span class="input-group-btn">
-                                                    <!--<button class="btn default date-reset" type="button" style="margin-right: 0"><i class="fa fa-times"></i></button>-->
-                                                    <button class="btn default date-set" type="button" style="margin-right: 0"><i class="fa fa-calendar"></i></button>
-                                                </span>
-                                            </div>
-
-
-                                            <div class="input-group date form_datetime margin-bottom-5">
-                                                <input type="text" class="form-control form-filter input-sm" style="height: 34px"  readonly name="to" id="to" placeholder="to">
-                                                <span class="input-group-btn">
-                                                    <!--<button class="btn default date-reset" type="button"  style="margin-right: 0"><i class="fa fa-times"></i></button>-->
-                                                    <button class="btn default date-set" type="button"  style="margin-right: 0"><i class="fa fa-calendar"></i></button>
-                                                </span>
-                                            </div>
-                                        </td>
 
                                         <td>
                                             <div class="margin-bottom-5">
@@ -199,7 +188,7 @@
                     ],
                     "pageLength": 10, // default record count per page
                     "ajax": {
-                        "url": "/system/no/verifiercode/getlist/" // ajax sourcedelBat
+                        "url": "/system/no/msg/getlist/" // ajax sourcedelBat
                     },
                     "aoColumnDefs" : [{  // define columns sorting options(by default all columns are sortable extept the first checkbox column)
                         'bSortable' : false,

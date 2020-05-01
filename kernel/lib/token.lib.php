@@ -2,32 +2,37 @@
 class TokenLib {
     static function create($uid){
         $secret = $GLOBALS[APP_NAME]['main']['tokenSecret'];
-
         return self::crypt($uid, $secret, 'encode');
     }
 
+//    static function getDecode($str){
+//        $secret = $GLOBALS['main']['tokenSecret'];
+//
+//        $data =  self::crypt($str, $secret, 'decode');
+//        $data['uid'] = $data['data'];
+//        unset($data['data']);
+//        return $data;
+//    }
+//
+//    static function getUid($str){
+//        $secret = $GLOBALS[APP_NAME]['main']['tokenSecret'];
+//
+//        $cryptData =  self::crypt($str, $secret, 'decode');
+//        $data  = array( 'uid'=> (int)$cryptData['data'],'expire'=>$cryptData['expire']);
+//        unset($data['data']);
+//        return $data;
+//    }
+
     static function getDecode($str){
-        $secret = $GLOBALS['main']['tokenSecret'];
-
-        $data =  self::crypt($str, $secret, 'decode');
-        $data['uid'] = $data['data'];
-        unset($data['data']);
-        return $data;
-    }
-
-    static function getUid($str){
         $secret = $GLOBALS[APP_NAME]['main']['tokenSecret'];
-
-//        $data =  intval(self::crypt($str, $secret, 'decode'));
-        $data =  self::crypt($str, $secret, 'decode');
-        $data['uid'] = (int)$data['data'];
-        unset($data['data']);
+        $cryptData =  self::crypt($str, $secret, 'decode');
+        $data  = array( 'uid'=> (int)$cryptData['data'],'expire'=>$cryptData['expire']);
         return $data;
     }
 
     //operation ＝ decode 解密  key 私钥
     static function crypt($string, $key = '', $operation = 'encode') {
-        $expire = 30 * 24 * 60 * 60;
+        $expire = 30 * 24 * 60 * 60;//30天失效
         if ($operation == 'decode') {
             return self::decrypt($string, $key );
         } else {

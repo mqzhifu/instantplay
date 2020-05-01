@@ -14,8 +14,14 @@ class BaseCtrl{
 
         $this->ctrl = $request['ctrl'];
         $this->ac = $request['ac'];
+
         $this->cate = "index";
+        if(arrKeyIssetAndExist($request,'cate'))
+            $this->cate = $request['cate'];
+
         $this->sub = "index";
+        if(arrKeyIssetAndExist($request,'sub'))
+            $this->sub = $request['sub'];
 
         $this->_st = getAppSmarty();
         $this->_acl = get_instance_of('AclLib');

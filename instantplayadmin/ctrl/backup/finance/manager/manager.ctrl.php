@@ -1,14 +1,6 @@
 <?php
 
-/**
- * @Author: Kir
- * @Date:   2019-03-25 18:37:43
- * @Last Modified by:   xuren
- * @Last Modified time: 2019-05-31 15:37:32
- */
-
-
-class ManagerCtrl extends BaseCtrl 
+class ManagerCtrl extends BaseCtrl
 {
 	function ok()
 	{
