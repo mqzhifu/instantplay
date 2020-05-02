@@ -4,6 +4,10 @@ class OrderCtrl extends BaseCtrl{
         if(_g("getlist")){
             $this->getList();
         }
+
+        $this->assign("statusOptions", OrderModel::getStatusOptions());
+        $this->assign("payTypeOptions", OrderModel::getPayTypeOptions());
+
         $this->display("/factory/order_list.html");
     }
 

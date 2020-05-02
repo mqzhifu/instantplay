@@ -4,6 +4,10 @@ class GoodsCtrl extends BaseCtrl{
         if(_g("getlist")){
             $this->getList();
         }
+
+
+
+        $this->assign("statusSelectOptionHtml",GoodsModel::getStatusSelectOptionHtml());
         $this->display("/product/goods_list.html");
     }
 
@@ -14,9 +18,34 @@ class GoodsCtrl extends BaseCtrl{
 
 
     function add(){
+        $pid = _g("pid");
+        if(!$pid){
+            exit("pid is null");
+        }
+
+        $product = ProductModel::db()->getById($pid);
+        if(!$product){
+            exit("pid is not in db");
+        }
+
+        if(_g("opt")){
+
+        }
+
+
+        $this->assign("payType",OrderModel::PAY_TYPE_DESC);
+
+        $productLinkCategoryAttr = ProductLinkCategoryAttrModel::getRelationFormatHtml($pid);
+        $this->assign("productLinkCategoryAttr",json_encode($productLinkCategoryAttr));
+
+
+
+        $category = ProductCategoryModel::db()->getById($product['category_id']);
+
         $statusSelectOptionHtml = ProductModel::getStatusSelectOptionHtml();
         $this->assign("statusSelectOptionHtml",$statusSelectOptionHtml);
-        $this->assign("categoryOptions", ProductCategoryModel::getSelectOptionHtml());
+        $this->assign("categoryName",$category['name']);
+//        $this->assign("categoryOptions", ProductCategoryModel::getSelectOptionHtml());
 
         $this->addJs('/assets/global/plugins/jquery-validation/js/jquery.validate.min.js');
         $this->addJs('/assets/global/plugins/jquery-validation/js/additional-methods.min.js');

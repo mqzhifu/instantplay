@@ -18,28 +18,21 @@ class AgentModel {
 		return call_user_func_array(array(self::db(),$func), $arguments);
 	}
 
-    static function addReq($adminId,$cate,$sub,$ctrl,$ac){
-	    $request = null;
-	    if($_REQUEST){
-	        foreach ($_REQUEST as $k=>$v) {
-                if(strpos($k,'columns') !== false){
-                    continue;
-                }
-                $request[$k] = $v;
-	        }
-        }
-        $data = array(
-        	'cate'=>$cate,
-        	'sub'=>$sub,
-            'ctrl'=>$ctrl,
-            'ac'=>$ac,
-            'a_time'=>time(),
-            'ip'=>get_client_ip(),
-            'request'=>json_encode($request),
-            'admin_uid'=>$adminId
-        );
+    const STATUS_AUDITING = 1;
+    const STATUS_REJECT = 2;
+    const STATUS_OK = 3;
 
-        $id = self::db()->add($data);
-        return $id;
+    const STATUS = [
+        self::STATUS_AUDITING => "审核中",
+        self::STATUS_REJECT => "拒绝",
+        self::STATUS_OK => "通过",
+    ];
+
+    static function getStatusSelectOptionHtml(){
+        $html = "";
+        foreach (self::STATUS as $k=>$v) {
+            $html .= "<option value='{$k}'>{$v}</option>";
+        }
+        return $html;
     }
 }

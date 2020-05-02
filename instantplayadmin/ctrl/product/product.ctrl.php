@@ -178,9 +178,9 @@ class ProductCtrl extends BaseCtrl{
                     $v['uv'],
                     $v['recommend'],
                     get_default_date($v['a_time']),
-                    '<button class="btn btn-xs default  delone" data-id="'.$v['id'].'" onclick="recover2(this)">详情</button>'.
-                    '<button class="btn btn-xs default red delone" data-id="'.$v['id'].'" onclick="recover2(this)">'.$statusBnt.'</button>'.
-                    '<button class="btn btn-xs default blue delone" data-id="'.$v['id'].'" onclick="recover2(this)">添加商品</button>',
+                    '<button class="btn btn-xs default" data-id="'.$v['id'].'" onclick="recover2(this)">详情</button>'.
+                    '<button class="btn btn-xs default red" data-id="'.$v['id'].'" onclick="recover2(this)">'.$statusBnt.'</button>'.
+                    '<a href="/product/no/goods/add/pid='.$v['id'].' ">添加商品</a>',
                 );
 
                 $records["data"][] = $row;

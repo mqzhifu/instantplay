@@ -4,6 +4,12 @@ class UserCtrl extends BaseCtrl{
         if(_g("getlist")){
             $this->getList();
         }
+
+
+
+        $this->assign("typeOptions",UserModel::getTypeOptions());
+        $this->assign("sexOptions", UserModel::getSexOptions());
+
         $this->display("/people/user_list.html");
     }
 

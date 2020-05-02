@@ -4,6 +4,8 @@ class AgentCtrl extends BaseCtrl{
         if(_g("getlist")){
             $this->getList();
         }
+
+        $this->assign("statusSelectOptionHtml",AgentModel::getStatusSelectOptionHtml());
         $this->display("/people/agent_list.html");
     }
 

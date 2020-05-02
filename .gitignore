@@ -3,4 +3,6 @@ storage/log/*
 storage/session/*
 storage/view_c/*
 
+static/upload/
+
 kernel/plugins/structure/testData

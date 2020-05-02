@@ -18,4 +18,28 @@ class ProductLinkCategoryAttrModel {
 		return call_user_func_array(array(self::db(),$func), $arguments);
 	}
 
+	static function getRelationFormatHtml($pid){
+        $relation = self::db()->getAll(" pid = $pid");
+        $productCategoryAttrParaGroup = array();
+        foreach ($relation as $k=>$v) {
+            $productCategoryAttrParaGroup[$v['pca_id']][] = $v['pcap_id'];
+        }
+
+        $rs = array();
+        foreach ($productCategoryAttrParaGroup as $k=>$v) {
+            $productCatgoryAttr = ProductCategoryAttrModel::db()->getById($k);
+            $row = $productCatgoryAttr;
+            $collect = [];
+            foreach ($v as $k2=>$v2) {
+                $productCategoryAttrPara = ProductCategoryAttrParaModel::db()->getById($v2);
+                $collect[] = $productCategoryAttrPara;
+            }
+            $row['para'] = $collect;
+
+            $rs[] = $row;
+        }
+
+        return $rs;
+    }
+
 }

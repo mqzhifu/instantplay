@@ -7,6 +7,13 @@ class GoodsModel {
     static $_db_key = "instantplay";
 
 
+    const STATUS_ON = 2;
+    const STATUS_OFF = 1;
+    const STATUS = [
+        self::STATUS_ON => "上架",
+        self::STATUS_OFF => "下架",
+    ];
+
     static function db(){
         if(self::$_db)
             return self::$_db;
@@ -17,5 +24,17 @@ class GoodsModel {
 
     public static function __callStatic($func, $arguments){
         return call_user_func_array(array(self::db(),$func), $arguments);
+    }
+
+    static function getStatusDescById($id){
+        return self::STATUS[$id];
+    }
+
+    static function getStatusSelectOptionHtml(){
+        $html = "";
+        foreach (self::STATUS as $k=>$v) {
+            $html .= "<option value='{$k}'>{$v}</option>";
+        }
+        return $html;
     }
 }

@@ -61,45 +61,45 @@
                                             ID
                                         </th>
                                         <th width="5%">
-                                            uname
+                                            用户名
                                         </th>
                                         <th width="10%">
-                                            nickname
+                                            昵称
                                         </th>
                                         <th width="10%">
-                                            sex
+                                            性别
                                         </th>
 
                                         <th width="5%">
-                                            realname
+                                            真实姓名
                                         </th>
 
                                         <th width="5%">
-                                            mobile
+                                            手机号
                                         </th>
 
                                         <th width="5%">
-                                            email
+                                            邮箱
                                         </th>
 
                                         <th width="5%">
-                                            birthday
+                                            生日
                                         </th>
 
                                         <th width="5%">
-                                            a_time
+                                            注册时间
                                         </th>
 
                                         <th width="5%">
-                                            avatar
+                                            头像
                                         </th>
 
                                         <th width="5%">
-                                            type
+                                            类型
                                         </th>
 
                                         <th width="5%">
-                                            third_uid
+                                            三方UID
                                         </th>
 
                                         <th width="5%">
@@ -124,7 +124,11 @@
                                             <input type="text" class="form-control form-filter input-sm" name="ctrlName" >
                                         </td>
                                         <td>
-                                            <input type="text" class="form-control form-filter input-sm" name="acName" >
+                                            <select name="type">
+
+                                                {$sexOptions}
+
+                                            </select>
                                         </td>
 
                                         <td>
@@ -132,6 +136,13 @@
 
 
                                         <td>
+
+                                        </td>
+
+                                        <td></td>
+                                        <td></td>
+                                        <td>
+
                                             <div class="input-group date form_datetime margin-bottom-5">
                                                 <input type="text" class="form-control form-filter input-sm" style="height: 34px" readonly name="from" id="from" placeholder="From">
                                                 <span class="input-group-btn">
@@ -148,13 +159,18 @@
                                                     <button class="btn default date-set" type="button"  style="margin-right: 0"><i class="fa fa-calendar"></i></button>
                                                 </span>
                                             </div>
-                                        </td>
 
+                                        </td>
                                         <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
+                                        <td>
+
+                                            <select name="type">
+
+                                                {$typeOptions}
+
+                                            </select>
+
+                                        </td>
                                         <td></td>
                                         <td></td>
 

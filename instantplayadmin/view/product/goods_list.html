@@ -61,55 +61,54 @@
                                             ID
                                         </th>
                                         <th width="5%">
-                                            pid
+                                            产品ID
                                         </th>
                                         <th width="10%">
                                             type
                                         </th>
                                         <th width="10%">
-                                            status
+                                            状态
+                                        </th>
+
+                                        <th width="5%">
+                                            SKU属性
                                         </th>
 
 
                                         <th width="5%">
-                                            product_arrt_ids
-                                        </th>
-
-
-                                        <th width="5%">
-                                            stock
+                                            库存
                                         </th>
 
                                         <th width="5%">
-                                            sale_price
+                                            销售价
                                         </th>
 
                                         <th width="5%">
-                                            original_price
+                                            原价
                                         </th>
 
                                         <th width="5%">
-                                            pay_type
+                                            支付类型
                                         </th>
 
                                         <th width="5%">
-                                            admin_id
+                                            管理员
                                         </th>
 
                                         <th width="5%">
-                                            is_search
+                                            来源
                                         </th>
 
                                         <th width="5%">
-                                            sort
+                                            排序
                                         </th>
 
                                         <th width="5%">
-                                            haulage
+                                            运费
                                         </th>
 
                                         <th width="5%">
-                                            a_time
+                                            添加时间
                                         </th>
 
                                         <th width="5%">
@@ -130,7 +129,10 @@
                                             <input type="text" class="form-control form-filter input-sm" name="ctrlName" >
                                         </td>
                                         <td>
-                                            <input type="text" class="form-control form-filter input-sm" name="acName" >
+                                            <select name="status">
+
+                                                {$statusSelectOptionHtml}
+                                            </select>
                                         </td>
 
                                         <td>
@@ -139,6 +141,17 @@
                                         <td></td>
 
                                         <td>
+
+                                        </td>
+
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td>
+
                                             <div class="input-group date form_datetime margin-bottom-5">
                                                 <input type="text" class="form-control form-filter input-sm" style="height: 34px" readonly name="from" id="from" placeholder="From">
                                                 <span class="input-group-btn">
@@ -155,15 +168,9 @@
                                                     <button class="btn default date-set" type="button"  style="margin-right: 0"><i class="fa fa-calendar"></i></button>
                                                 </span>
                                             </div>
-                                        </td>
 
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
+
+                                        </td>
 
                                         <td>
                                             <div class="margin-bottom-5">

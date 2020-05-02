@@ -41,13 +41,19 @@ class UserModel {
             self::$_type_twitter =>'推特',
             self::$_type_qq =>'QQ',
             self::$_type_guest =>'游客',
-            self::$_type_cellphone_ps =>'手机密码登陆',
-            self::$_type_pc_cellphone_ps =>'pc端手机密码登陆',
-            self::$_type_pc_cellphone_sms =>'pc端手机验证码登陆',
-            self::$_type_sdk_share_app =>'SDK内分享',
-
-
+//            self::$_type_cellphone_ps =>'手机密码登陆',
+//            self::$_type_pc_cellphone_ps =>'pc端手机密码登陆',
+//            self::$_type_pc_cellphone_sms =>'pc端手机验证码登陆',
+//            self::$_type_sdk_share_app =>'SDK内分享',
         );
+    }
+
+    static function getTypeOptions(){
+        $html = "";
+        foreach (self::getTypeDesc() as $k=>$v) {
+            $html .= "<option value={$k}>{$v}</option>";
+        }
+        return $html;
     }
 
     static function db(){
@@ -69,6 +75,14 @@ class UserModel {
 
     static function getSexDesc(){
         return array(self::$_sex_male=>'男',self::$_sex_female=>'女');
+    }
+
+    static function getSexOptions(){
+        $html = "";
+        foreach (self::getSexDesc() as $k=>$v) {
+            $html .= "<option value={$k}>{$v}</option>";
+        }
+        return $html;
     }
 
     static function keyInSex($key){
