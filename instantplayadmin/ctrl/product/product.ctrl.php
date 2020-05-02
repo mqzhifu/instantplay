@@ -13,6 +13,77 @@ class ProductCtrl extends BaseCtrl{
     }
 
 
+    function add(){
+        if(_g('opt')){
+
+            $data['title']= _g("title");
+            $data['desc'] = _g("desc");
+            $data['brand'] = _g("brand");
+            $data['notice']  = _g("notice");
+            $data['category_id'] = _g("category_id");
+            $data['status'] = _g("status");
+            $data['admin_id']  = $this->_adminid;
+            $categoryAttrPara  = _g("categoryAttrPara");
+            if(!$categoryAttrPara){
+                exit(" categoryAttrPara is null ");
+            }
+            $data['attribute'] = json_encode($categoryAttrPara);
+
+
+//            if(ProductModel::db()->getOneByOneField("title",$data['title'])){
+//
+//            }
+
+            $uploadService = new UploadService();
+            $uploadRs = $uploadService->product('pic');
+            if($uploadRs['code'] != 200){
+                exit(" uploadService->product error ".json_encode($uploadRs));
+            }
+
+            $data['pic'] = $uploadRs['msg'];
+
+            $addId = ProductModel::db()->add($data);
+
+            foreach ( $categoryAttrPara as $k=>$v) {
+                $exp = explode("_",$v);
+                $categoryAttr = $exp[1];
+                $categoryAttrPara = $exp[2];
+                $addData = array(
+                    'pid'=>$addId,
+                    'pc_id'=>$data['category_id'],
+                    'pca_id'=>$categoryAttr,
+                    'pcap_id'=>$categoryAttrPara,
+                );
+
+                ProductLinkCategoryAttrModel::db()->add($addData);
+            }
+
+
+
+            exit("成功");
+        }
+        $statusSelectOptionHtml = ProductModel::getStatusSelectOptionHtml();
+        $this->assign("statusSelectOptionHtml",$statusSelectOptionHtml);
+        $this->assign("categoryOptions", ProductCategoryModel::getSelectOptionHtml());
+
+        $this->addJs('/assets/global/plugins/jquery-validation/js/jquery.validate.min.js');
+        $this->addJs('/assets/global/plugins/jquery-validation/js/additional-methods.min.js');
+
+        $this->addHookJS("product/product_add_hook.html");
+        $this->display("/product/product_add.html");
+    }
+
+    function getProductCategoryRelation(){
+        if(!arrKeyIssetAndExist($this->_request,'categoryId')){
+            echo false;
+            exit;
+        }
+        $list = CategoryModel::getProductRelationByCid($this->_request['categoryId']);
+
+        echo json_encode($list);
+        exit;
+    }
+
     function getList(){
         $this->getData();
     }
@@ -96,7 +167,7 @@ class ProductCtrl extends BaseCtrl{
                     $v['desc'],
                     $v['brand'],
                     $v['attribute'],
-//                    $v['notice'],
+                    '<img height="30" width="30" src="'.get_product_url($v['pic']).'" />',
                     ProductCategoryModel::getNameById($v['category_id']),
 //                    $v['status'],
                     ProductModel::getStatusDescById( $v['status']),
@@ -107,6 +178,7 @@ class ProductCtrl extends BaseCtrl{
                     $v['uv'],
                     $v['recommend'],
                     get_default_date($v['a_time']),
+                    '<button class="btn btn-xs default  delone" data-id="'.$v['id'].'" onclick="recover2(this)">详情</button>'.
                     '<button class="btn btn-xs default red delone" data-id="'.$v['id'].'" onclick="recover2(this)">'.$statusBnt.'</button>'.
                     '<button class="btn btn-xs default blue delone" data-id="'.$v['id'].'" onclick="recover2(this)">添加商品</button>',
                 );

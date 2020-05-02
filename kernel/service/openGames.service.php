@@ -226,23 +226,6 @@ class OpenGamesService
         system("/usr/bin/rsync -av {$rsyncPath} 10.10.7.223::XYX/ > /dev/null");
     }
 
-    public function rsyncToCDNServer ($appName = APP_NAME,$module,$path,$avatarImgUrl)
-    {
-        // 同步数据到CDN
-//        $rsyncPath = get_upload_os_dir_by_app($appName,$module , $path)  ;
-//        chmod($rsyncPath ."/$avatarImgUrl",0744);
-//        $comm = "/usr/bin/rsync -av {$rsyncPath} 10.10.7.223::XYX/".get_upload_cdn_evn()."/$appName/$module/$path/ > /dev/null";
-
-        $os_dir = get_cdn_base_dir();
-
-        $ar1 = get_upload_cdn_evn() . "/$appName/$module/$path/$avatarImgUrl";
-        $comm = BASE_DIR . "/www/".get_cdn_xyx_dir()."/rsync_to_cdn.sh $ar1 $os_dir > /dev/null";
-//        $comm = BASE_DIR . "/www/".get_cdn_xyx_dir()."/rsync_to_cdn.sh $ar1 $os_dir ";
-//        echo $comm;
-//        exit;
-        system($comm);
-    }
-
     // 检查目录，若不存在则建立目录
     public function checkDirectory ($directory)
     {

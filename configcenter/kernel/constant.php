@@ -53,8 +53,8 @@ defined('PLUGIN') or define(  'PLUGIN',KERNEL_DIR . '/plugins/');
 
 //总日志目录
 define('LOG_PATH', STORAGE_DIR.DS."log");
-//图片上传路径
-define('IMG_UPLOAD', STORAGE_DIR . '/upload');
+//文件上传总路径
+define('FILE_UPLOAD_DIR', STATIC_DIR . '/upload');
 
 //session存储类型
 defined('SESS_TYPE') or define('SESS_TYPE','FILE');
@@ -73,6 +73,10 @@ define ('APP_DIR', BASE_DIR .DS . APP_NAME);
 //define("APP_CONFIG_DIR",APP_DIR.DS."config");
 //APP 生成 模板 编译后的文件位置 s
 define("APP_SMARTY_COMPILE_DIR",STORAGE_DIR.DS."view_c".DS.APP_NAME.DS );
+
+
+//项目-文件上传路径
+define('APP_FILE_UPLOAD_DIR', FILE_UPLOAD_DIR . DS .APP_NAME);
 
 ////头像-相对路径 不分应用
 //defined('USER_AVATAR_IMG_VIRTUAL') or define('USER_AVATAR_IMG_VIRTUAL', 'avatar/user/');

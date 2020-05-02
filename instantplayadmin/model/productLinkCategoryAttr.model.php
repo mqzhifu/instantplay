@@ -1,9 +1,9 @@
 <?php
 class ProductLinkCategoryAttrModel {
-	static $_table = 'product';
+	static $_table = 'product_link_category_attr';
 	static $_pk = 'id';
 	static $_db = null;
-    static $_db_key = "product_link_category_attr";
+    static $_db_key = "instantplay";
 
 
 	static function db(){

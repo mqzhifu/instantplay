@@ -12,6 +12,19 @@ class GoodsCtrl extends BaseCtrl{
         $this->getData();
     }
 
+
+    function add(){
+        $statusSelectOptionHtml = ProductModel::getStatusSelectOptionHtml();
+        $this->assign("statusSelectOptionHtml",$statusSelectOptionHtml);
+        $this->assign("categoryOptions", ProductCategoryModel::getSelectOptionHtml());
+
+        $this->addJs('/assets/global/plugins/jquery-validation/js/jquery.validate.min.js');
+        $this->addJs('/assets/global/plugins/jquery-validation/js/additional-methods.min.js');
+
+        $this->addHookJS("/product/goods_add_hook.html");
+        $this->display("/product/goods_add.html");
+    }
+
     function getWhere(){
         $where = " 1 ";
         if($mobile = _g("mobile"))

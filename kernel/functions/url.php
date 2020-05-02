@@ -1,5 +1,19 @@
 <?php
+function get_product_url( $tmpPath , $protocol = 'http'){
+    if(!$tmpPath){
+        return false;
+    }
+    $staticUrl = get_static_url($protocol);
+    $url =  $staticUrl . DS . "upload" . DS .APP_NAME . DS . get_upload_cdn_evn() .  DS."product".DS . $tmpPath;
+    return $url;
+}
 
+
+
+
+
+
+//以上是新的
 function getUserAvatar($userInfo){
 
     if(!arrKeyIssetAndExist($userInfo,'avatar')){
@@ -24,30 +38,6 @@ function getUserAvatar($userInfo){
     return get_static_file_url_by_app('avatar', "user/" . $userInfo['avatar'], IS_NAME);
 
 }
-
-function getGameUrl(){
-
-}
-
-
-//function getUserAvatarOld($userInfo){
-//
-//    if(!arrKeyIssetAndExist($userInfo,'avatar')){
-//        return get_static_url("https"). "images/nouser.png";
-//    }
-//
-//    if($userInfo['robot'] == 1){
-//        return get_static_url()  . ROBOT_AVATAR_IMG_VIRTUAL. $userInfo['avatar'];
-//    }
-//
-//    if(substr($userInfo['avatar'],0,4) == "http"){
-//        //兼容下HTTPS
-//        return substr($userInfo['avatar'],0,4)."s".substr($userInfo['avatar'],4);
-//    }
-//
-//    return get_static_url("https")  .USER_AVATAR_IMG_VIRTUAL. $userInfo['avatar'];
-//
-//}
 
 function get_cdn_base_dir(){
     return BASE_DIR ."/www/".get_cdn_xyx_dir();
@@ -116,51 +106,6 @@ function get_domain_url($protocol = 'http'){
 
 function get_static_url($protocol = 'http'){
     return $protocol."://".STATIC_URL."/";
-}
-
-function generateApiDefaultUrls(){
-    $urls = [];
-
-    $token = "sre6Yn-IttmHuXqYfdup2bN2pax-poBpr62fdg";
-    $domain = "http://xuren.com";
-    $ctrl = "";
-    $ac = "";
-    $params = "";
-    foreach ($GLOBALS['api'] as $ctrl => $value) {
-
-        foreach ($value as $mayac => $att) {
-            $newUrl = $domain."/".$ctrl;
-            if($mayac != 'title'){
-                $ac = $mayac;
-                $newUrl = $newUrl."/".$ac."/token=".$token;
-                
-                $paramNum = 0;
-                foreach ($att['request'] as $paramName => $paramAttri) {
-                    $type = "";
-                    $default = "";
-                    $must = 0;
-                    $paramNum++;
-                    
-                    $param = $paramAttri['default'];
-                    if($paramAttri['type'] == 'int'){
-                        $param = (int)$param;
-                    }
-                    if($paramAttri['type'] == 'string'){
-                        $param = (string)$param;
-                    }
-
-                    // if($paramNum>1)
-                        $newUrl .= "&";
-                    $newUrl .= $paramName."=".$param;
-                }
-                // echo $newUrl."\n";
-                $urls[] = $newUrl;
-            }
-        }
-    }
-
-        
-    return $urls;
 }
 
 function curl_get($url){

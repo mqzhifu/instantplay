@@ -31,7 +31,7 @@ class ProductModel {
     static function getStatusSelectOptionHtml(){
         $html = "";
         foreach (self::STATUS as $k=>$v) {
-            $html .= "<option name='$k'>{$v}</option>";
+            $html .= "<option value='{$k}'>{$v}</option>";
         }
         return $html;
     }

@@ -362,6 +362,12 @@ class DbLib{
         }
     	$this->_config = $config;
     }
+
+    function getOneByOneField($field,$value){
+        $where = " $field = '$value' ";
+        return $this->getOne($where);
+    }
+
     //验证execute方法，只允许执行update 和 delete 且   包含 limit 且 不能操作大于100行
     function authExecute($str){
         $str = trim($str);

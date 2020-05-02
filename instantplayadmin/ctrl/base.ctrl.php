@@ -7,8 +7,9 @@ class BaseCtrl{
     public $_hook_js = '';
     public $_assign = array();
     public $_adminid = "";
-
+    public $_request = null;
     function __construct($request){
+        $this->_request = $request;
         //接口配置信息
 //        include_once CONFIG_DIR.DS.IS_NAME."/api.php";
 

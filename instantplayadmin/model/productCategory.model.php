@@ -25,7 +25,7 @@ class ProductCategoryModel {
         }
         $html = "";
         foreach ($list as $k=>$v) {
-            $html .= "<option name='$k'>{$v['name']}</option>";
+            $html .= "<option value='{$v['id']}'>{$v['name']}</option>";
         }
         return $html;
     }

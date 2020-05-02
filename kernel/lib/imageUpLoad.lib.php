@@ -5,7 +5,7 @@ class ImageUpLoadLib{
     public $fileSize = 2;
     public $fileType = array('pjpeg','gif','bmp','png','jpeg','jpg','x-png');
     //文件上传路径
-    public $path = IMG_UPLOAD;
+    public $path = APP_FILE_UPLOAD_DIR;
     //是否开始HASH随机文件名
     public $hash = true;
     public $postInputName = null;
@@ -13,123 +13,117 @@ class ImageUpLoadLib{
     function __construct(){
 
     }
-	//开始上传一个文件
-    //$path:文件上传路径
-    //$fileType：文件类型|文件扩展名
-    //$postNames:input name
-    function upLoadOneFile($postInputName,$path = null,$fileType = null ){
-        LogLib::appWriteFileHash("im in upLoadOneFile");
-        if($path){
-            if(!is_dir($path))
-                return out_pc(8112);
-            $this->path = $path;
-        }else{
-            if(!is_dir($this->path))
-                return out_pc(8112);
+
+    function realUpLoadOneFile($postInputName,$path ,$allowFileTypes = array(),$useHash = 0){
+        $errInfo = " upLoadOneFile ";
+        if(!is_dir($path))
+            exit($errInfo." path not dir");
+
+        if(!$allowFileTypes)
+            exit($errInfo." allowFileTypes path not dir");
+
+        foreach ($allowFileTypes as $k=>$v) {
+            if(!in_array($v,$this->fileType)){
+                exit($errInfo ." allowFileTypes is err. $v");
+            }
         }
 
-        if($fileType)
-            $this->fileType = $fileType;
-
-        if(!$postInputName){
-        	return out_pc(8017);
-        }
+        if(!$postInputName)
+            exit($errInfo." postInputName path not dir");
 
         if(!isset($_FILES[$postInputName]))
-            return out_pc(8018,'$_FILES['.$postInputName .'] null notice: enctype="multipart/form-data"');
+            exit($errInfo.'$_FILES['.$postInputName .'] null notice: enctype="multipart/form-data"');
 
-        $mark = file_mode_info($this->path);
+
+        $_FILE = $_FILES[$postInputName];
+        $mark = file_mode_info($path);
         if(strtoupper(substr(PHP_OS, 0, 3)) == 'WIN'){
             if( $mark < 7){
-                return out_pc(8113);
+                exit($errInfo." dir not power");
             }
         }else{
             if( $mark != 15){
-                return out_pc(8113);
+                exit($errInfo." dir not power");
             }
         }
 
-        if(arrKeyIssetAndExist($_FILES[$postInputName],'error')){
-			return out_pc(8118);
+        if(arrKeyIssetAndExist($_FILE,'error')){
+            exit($errInfo.'$_FILES[$postInputName] have error');
         }
 
 
-//        $this->postInputName = $postInputName;
-        $fileName = $postInputName;
-        if( $_FILES[$fileName]['size']  > $this->fileSize  * 1024 * 1024)
-            return out_pc(8114);
+//        $fileName = $postInputName;
+        if($_FILE['size']  > $this->fileSize  * 1024 * 1024)
+            exit($errInfo." file size >  ".$this->fileSize);
 
         //判断文件类型(扩展)，共3步，1：文件名、2：PHP自带的函数、3：打开二进制文件
 
 
-		//1判断文件名
-        $fileType = get_file_ext($_FILES[$fileName]["name"]);
-        //转小写
-        $fileType = strtolower($fileType);
-        if(!in_array($fileType, $this->fileType))
-            return out_pc(8115);
-
-
-
-
-//        LogLib::appWriteFileHash("..............");
-//        LogLib::appWriteFileHash($_FILES[$fileName]);
+        //1判断文件名
+        $extFileType = get_file_ext($_FILE["name"]);
+        $extFileType = strtolower($extFileType);//转小写
+        if(!in_array($extFileType, $this->fileType))
+            exit($errInfo . " extFileType $extFileType ");
 
 
         //2PHP自带的函数
-        $fileType = explode('/', $_FILES[$fileName]["type"]);
-        $fileType[1] = strtolower($fileType[1]);
-        if(!in_array($fileType[1], $this->fileType)){
-            return out_pc(8115);
+        $fileType = explode('/',$_FILE["type"]);
+        $preType = $fileType[0];
+
+        $extFileType = strtolower($fileType[1]);
+        if(!in_array($extFileType, $this->fileType)){
+            exit($errInfo . " explode fileType  $extFileType ");
         }
 
-        if($fileType[1] == 'pjpeg' || $fileType[1] == 'jpeg'){
-            $fileType[1] = 'jpg';
+        if($extFileType == 'pjpeg' || $extFileType == 'jpeg'){
+            $extFileType = 'jpg';
         }
-        if($fileType[1] == 'x-png' || $fileType[1] == 'png'){
-            $fileType[1] = 'png';
+        if($extFileType == 'x-png' || $extFileType == 'png'){
+            $extFileType = 'png';
         }
 
         //这个验证就比较关键了，防止用户上传恶意文件~
-		//但实际上黑客还是能攻击，但至少能防一些低级的攻击者
-        $type = $this->getFileType($_FILES[$fileName]["tmp_name"]);
-		if(!in_array($type,$this->fileType)){
-            return out_pc(8116);
-		}
+        //但实际上黑客还是能攻击，但至少能防一些低级的攻击者
+        $extFileType = $this->getFileType($_FILE["tmp_name"]);
+        if(!in_array($extFileType,$this->fileType)){
+            exit($errInfo . " tmp_name  type error");
+        }
 
         $createFileName = date("YmdHis")."_" .rand(1000,9999);
-        if($this->hash){
-        	//年月日-小时分秒+4位随机数
+        if($useHash){
+            //年月日-小时分秒+4位随机数
 
             //获取 HASH 文件夹目录
             $hashDir = $this->mkdirHash();
-            $fileDirName = $hashDir . "/" . $createFileName ."." . $fileType[1];
+            $fileDirName = $hashDir . "/" . $createFileName ."." .$extFileType;
         }else{
-//            $fileDirName = $_FILES[$fileName]['name'];
-            $fileDirName = $createFileName."." . $fileType[1];
+            $fileDirName = $createFileName."." .$extFileType;
         }
 
-        if($this->module){
-            $finalFileDirName =  $this->path . "/" .$this->module ."/".  $fileDirName;
-        }else{
-            $finalFileDirName =  $this->path . "/" .  $fileDirName;
-        }
-
+        $realFileDir = $path . DS .$fileDirName;
         //真正-开始-将用户上传的临时文件，转移至目录
-        $rs = move_uploaded_file($_FILES[$fileName]["tmp_name"],$finalFileDirName);
+        $rs = move_uploaded_file($_FILE["tmp_name"],$realFileDir);
         if(!$rs){
-            return out_pc(8017);
+            exit($errInfo . " move_uploaded_file error");
         }
 
-        LogLib::appWriteFileHash($fileDirName);
+        return out_pc(200,$fileDirName);
+    }
 
-
-
-        $rs = $fileDirName;
-        if($this->module){
-            $rs = $this->module ."/".$fileDirName;
+	//开始上传一个文件
+    //$path:文件上传路径
+    //$fileType：文件类型|文件扩展名
+    //$postNames:input name
+    function upLoadOneFile($postInputName,$module ,$allowFileTypes = array(),$useHash = 0 ){
+        $errInfo = " upLoadOneFile ";
+        if(!$module){
+            exit($errInfo." module is null");
         }
-        return out_pc(200,$rs);
+
+
+
+        $path = $this->path . DS . get_upload_cdn_evn() . DS .$module;
+        return $this->realUpLoadOneFile($postInputName,$path,$allowFileTypes,$useHash);
     }
 	//上传多文件
 	function upLoad(){
