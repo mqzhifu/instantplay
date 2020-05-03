@@ -339,6 +339,11 @@
 
     });
 
+    $("#datatable_products").on("click",".qrcode",function(){
+        var id = $(this).attr("data-id");
+        location.href="/product/no/goods/makeQrcode/";
+    });
+
     if (!jQuery().datetimepicker) {
         alert(333);
     }

@@ -16,6 +16,12 @@ class GoodsCtrl extends BaseCtrl{
         $this->getData();
     }
 
+    function makeQrcode(){
+//        var_dump(1);
+        include PLUGIN .DS."phpqrcode".DS."qrlib.php";
+        $url = "http://www.baidu.com";
+        QRcode::png($url,false,"L",10);
+    }
 
     function add(){
         $pid = _g("pid");
@@ -168,7 +174,7 @@ class GoodsCtrl extends BaseCtrl{
                     $v['sort'],
                     $v['haulage'],
                     get_default_date($v['a_time']),
-                    "",
+                    '<button class="btn btn-xs qrcode" data-id="'.$v['id'].'">二维码</button>',
                 );
 
                 $records["data"][] = $row;
