@@ -24,7 +24,8 @@
                         </div>
                         <div class="portlet-body form">
                             <!-- BEGIN FORM-->
-                            <form action="?opt=1" method="post" id="form_sample_3" class="form-horizontal" enctype="multipart/form-data">
+                            <form action="/product/no/goods/add/opt=1" method="post" id="form_sample_3" class="form-horizontal" enctype="multipart/form-data">
+                                <input type="hidden" value="{$product['id']}" name="pid" />
                                 <div class="form-body">
                                     <div class="alert alert-danger display-hide">
                                         <button class="close" data-close="alert"></button>
@@ -36,10 +37,16 @@
                                     </div>
 
 
-                                    <div class="form-group" id="category">
-                                        <label class="control-label col-md-3">分类<span class="required">
-										* </span>
-                                        </label>
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3">产品名称</label>
+                                        <div class="col-md-4">
+                                            {$product['title']}
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3">分类</label>
                                         <div class="col-md-4">
                                                 {$categoryName}
                                         </div>
@@ -51,8 +58,7 @@
 										* </span>
                                         </label>
                                         <div class="col-md-4">
-
-                                            <input type="text" name="stock" data-required="1" id="name" class="form-control" value="" />
+                                            <input type="text" name="stock" data-required="1" class="form-control" value="" />
                                         </div>
                                     </div>
 
@@ -99,7 +105,7 @@
                                         </label>
                                         <div class="col-md-4">
 
-                                            <input type="text" name="sale_price" data-required="1" id="sort" class="form-control" value="" />
+                                            <input type="text" name="sale_price" data-required="1" class="form-control" value="" />
                                         </div>
                                     </div>
 

@@ -1,0 +1,12 @@
+需要初始化的表：
+admin_user
+area_city
+area_province
+area_street
+area_county
+id_num
+ip
+mobile
+roles
+university
+menu

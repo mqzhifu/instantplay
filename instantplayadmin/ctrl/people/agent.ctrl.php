@@ -14,6 +14,22 @@ class AgentCtrl extends BaseCtrl{
         $this->getData();
     }
 
+    function add(){
+        if(_g('opt')){
+
+        }
+
+//        $statusSelectOptionHtml = ProductModel::getStatusSelectOptionHtml();
+//        $this->assign("statusSelectOptionHtml",$statusSelectOptionHtml);
+//        $this->assign("categoryOptions", ProductCategoryModel::getSelectOptionHtml());
+
+        $this->addJs('/assets/global/plugins/jquery-validation/js/jquery.validate.min.js');
+        $this->addJs('/assets/global/plugins/jquery-validation/js/additional-methods.min.js');
+
+//        $this->addHookJS("people/agent_add_hook.html");
+        $this->display("/people/agent_add.html");
+    }
+
     function getWhere(){
         $where = " 1 ";
         if($mobile = _g("mobile"))

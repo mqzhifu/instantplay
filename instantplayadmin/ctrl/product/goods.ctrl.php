@@ -30,9 +30,40 @@ class GoodsCtrl extends BaseCtrl{
 
         if(_g("opt")){
 
+            $data = array(
+                'pid'=>$pid,
+                'stock'=>_g('stock'),
+                'status'=>_g('status'),
+                'sort'=>_g('sort'),
+                'sale_price'=>_g('sale_price'),
+                'original_price'=>_g('original_price'),
+                'pay_type'=>implode(",",_g('payType')),
+                'haulage'=>_g('haulage'),
+                'admin_id'=>$this->_adminid,
+            );
+
+
+            $attrParaGroup = ProductLinkCategoryAttrModel::getAttrParaGroup($pid);
+            $attrPara = [];
+            foreach ($attrParaGroup as $k=>$v) {
+                $attrPara[$k] = _g("categoryAttrPara_".$k);
+            }
+
+            $product_attr_ids = "";
+            foreach ($attrPara as $k=>$v) {
+                $product_attr_ids .= $k . "-" .$v . ",";
+            }
+
+            $product_attr_ids = substr($product_attr_ids,0,strlen($product_attr_ids)-1);
+            $data['product_attr_ids'] = $product_attr_ids;
+
+            $newId = GoodsModel::db()->add($data);
+
+            var_dump($newId);exit;
+
         }
 
-
+        $this->assign("product",$product);
         $this->assign("payType",OrderModel::PAY_TYPE_DESC);
 
         $productLinkCategoryAttr = ProductLinkCategoryAttrModel::getRelationFormatHtml($pid);
@@ -127,7 +158,7 @@ class GoodsCtrl extends BaseCtrl{
                     $v['pid'],
                     $v['type'],
                     $v['status'],
-                    $v['product_arrt_ids'],
+                    $v['product_attr_ids'],
                     $v['stock'],
                     $v['sale_price'],
                     $v['original_price'],

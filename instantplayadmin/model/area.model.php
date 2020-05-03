@@ -18,4 +18,8 @@ class AreaModel {
 		return call_user_func_array(array(self::db(),$func), $arguments);
 	}
 
+	static function getByDeep($deep){
+        return self::db()->getAll(" deep = $deep");
+    }
+
 }

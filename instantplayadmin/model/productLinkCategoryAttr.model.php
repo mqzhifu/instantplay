@@ -19,12 +19,12 @@ class ProductLinkCategoryAttrModel {
 	}
 
 	static function getRelationFormatHtml($pid){
-        $relation = self::db()->getAll(" pid = $pid");
-        $productCategoryAttrParaGroup = array();
-        foreach ($relation as $k=>$v) {
-            $productCategoryAttrParaGroup[$v['pca_id']][] = $v['pcap_id'];
-        }
-
+//        $relation = self::db()->getAll(" pid = $pid");
+//        $productCategoryAttrParaGroup = array();
+//        foreach ($relation as $k=>$v) {
+//            $productCategoryAttrParaGroup[$v['pca_id']][] = $v['pcap_id'];
+//        }
+        $productCategoryAttrParaGroup = self::getAttrParaGroup($pid);
         $rs = array();
         foreach ($productCategoryAttrParaGroup as $k=>$v) {
             $productCatgoryAttr = ProductCategoryAttrModel::db()->getById($k);
@@ -40,6 +40,16 @@ class ProductLinkCategoryAttrModel {
         }
 
         return $rs;
+    }
+
+    static function getAttrParaGroup($pid){
+        $relation = self::db()->getAll(" pid = $pid");
+        $productCategoryAttrParaGroup = array();
+        foreach ($relation as $k=>$v) {
+            $productCategoryAttrParaGroup[$v['pca_id']][] = $v['pcap_id'];
+        }
+
+        return $productCategoryAttrParaGroup;
     }
 
 }
