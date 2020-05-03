@@ -1,0 +1,44 @@
+<?php
+class AreaCityModel {
+	static $_table = 'area_city';
+	static $_pk = 'id';
+	static $_db = null;
+    static $_db_key = "instantplay";
+
+
+	static function db(){
+		if(self::$_db)
+			return self::$_db;
+
+		echo 234234;
+
+		self::$_db = new DbLib(self::$_db_key,self::$_table,self::$_pk);
+		return self::$_db;
+	}
+	
+	public static function __callStatic($func, $arguments){
+		return call_user_func_array(array(self::db(),$func), $arguments);
+	}
+
+    static function getSelectOptionsHtml(){
+        $list = self::db()->getAll(1,self::$_table,"city_code,short_name");
+        $html = "";
+        foreach ($list as $k=>$v) {
+            $html .= "<option value='{$v['city_code']}'>{$v['short_name']}</option>";
+        }
+        return $html;
+    }
+
+    static function getJsSelectOptions(){
+        self::db()->_fetchArray = 1;
+        $data = self::db()->getAll(" 1 order by sort ","","province_code,short_name,city_code");
+        self::db()->_fetchArray = 0;
+        $rs = [];
+        foreach ($data as $k=>$v) {
+            $row = $v;
+            unset($row[0]);
+            $rs[$v[0]][] = $row;
+        }
+        return $rs;
+    }
+}

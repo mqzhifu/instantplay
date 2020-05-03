@@ -5,10 +5,16 @@ class AgentCtrl extends BaseCtrl{
             $this->getList();
         }
 
+
         $this->assign("statusSelectOptionHtml",AgentModel::getStatusSelectOptionHtml());
         $this->display("/people/agent_list.html");
     }
 
+    function getCountyData(){
+        $id = _g("countyId");
+        $data = AreaStreetModel::db()->getAll("area_code=$id");
+        echo json_encode($data);
+    }
 
     function getList(){
         $this->getData();
@@ -19,14 +25,17 @@ class AgentCtrl extends BaseCtrl{
 
         }
 
-//        $statusSelectOptionHtml = ProductModel::getStatusSelectOptionHtml();
-//        $this->assign("statusSelectOptionHtml",$statusSelectOptionHtml);
-//        $this->assign("categoryOptions", ProductCategoryModel::getSelectOptionHtml());
+        $cityJs = json_encode(AreaCityModel::getJsSelectOptions());
+        $countryJs = json_encode(AreaCountyModel::getJsSelectOptions());
+
+        $this->assign("provinceOption",AreaProvinceModel::getSelectOptionsHtml());
+        $this->assign("cityJs",$cityJs);
+        $this->assign("countyJs",$countryJs);
 
         $this->addJs('/assets/global/plugins/jquery-validation/js/jquery.validate.min.js');
         $this->addJs('/assets/global/plugins/jquery-validation/js/additional-methods.min.js');
 
-//        $this->addHookJS("people/agent_add_hook.html");
+        $this->addHookJS("people/agent_add_hook.html");
         $this->display("/people/agent_add.html");
     }
 

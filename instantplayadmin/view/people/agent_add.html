@@ -115,9 +115,25 @@
 										* </span>
                                         </label>
                                         <div class="col-md-4">
-                                            <select id="province" name="province">
-                                                {$provinceOptions}
+                                            <select  name="province" id="province" onchange="area('province',this)">
+                                                <option value="">请选择</option>
+                                                {$provinceOption}
                                             </select>
+
+                                            <select  name="city" id="city" onchange="area('city',this)">
+                                                <option value="">请选择</option>
+                                            </select>
+
+                                            <select  name="county" id="county" onchange="area('county',this)">
+                                                <option value="">请选择</option>
+                                            </select>
+
+                                            <select name="street" id="street" >
+                                                <option value="">请选择</option>
+                                            </select>
+
+
+
                                         </div>
                                     </div>
 

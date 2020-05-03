@@ -15,7 +15,7 @@ class DbLib{
     public $_mysqlMemPoint = null;//mysql接收到执行QUERY后，会返回一个内存地址指针，指向你QUERY的结果集
     public $_addId = 0;//每次insert时候返回的新自增ID
     public $_changeRow = 0;//delete update 影响了MYSQL 多少行记录
-
+    public $_fetchArray = 0;
 //    public $error;//错误信息
 //    public $mTransaction = 0;//是否为事务，如果是则出现错误后是要抛出异常的
 
@@ -125,7 +125,7 @@ class DbLib{
 
         $this->debug($sql);//SQL日志
         if ( false === $this->_mysqlMemPoint ) {
-            $err  = $this->error($this->_slaveFD);
+            $err  = $this->error($this->_masterFD);
 //            if($this->mTransaction){//这个位置是事务处理时，需要抛出异常
 //           		throw new Exception($err);
 //            }else{
@@ -569,9 +569,16 @@ class DbLib{
     private function getDbAll() {
         $result = array();
         if($this->_mysqlMemPoint) {
-            while($row = mysqli_fetch_assoc($this->_mysqlMemPoint)){
-                $result[]   =   $row;
+            if($this->_fetchArray){
+                while($row = mysqli_fetch_row($this->_mysqlMemPoint)){
+                    $result[]   =   $row;
+                }
+            }else{
+                while($row = mysqli_fetch_assoc($this->_mysqlMemPoint)){
+                    $result[]   =   $row;
+                }
             }
+
         }
         return $result;
     }
