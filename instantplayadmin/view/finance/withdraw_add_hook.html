@@ -1,5 +1,4 @@
 <script>
-
     var FormValidation = function () {
 
 
@@ -25,49 +24,46 @@
                 focusInvalid: false, // do not focus the last invalid input
                 ignore: "", // validate all fields including form hidden input
                 rules: {
-                    title: {
+                    name: {
+                        minlength: 2,
+                        maxlength: 50,
                         required: true
                     },
-                    pic: {
+                    category: {
                         required: true
                     },
-                    realname: {
+                    is_online: {
                         required: true,
                     },
-                    id_card_num: {
+                    small_img: {
                         required: true
                     },
-                    sex: {
+                    list_img: {
                         required: true
                     },
-                    mobile: {
+                    index_reco_img: {
                         required: true
                     },
-                    fee_percent: {
+                    screen: {
                         required: true
                     },
-                    address: {
+                    sort: {
+                        integer:true,
+                        maxlength: 4,
                         required: true
                     },
-                    province: {
+                    background_color: {
+                        minlength: 7,
+                        maxlength: 7,
                         required: true
                     },
-
-                    city: {
-                        required: true
-                    },
-
-                    county: {
-                        required: true
-                    },
-
-                    street: {
+                    play_url: {
                         required: true
                     },
 
-                    villages: {
-                        required: true
-                    },
+
+
+
 
                 },
 
@@ -151,73 +147,22 @@
 
     }();
 
-    jQuery(document).ready(function() {
-        FormValidation.init();
-
-    });
-</script>
 
 
-<script>
+    function onCategoryChange(obj){
+        var categoryId = $(obj).val();
+        if(!categoryId && categoryId !== 0){
+            $("#categoryAttrPara").css("display",'none');
+            $("#replace_div").html("|checkbox|");
 
-    var areaSelectedProvince = 0;
-    var areaSelectedCity = 0;
-    var areaSelectedCounty = 0;
-
-
-    var city = eval({$cityJs});
-    var county = eval({$countyJs});
-    var ajaxStreetData = null;
-    function area(type,obj){
-        if(type == 'province'){
-            $("#city").html("<option value=''>请选择</option>");
-            $("#county").html("<option value=''>请选择</option>");
-            $("#street").html("<option value=''>请选择</option>");
-
-            areaSelectedProvince = $(obj).val();
-
-            var cityList = city[areaSelectedProvince];
-            // return alert(cityList[0]);
-            var optionHtml = "";
-            for(var i=0;i<cityList.length;i++){
-                optionHtml += "<option value='"+cityList[i][2]+"'>"+cityList[i][1]+"</option>";
-            }
-            $("#city").html(optionHtml);
-        }else if(type =='city'){
-            $("#county").html("<option value=''>请选择</option>");
-            $("#street").html("<option value=''>请选择</option>");
-
-            areaSelectedCity = $(obj).val();
-            var countyList = county[areaSelectedCity];
-            var optionHtml = "";
-            for(var i=0;i<countyList.length;i++){
-                optionHtml += "<option value='"+countyList[i][1]+"'>"+countyList[i][2]+"</option>";
-            }
-            $("#county").html(optionHtml);
-        }else if(type =='county'){
-            $("#street").html("<option value=''>请选择</option>");
-            var countyId = $(obj).val();
-            ajaxGetAreaStreet(countyId);
-            var streetData = ajaxStreetData;
-            // alert(streetData[0]['street_code']);
-            var optionHtml = "";
-            for(var i=0;i<streetData.length;i++){
-                optionHtml += "<option value='"+streetData[i]['street_code']+"'>"+streetData[i]['short_name']+"</option>";
-            }
-            $("#street").html(optionHtml);
-        }else{
-            return alert(" type error");
+            // return alert("categoryId is null");
+            return -1;
         }
-    }
-
-
-    function ajaxGetAreaStreet(countyId){
         $.ajax({
-            async: false,
             // contentType: "application/json;charset=UTF-8",
             //请求方式
             type : "POST",
-            url : "/people/no/agent/getCountyData/countyId="+countyId,
+            url : "/product/no/product/getProductCategoryRelation/categoryId="+categoryId,
 //            //数据，json字符串
             // data : JSON.stringify(list),
             //请求成功
@@ -226,13 +171,50 @@
                     return alert("ajax getProductCategoryRelation is null");
                 }
 
-                ajaxStreetData =eval("("+result+")");
+                $("#replace_div").html("|checkbox|");
+
+                var resultObj=eval("("+result+")");
+                var checkBoxHtml = "";
+                for(var i= 0 ;i <resultObj.length;i++){
+                    checkBoxHtml += "<div  >" + resultObj[i]['name'] ;
+
+                    if(resultObj[i]['para']){
+                        for(var j= 0 ;j <resultObj[i]['para'].length;j++){
+                            checkBoxHtml += "<input type='checkbox' name='categoryAttrPara[]' value="+ categoryId+"_"+resultObj[i]['id'] + "_" + resultObj[i]['para'][j]['id'] + " />&nbsp;"+resultObj[i]['para'][j]['name'];
+                        }
+                    }
+
+                    checkBoxHtml += "</div>";
+                }
+                // var replaceHtml = $("#categoryAttrPara").html();
+                // alert(replaceHtml);
+                // replaceHtml = replaceHtml.replace("|checkbox|",checkBoxHtml);
+
+                $("#categoryAttrPara").css("display",'block');
+                $("#replace_div").html(checkBoxHtml);
             },
             //请求失败，包含具体的错误信息
             error : function(e){
                 alert("ajax failed!");
             }
         });
+        //
     }
+
+    jQuery(document).ready(function() {
+        FormValidation.init();
+
+    });
+
+    // var categoryAttr = '<div class="form-group">'+
+    //     // '<label class="control-label col-md-3">描述图片 <span class="required">'+
+    //     //     '* </span></label>'+
+    //     '<div class="col-md-4">'+
+    //     '#checkbox#'+
+    //     '</div>'+
+    //     '</div>';
+
+
+
 
 </script>

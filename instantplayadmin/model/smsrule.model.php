@@ -1,9 +1,10 @@
 <?php
 class SmsRuleModel {
 	static $_table = 'sms_rule';
-	static $_pk = 'id';
-	static $_db_key =DEF_DB_CONN;
-	static $_db = null;
+    static $_pk = 'id';
+    static $_db = null;
+    static $_db_key = "instantplay";
+
 
 	static $_type_login = 1;//登陆
     static $_type_bind = 2;//绑定
@@ -14,17 +15,17 @@ class SmsRuleModel {
     static $_type_pc_login = 7;//密码端手机验证码登陆
     static $_type_realname_verify = 8;//实名认证
 
-	static function db(){
-		if(self::$_db)
-			return self::$_db;
-		
-		self::$_db = DbLib::getDbStatic(self::$_db_key,self::$_table,self::$_pk);
-		return self::$_db;
-	}
-	
-	public static function __callStatic($func, $arguments){
-		return call_user_func_array(array(self::db(),$func), $arguments);
-	}
+    static function db(){
+        if(self::$_db)
+            return self::$_db;
+
+        self::$_db = new DbLib(self::$_db_key,self::$_table,self::$_pk);
+        return self::$_db;
+    }
+
+    public static function __callStatic($func, $arguments){
+        return call_user_func_array(array(self::db(),$func), $arguments);
+    }
 	
 	static function login($uname,$ps){
 		return self::db()->getRow(" uname = '$uname' and ps = '$ps'");

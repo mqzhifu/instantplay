@@ -12,7 +12,13 @@ class UploadService
 
     function product($postInputName){
         $lib = new ImageUpLoadLib();
-        $rs = $lib->upLoadOneFile($postInputName,'product',array('png'),0);
+        $rs = $lib->upLoadOneFile($postInputName,'product',array('png','jpg','bmp'),0);
+        return $rs;
+    }
+
+    function agent($postInputName){
+        $lib = new ImageUpLoadLib();
+        $rs = $lib->upLoadOneFile($postInputName,'agent',array('png','jpg','bmp'),0);
         return $rs;
     }
 

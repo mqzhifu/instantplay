@@ -10,8 +10,6 @@ class AreaCityModel {
 		if(self::$_db)
 			return self::$_db;
 
-		echo 234234;
-
 		self::$_db = new DbLib(self::$_db_key,self::$_table,self::$_pk);
 		return self::$_db;
 	}

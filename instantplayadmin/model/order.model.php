@@ -48,6 +48,12 @@ class OrderModel {
         self::STATUS_REFUND_FINISH=>"退款完成",
     ];
 
+    const WITHDRAW_MONEY_STATUS_WAIT = 1;
+    const WITHDRAW_MONEY_STATUS_OK = 2;
+    const WITHDRAW_MONEY_STATUS = [
+        self::WITHDRAW_MONEY_STATUS_WAIT =>"未操作",
+        self::WITHDRAW_MONEY_STATUS_OK =>"已提现",
+    ];
 
 	static function db(){
 		if(self::$_db)

@@ -8,6 +8,15 @@ function get_product_url( $tmpPath , $protocol = 'http'){
     return $url;
 }
 
+function get_agent_url( $tmpPath , $protocol = 'http'){
+    if(!$tmpPath){
+        return false;
+    }
+    $staticUrl = get_static_url($protocol);
+    $url =  $staticUrl . DS . "upload" . DS .APP_NAME . DS . get_upload_cdn_evn() .  DS."agent".DS . $tmpPath;
+    return $url;
+}
+
 
 
 

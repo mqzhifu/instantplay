@@ -9,6 +9,65 @@ class WithdrawCtrl extends BaseCtrl{
         $this->display("/finance/withdraw_list.html");
     }
 
+    function add(){
+        $oids = _g("oids");
+        if(!$oids){
+            exit("oids is null");
+        }
+
+        $role = _g("role");
+        if(!$role){
+            exit("role is null");
+        }
+        $oids = explode(",",$oids);
+        $priceTotal = 0;
+        $showHtml = "";
+        $agent = null;
+        foreach ($oids as $k=>$v) {
+            $order = OrderModel::db()->getById($v);
+            if($role == AgentModel::ROLE_FACTORY){
+                if($order['factory_withdraw_money_status'] ==OrderModel::WITHDRAW_MONEY_STATUS_OK){
+                    exit(" 订单 已提取过了");
+                }
+            }else{
+                if($order['agent_withdraw_money_status'] ==OrderModel::WITHDRAW_MONEY_STATUS_OK){
+                    exit(" 订单 已提取过了");
+                }
+            }
+
+            if($role != AgentModel::ROLE_FACTORY){
+                $agent = AgentModel::db()->getById($order['agent_uid']);
+                $fee_percent = $agent['fee_percent'] / 100;
+                $price = $order['price'] * $fee_percent;
+                $priceTotal += $price;
+                $showHtml .= "$v($price)";
+            }
+        }
+
+        if(_g('opt')){
+
+        }else{
+//            $category = ProductCategoryModel::db()->getById($product['category_id']);
+//
+//            $statusSelectOptionHtml = ProductModel::getStatusSelectOptionHtml();
+//            $this->assign("statusSelectOptionHtml",$statusSelectOptionHtml);
+//            $this->assign("categoryName",$category['name']);
+//        $this->assign("categoryOptions", ProductCategoryModel::getSelectOptionHtml());
+
+            $this->assign("priceTotal",$priceTotal);
+            $this->assign("show",$showHtml);
+            $this->assign("agent",$agent);
+            $this->assign("role",AgentModel::ROLE[$role]);
+
+
+            $this->addJs('/assets/global/plugins/jquery-validation/js/jquery.validate.min.js');
+            $this->addJs('/assets/global/plugins/jquery-validation/js/additional-methods.min.js');
+
+//            $this->addHookJS("/finance/withdraw_add_hook.html");
+            $this->display("/finance/withdraw_add.html");
+        }
+
+    }
 
     function getList(){
         $this->getData();

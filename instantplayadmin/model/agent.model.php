@@ -6,6 +6,26 @@ class AgentModel {
     static $_db_key = "instantplay";
 
 
+    const STATUS_AUDITING = 1;
+    const STATUS_REJECT = 2;
+    const STATUS_OK = 3;
+
+    const STATUS = [
+        self::STATUS_AUDITING => "审核中",
+        self::STATUS_REJECT => "拒绝",
+        self::STATUS_OK => "通过",
+    ];
+
+    const ROLE_LEVEL_ONE = 1;
+    const ROLE_LEVEL_TWO = 2;
+    const ROLE_FACTORY = 3;
+
+    const ROLE = [
+        self::ROLE_LEVEL_ONE=>"一级代理",
+        self::ROLE_LEVEL_TWO=>"二级代理",
+        self::ROLE_FACTORY=>"工厂",
+    ];
+
 	static function db(){
 		if(self::$_db)
 			return self::$_db;
@@ -17,16 +37,6 @@ class AgentModel {
 	public static function __callStatic($func, $arguments){
 		return call_user_func_array(array(self::db(),$func), $arguments);
 	}
-
-    const STATUS_AUDITING = 1;
-    const STATUS_REJECT = 2;
-    const STATUS_OK = 3;
-
-    const STATUS = [
-        self::STATUS_AUDITING => "审核中",
-        self::STATUS_REJECT => "拒绝",
-        self::STATUS_OK => "通过",
-    ];
 
     static function getStatusSelectOptionHtml(){
         $html = "";

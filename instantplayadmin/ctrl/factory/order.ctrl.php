@@ -97,7 +97,7 @@ class OrderCtrl extends BaseCtrl{
                     $v['address_agent'],
                     get_default_date($v['a_time']),
                     get_default_date($v['pay_time']),
-                    "",
+                    '<a href="/finance/no/withdraw/add/role='.AgentModel::ROLE_FACTORY.'&oids='.$v['id'].' ">提现</a>',
                 );
 
                 $records["data"][] = $row;

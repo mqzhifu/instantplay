@@ -365,7 +365,7 @@ class DbLib{
 
     function getOneByOneField($field,$value){
         $where = " $field = '$value' ";
-        return $this->getOne($where);
+        return $this->getRow($where);
     }
 
     //验证execute方法，只允许执行update 和 delete 且   包含 limit 且 不能操作大于100行
