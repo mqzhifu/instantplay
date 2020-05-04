@@ -67,6 +67,10 @@ class OrderModel {
 		return call_user_func_array(array(self::db(),$func), $arguments);
 	}
 
+	static function getNo(){
+	    return uniqid(time());
+    }
+
 	static function getStatusOptions(){
 	    $html = "";
 	    foreach (self::STATUS_DESC as $k=>$v) {

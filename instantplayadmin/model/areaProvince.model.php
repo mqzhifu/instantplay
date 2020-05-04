@@ -32,4 +32,9 @@ class AreaProvinceModel {
         var_dump(array_values($rs));exit;
     }
 
+    static function getNameByCode($code){
+        $row = self::db()->getRow(" province_code = '$code'");
+        return $row['province_name'];
+    }
+
 }

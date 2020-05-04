@@ -45,4 +45,14 @@ class AgentModel {
         }
         return $html;
     }
+
+    static function getAddrStrById($agentUid){
+        $agent = self::db()->getById($agentUid);
+        $province = AreaProvinceModel::getNameByCode($agent['province_id']);
+        $city = AreaCityModel::getNameByCode($agent['city_id']);
+        $county = AreaCountyModel::getNameByCode($agent['county_id']);
+        $street = AreaStreetModel::getNameByCode($agent['towns_id']);
+        $addrStr = $province . "-" .  $city  . "-" . $county  . "-" .$street . "-" .$agent['address'] ;
+        return $addrStr;
+    }
 }

@@ -1,19 +1,67 @@
 <?php
-class OrderCtrl extends BaseCtrl{
+class FactoryCtrl extends BaseCtrl{
     function index(){
         if(_g("getlist")){
             $this->getList();
         }
 
-        $this->assign("statusOptions", OrderModel::getStatusOptions());
-        $this->assign("payTypeOptions", OrderModel::getPayTypeOptions());
 
-        $this->display("/factory/order_list.html");
+
+        $this->assign("statusOptions",FactoryModel::getStatusOptions());
+//        $this->assign("sexOptions", UserModel::getSexOptions());
+
+        $this->display("/people/factory_list.html");
     }
 
 
     function getList(){
         $this->getData();
+    }
+
+    function add(){
+        if(_g('opt')){
+            $data =array(
+                'title'=> _g('title'),
+                'real_name'=> _g('realname'),
+                'id_card_num'=> _g('id_card_num'),
+                'mobile'=> _g('mobile'),
+                'fee_percent'=> _g('fee_percent'),
+                'address'=> _g('address'),
+                'province_id'=> _g('province'),
+                'status'=>1,
+                'city_id'=> _g('city'),
+                'county_id'=> _g('county'),
+                'towns_id'=> _g('street'),
+                'villages'=> _g('villages'),
+                'a_time'=>time(),
+            );
+
+            $uploadService = new UploadService();
+            $uploadRs = $uploadService->agent('pic');
+            if($uploadRs['code'] != 200){
+                exit(" uploadService->product error ".json_encode($uploadRs));
+            }
+
+            $data['pic'] = $uploadRs['msg'];
+
+            $newId = AgentModel::add($data);
+
+            var_dump($newId);exit;
+
+        }
+
+        $cityJs = json_encode(AreaCityModel::getJsSelectOptions());
+        $countryJs = json_encode(AreaCountyModel::getJsSelectOptions());
+
+        $this->assign("provinceOption",AreaProvinceModel::getSelectOptionsHtml());
+        $this->assign("cityJs",$cityJs);
+        $this->assign("countyJs",$countryJs);
+
+        $this->addJs('/assets/global/plugins/jquery-validation/js/jquery.validate.min.js');
+        $this->addJs('/assets/global/plugins/jquery-validation/js/additional-methods.min.js');
+
+        $this->addHookJS("/people/agent_add_hook.html");
+        $this->display("/people/agent_add.html");
     }
 
     function getWhere(){
@@ -46,7 +94,7 @@ class OrderCtrl extends BaseCtrl{
 
         $where = $this->getDataListTableWhere();
 
-        $cnt = OrderModel::db()->getCount($where);
+        $cnt = FactoryModel::db()->getCount($where);
 
         $iTotalRecords = $cnt;//DB中总记录数
         if ($iTotalRecords){
@@ -63,7 +111,7 @@ class OrderCtrl extends BaseCtrl{
                 '',
                 '',
                 '',
-                'add_time',
+                'a_time',
             );
             $order = " order by ". $sort[$order_column]." ".$order_dir;
 
@@ -80,24 +128,20 @@ class OrderCtrl extends BaseCtrl{
             $end = $iDisplayStart + $iDisplayLength;
             $end = $end > $iTotalRecords ? $iTotalRecords : $end;
 
-            $data = OrderModel::db()->getAll($where . $order);
+            $data = FactoryModel::db()->getAll($where . $order);
 
             foreach($data as $k=>$v){
                 $row = array(
                     '<input type="checkbox" name="id[]" value="'.$v['id'].'">',
                     $v['id'],
-                    $v['no'],
-                    ProductModel::db()->getOneFieldValueById($v['pid'],'title'),
-                    $v['goods_id'],
-                    $v['price'],
-                    $v['pay_type'],
+                    $v['title'],
+                    $v['category'],
+                    $v['real_name'],
+                    $v['id_card_num'],
                     $v['status'],
-                    $v['uid'],
-                    $v['agent_uid'],
-                    $v['address_agent'],
                     get_default_date($v['a_time']),
-                    get_default_date($v['pay_time']),
-                    '<a href="/finance/no/withdraw/add/role='.AgentModel::ROLE_FACTORY.'&oids='.$v['id'].'" class="btn blue btn-xs margin-bottom-5" data-id="'.$v['id'].'"><i class="fa fa-file-o"></i> 提现 </a>',
+                    $v['mobile'],
+                    "",
                 );
 
                 $records["data"][] = $row;

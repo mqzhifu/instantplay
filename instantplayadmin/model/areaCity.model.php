@@ -39,4 +39,9 @@ class AreaCityModel {
         }
         return $rs;
     }
+
+    static function getNameByCode($code){
+        $row = self::db()->getRow(" city_code = '$code'");
+        return $row['city_name'];
+    }
 }

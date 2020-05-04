@@ -65,6 +65,7 @@ class ProductCtrl extends BaseCtrl{
             $data['pv'] =0;
             $data['uv'] =0;
             $data['lowest_price'] = 0;
+            $data['factory_uid'] = _g("factory_uid");
 
             $categoryAttrPara  = _g("categoryAttrPara");
             if(!$categoryAttrPara){

@@ -26,4 +26,11 @@ class AreaStreetModel {
         }
         return $html;
     }
+
+    static function getNameByCode($code){
+        $row = self::db()->getRow(" street_code = '$code'");
+        return $row['street_name'];
+    }
+
+
 }

@@ -1,95 +1,52 @@
 <?php
-set_time_limit(600);
-header("Content-type:text/html;charset=utf-8");
-class WithdrawCtrl extends BaseCtrl{
+class OrderCtrl extends BaseCtrl{
     function index(){
         if(_g("getlist")){
             $this->getList();
         }
-        $this->display("/finance/withdraw_list.html");
+
+        $this->assign("statusOptions", OrderModel::getStatusOptions());
+        $this->assign("payTypeOptions", OrderModel::getPayTypeOptions());
+
+        $this->display("/finance/order_list.html");
     }
 
-    function add(){
-        $oids = _g("oids");
-        if(!$oids){
-            exit("oids is null");
-        }
-
-        $role = _g("role");
-        if(!$role){
-            exit("role is null");
-        }
-        $oids = explode(",",$oids);
-        $priceTotal = 0;
-        $showHtml = "";
-        $agent = null;
-        foreach ($oids as $k=>$v) {
-            $order = OrderModel::db()->getById($v);
-            if($order != OrderModel::STATUS_FINISH){
-                $this->notice($v. " 订单非完成状态，不允许 提现");
-            }
-
-            if($role == AgentModel::ROLE_FACTORY){
-                if($order['factory_withdraw_money_status'] ==OrderModel::WITHDRAW_MONEY_STATUS_OK){
-                    $this->notice($v." 订单 已提取过了");
-                }
-            }else{
-                if($order['agent_withdraw_money_status'] ==OrderModel::WITHDRAW_MONEY_STATUS_OK){
-                    $this->notice($v." 订单 已提取过了");
-                }
-            }
-
-            if($role != AgentModel::ROLE_FACTORY){
-                $agent = AgentModel::db()->getById($order['agent_uid']);
-                $fee_percent = $agent['fee_percent'] / 100;
-                $price = $order['price'] * $fee_percent;
-                $priceTotal += $price;
-                $showHtml .= "$v($price)";
-            }
-        }
-
-        if(_g('opt')){
-            $data = array(
-                'price'=>_g('price'),
-                'orders_ids'=>_g('price'),
-                'status'=>_g('price'),
-                'type'=>_g('role'),
-                'a_time'=>time(),
-            );
-            if(AgentModel::ROLE_FACTORY == $role){
-                $data['admin_id'] = $this->_adminid;
-            }else{
-                $data['uid'] = -1;
-            }
-
-            $newId = WithdrawModel::db()->add($data);
-
-            var_dump($newId);exit;
-        }else{
-//            $category = ProductCategoryModel::db()->getById($product['category_id']);
-//
-//            $statusSelectOptionHtml = ProductModel::getStatusSelectOptionHtml();
-//            $this->assign("statusSelectOptionHtml",$statusSelectOptionHtml);
-//            $this->assign("categoryName",$category['name']);
-//        $this->assign("categoryOptions", ProductCategoryModel::getSelectOptionHtml());
-
-            $this->assign("priceTotal",$priceTotal);
-            $this->assign("show",$showHtml);
-            $this->assign("agent",$agent);
-            $this->assign("role",AgentModel::ROLE[$role]);
-
-
-            $this->addJs('/assets/global/plugins/jquery-validation/js/jquery.validate.min.js');
-            $this->addJs('/assets/global/plugins/jquery-validation/js/additional-methods.min.js');
-
-//            $this->addHookJS("/finance/withdraw_add_hook.html");
-            $this->display("/finance/withdraw_add.html");
-        }
-
-    }
 
     function getList(){
         $this->getData();
+    }
+
+    function add(){
+        if(_g("opt")){
+            $goods_id =_g("goods_id");
+            $agent_uid = _g("agent_uid");
+            $num = _g("num");
+            $goods = GoodsModel::db()->getById($goods_id);
+            $agentAddr = AgentModel::getAddrStrById($agent_uid);
+            $data = array(
+                'no'=>OrderModel::getNo(),
+                'uid'=>_g("uid"),
+                'goods_id'=>$goods_id,
+                'pay_type'=>$goods['pay_type'],
+                'agent_uid'=>$agent_uid,
+                'a_time'=> time(),
+                'status'=>1,
+                'pay_type'=>0,
+                'express_no'=>"",
+                'address_agent'=>$agentAddr,
+                'agent_withdraw_money_status'=> 1,
+                'factory_withdraw_money_status'=>1,
+            );
+            $price = $goods['sale_price'] * $num;
+            $data['price'] = $price;
+            $data['pid'] = $goods['pid'];
+
+            $newId = OrderModel::db()->add($data);
+            var_dump($newId);exit;
+        }
+
+
+        $this->display("/finance/order_add.html");
     }
 
     function getWhere(){
@@ -122,7 +79,7 @@ class WithdrawCtrl extends BaseCtrl{
 
         $where = $this->getDataListTableWhere();
 
-        $cnt = WithdrawModel::db()->getCount($where);
+        $cnt = OrderModel::db()->getCount($where);
 
         $iTotalRecords = $cnt;//DB中总记录数
         if ($iTotalRecords){
@@ -139,9 +96,7 @@ class WithdrawCtrl extends BaseCtrl{
                 '',
                 '',
                 '',
-                '',
-                '',
-                'a_time',
+                'add_time',
             );
             $order = " order by ". $sort[$order_column]." ".$order_dir;
 
@@ -158,21 +113,30 @@ class WithdrawCtrl extends BaseCtrl{
             $end = $iDisplayStart + $iDisplayLength;
             $end = $end > $iTotalRecords ? $iTotalRecords : $end;
 
-            $data = WithdrawModel::db()->getAll($where . $order);
+            $data = OrderModel::db()->getAll($where . $order);
 
             foreach($data as $k=>$v){
+                $payType = "--";
+                if($v['pay_type']){
+                    $payType = OrderModel::PAY_TYPE_DESC[$v['pay_type']];
+                }
                 $row = array(
                     '<input type="checkbox" name="id[]" value="'.$v['id'].'">',
                     $v['id'],
-                    $v['uid'],
+                    $v['no'],
+                    ProductModel::db()->getOneFieldValueById($v['pid'],'title'),
+                    $v['goods_id'],
                     $v['price'],
-                    $v['orders_ids'],
+                    $payType,
+                    OrderModel::STATUS_DESC[$v['status']],
+                    $v['uid'],
+                    $v['agent_uid'],
+                    $v['address_agent'],
                     get_default_date($v['a_time']),
-                    $v['status'],
-                    $v['memo'],
-                    $v['type'],
-                    get_default_date($v['u_time']),
-                    "",
+                    get_default_date($v['pay_time']),
+                    '<a href="/finance/no/withdraw/add/role='.AgentModel::ROLE_LEVEL_ONE.'&oids='.$v['id'].'&uid=1" class="btn red btn-xs margin-bottom-5" data-id="'.$v['id'].'"><i class="fa fa-file-o"></i> 一级代理提现 </a>'.
+                    '<a href="/finance/no/withdraw/add/role='.AgentModel::ROLE_LEVEL_TWO.'&oids='.$v['id'].'&uid=2" class="btn blue btn-xs margin-bottom-5" data-id="'.$v['id'].'"><i class="fa fa-file-o"></i> 二级代理提现 </a>',
+                    '<a href="/finance/no/withdraw/add/role='.AgentModel::ROLE_FACTORY.'&oids='.$v['id'].'&fid=3" class="btn blue btn-xs margin-bottom-5" data-id="'.$v['id'].'"><i class="fa fa-file-o"></i> 工厂提现 </a>',
                 );
 
                 $records["data"][] = $row;
