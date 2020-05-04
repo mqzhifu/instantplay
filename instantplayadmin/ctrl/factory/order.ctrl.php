@@ -87,7 +87,7 @@ class OrderCtrl extends BaseCtrl{
                     '<input type="checkbox" name="id[]" value="'.$v['id'].'">',
                     $v['id'],
                     $v['no'],
-                    $v['pid'],
+                    ProductModel::db()->getOneFieldValueById($v['pid'],'title'),
                     $v['goods_id'],
                     $v['price'],
                     $v['pay_type'],
@@ -97,7 +97,7 @@ class OrderCtrl extends BaseCtrl{
                     $v['address_agent'],
                     get_default_date($v['a_time']),
                     get_default_date($v['pay_time']),
-                    '<a href="/finance/no/withdraw/add/role='.AgentModel::ROLE_FACTORY.'&oids='.$v['id'].' ">提现</a>',
+                    '<a href="/finance/no/withdraw/add/role='.AgentModel::ROLE_FACTORY.'&oids='.$v['id'].'" class="btn blue btn-xs margin-bottom-5" data-id="'.$v['id'].'"><i class="fa fa-file-o"></i> 提现 </a>',
                 );
 
                 $records["data"][] = $row;

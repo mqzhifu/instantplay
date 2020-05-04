@@ -4,7 +4,9 @@ class indexCtrl extends BaseCtrl{
     function index(){
         $this->setTitle('test');
 
-        $this->display("index.html");
+//        $this->display("index.html");
+
+        $this->notice("用户名错误","/");
     }
 
 

@@ -46,8 +46,8 @@ class GoodsCtrl extends BaseCtrl{
                 'pay_type'=>implode(",",_g('payType')),
                 'haulage'=>_g('haulage'),
                 'admin_id'=>$this->_adminid,
+                'a_time'=>time(),
             );
-
 
             $attrParaGroup = ProductLinkCategoryAttrModel::getAttrParaGroup($pid);
             $attrPara = [];
@@ -64,6 +64,9 @@ class GoodsCtrl extends BaseCtrl{
             $data['product_attr_ids'] = $product_attr_ids;
 
             $newId = GoodsModel::db()->add($data);
+
+
+            ProductModel::upLowestPriceByGoods($pid);
 
             var_dump($newId);exit;
 
@@ -157,24 +160,36 @@ class GoodsCtrl extends BaseCtrl{
 
             $data = GoodsModel::db()->getAll($where . $order);
 
+
             foreach($data as $k=>$v){
+                $paraIds = explode(",",$v['product_attr_ids']);
+                $paraStr = "";
+                foreach ($paraIds as $k2=>$v2) {
+                    $tmp = explode("-",$v2);
+                    $attrName = ProductCategoryAttrModel::db()->getOneFieldValueById($tmp[0],'name');
+                    $paraName = ProductCategoryAttrParaModel::db()->getOneFieldValueById($tmp[1],'name');
+                    $paraStr .= $attrName . " : ". $paraName . "<br/>";
+                }
+
+                $payTypeArr = OrderModel::getSomePayTypeDesc($v['pay_type']);
+
                 $row = array(
                     '<input type="checkbox" name="id[]" value="'.$v['id'].'">',
                     $v['id'],
-                    $v['pid'],
-                    $v['type'],
-                    $v['status'],
-                    $v['product_attr_ids'],
+                    ProductModel::db()->getOneFieldValueById($v['pid'],'title'),
+//                    $v['type'],
+                    GoodsModel::STATUS[$v['status']],
+                    $paraStr,
                     $v['stock'],
                     $v['sale_price'],
                     $v['original_price'],
-                    $v['pay_type'],
-                    $v['admin_id'],
+                    json_encode($payTypeArr,JSON_UNESCAPED_UNICODE),
+                    AdminUserModel::db()->getOneFieldValueById($v['admin_id'],'uname'),
                     $v['is_search'],
                     $v['sort'],
                     $v['haulage'],
                     get_default_date($v['a_time']),
-                    '<button class="btn btn-xs qrcode" data-id="'.$v['id'].'">二维码</button>',
+                    '<a href="/product/no/goods/qrcode/id='.$v['id'].'" class="btn blue btn-xs margin-bottom-5" data-id="'.$v['id'].'"><i class="fa fa-file-o"></i> 二维码 </a>',
                 );
 
                 $records["data"][] = $row;

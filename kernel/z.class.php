@@ -20,7 +20,7 @@ class Z{
         ConfigCenter::get(KERNEL_NAME,"main");//kernel 主配置文件，主要是网关限制
         ConfigCenter::get(KERNEL_NAME,"rediskey");//kernel redis KEY 配置信息，主要是网关限制
 
-        ConfigCenter::getEnv(KERNEL_NAME,"domain_".LANG);
+//        ConfigCenter::getEnv(KERNEL_NAME,"domain_".LANG);
         ConfigCenter::getEnv(KERNEL_NAME,"mysql_".LANG);
         ConfigCenter::getEnv(KERNEL_NAME,"redis_".LANG);
         //常量检查
@@ -50,8 +50,8 @@ class Z{
 		}
 		//类自动加载函数
 		spl_autoload_register('autoload');
-		//捕获-fatal脚本停止/脚本结束钩子
-        register_shutdown_function('shutdown_function');//fatal error
+		//捕获-fatal脚本停止/脚本结束钩子 fatal error
+        register_shutdown_function(array("ExceptionFrameLib",'fatalShutdown'));
 		// 设定warning notice 错误
 		set_error_handler(array('ExceptionFrameLib','appError'));
 		//设定 异常处理

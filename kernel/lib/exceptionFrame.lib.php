@@ -2,12 +2,36 @@
 //异常处理
 class ExceptionFrameLib extends Exception {
 	
-	public function __construct($message,$code=0,$extra=false) {
-		parent::__construct($message,$code);
-	}
+//	public function __construct($message,$code=0,$extra=false) {
+//	    var_dump(333);exit;
+//		parent::__construct($message,$code);
+//	}
+    //脚本结束，或者触发了fatal  必须静态
+    static function fatalShutdown()
+    {
+        $e = error_get_last();
+        if($e){//证明是 非正常结束（也可能是异常 被其它被捕了）
+            $type = getErrInfo($e['type']);
+            $str = "[type]:".$type.",[msg]:".$e['message'].",[file]:".$e['file'].",[line]".$e['line'];
+
+            if(RUN_ENV == 'WEBSOCKET'){
+                exit("shutdown_function WEBSOCKET");
+                LogLib::fatal([$str]);
+            }else {
+                LogLib::fatal($str);
+                if (!DEBUG) {
+                    $arr = array("code" => 9993, 'msg' => 'fatal');
+                    echo json_encode($arr);
+                    exit;
+                } else {
+                    var_dump($str);
+                    exit;
+                }
+            }
+        }
+    }
     //捕获 异常 触发
     static function throwCatch($exceptionInfo ) {
-//	    var_dump($exceptionInfo);exit;
 	    if(is_object($exceptionInfo)){
             $errInfo = self::parseExceptionObjToStr($exceptionInfo);
         }elseif(is_scalar($exceptionInfo) ){//标量
@@ -21,28 +45,41 @@ class ExceptionFrameLib extends Exception {
         }
 
         if(RUN_ENV == 'WEBSOCKET'){
-            LogLib::wsWriteFileHash([$errInfo[0]['msg']]);
-        }else{
+            exit("WEBSOCKET throwCatch");
+//            LogLib::wsWriteFileHash([$errInfo[0]['msg']]);
+        }elseif(RUN_ENV == 'WEB' || RUN_ENV == 'CLI'){
             LogLib::inc()->exception($errInfo);
-            if(!DEBUG){
-                $arr = array("code"=>9991,"msg"=>'throw new exception:'.$errInfo[0]['msg']);
-                echo json_encode($arr);
+//            if(!DEBUG){
+//                $arr = array("code"=>9991,"msg"=>'throw new exception:'.$errInfo[0]['msg']);
+//                echo json_encode($arr);
+//
+//            }else{
+//                var_dump($errInfo);
+//            }
 
-            }else{
-                var_dump($errInfo);
+//            $smarty = getKernelSmarty();
+//            $header_html = $smarty->compile("error.html");
+//            echo include_once $header_html;
+
+            out("first:");
+            foreach ($errInfo['first'] as $k=>$v) {
+                out(" ".$k . " " .$v);
+            }
+            out(" ");
+            out(" ");
+            out("stack:");
+            foreach ($errInfo['stack'] as $k=>$v) {
+                out(" ".$k . " " .json_encode($v));
             }
 
-            exit;
         }
+        exit;
     }
     //notice 之类的错误
 	static public function appError($errno, $errstr, $errfile, $errline) {
+        var_dump(33);
         $type = getErrInfo($errno);
         $str  = "[type]: $type"."[msg]: $errstr "."[file]: $errfile "."[line]: $errline";
-
-
-//        $VerifierCodeLib = new VerifierCodeLib();
-//        $VerifierCodeLib->send(2,'78878296@qq.com',2,array('#errInfo#'=>APP_NAME.$str));
 
 	    if(RUN_ENV == 'WEBSOCKET'){
             LogLib::wsWriteFileHash([$str]);
@@ -61,14 +98,17 @@ class ExceptionFrameLib extends Exception {
 
 
 	}
-
+    //将异常信息，格式化
 	static function parseExceptionObjToStr($e){
+        $first = array(
+            "message" => $e->getMessage(),
+            "code" => $e->getCode(),
+            "file" => $e->getFile(),
+            "line" => $e->getLine(),
+        );
+
         $trace = $e->getTrace();
-
-        $trace[0]['file'] = $e->getFile();
-        $trace[0]['line'] = $e->getLine();
-        $trace[0]['msg'] = $msg = $e->getMessage();
-
+//        $traceInfo = "";
 //        foreach ($trace as $t) {
 //            if(isset($t['msg']))
 //                $traceInfo .=  ' (' . $t['msg'] . ') ';
@@ -88,14 +128,18 @@ class ExceptionFrameLib extends Exception {
 //            if(isset($t['function']))
 //                $traceInfo .= $t['function'] . " ";
 //
-////            if(isset($t['args']) && $t['args']){
-////                var_dump($t['args']);exit;
-////                $traceInfo .= implode(',', $t['args']);
-////            }
+//            if(isset($t['args']) && $t['args']){
+//                var_dump($t['args']);exit;
+//                $traceInfo .= implode(',', $t['args']);
+//            }
 //            $traceInfo .=')'.$s;
 //        }
 
-        return $trace;
+        $data = array(
+            'first'=>$first,
+            'stack'=>$trace,
+        );
+        return $data;
 
     }
     //显示 到浏览器的错误信息

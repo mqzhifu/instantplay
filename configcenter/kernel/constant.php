@@ -67,6 +67,9 @@ defined('APP_SESS_STORE_DIR') or define('APP_SESS_STORE_DIR',SESS_STORE_DIR.DS.A
 //语言包
 defined('LANG') or define('LANG',"cn");
 
+
+define("KERNEL_SMARTY_COMPILE_DIR",STORAGE_DIR.DS."view_c".DS.KERNEL_NAME.DS );
+
 //项目目录
 define ('APP_DIR', BASE_DIR .DS . APP_NAME);
 //项目配置文件目录

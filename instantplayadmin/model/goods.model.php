@@ -37,4 +37,8 @@ class GoodsModel {
         }
         return $html;
     }
+
+    static function getListByPid($pid){
+        return self::db()->getAll(" pid = $pid ");
+    }
 }

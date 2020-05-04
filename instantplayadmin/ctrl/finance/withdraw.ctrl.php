@@ -45,7 +45,22 @@ class WithdrawCtrl extends BaseCtrl{
         }
 
         if(_g('opt')){
+            $data = array(
+                'price'=>_g('price'),
+                'orders_ids'=>_g('price'),
+                'status'=>_g('price'),
+                'type'=>_g('role'),
+                'a_time'=>time(),
+            );
+            if(AgentModel::ROLE_FACTORY == $role){
+                $data['admin_id'] = $this->_adminid;
+            }else{
+                $data['uid'] = -1;
+            }
 
+            $newId = WithdrawModel::db()->add($data);
+
+            var_dump($newId);exit;
         }else{
 //            $category = ProductCategoryModel::db()->getById($product['category_id']);
 //

@@ -28,6 +28,33 @@ class ProductModel {
         return self::STATUS[$id];
     }
 
+    static function upLowestPriceByGoods($pid){
+	    $lowest = GoodsModel::db()->getRow(" pid = $pid order by sale_price asc limit 1");
+	    if(!$lowest){
+            $rs = self::db()->upById($pid,array('lowest_price'=>0));
+        }else{
+            $rs = self::db()->upById($pid,array('lowest_price'=>$lowest['sale_price']));
+        }
+
+        return $rs;
+    }
+
+    static function attrParaParserToName($attribute){
+        $attribute = json_decode($attribute,true);
+        $attributeArr = [];
+        foreach ($attribute as $k=>$v) {
+            $attrTmp = ProductCategoryAttrModel::db()->getById($k);
+            $str = "";
+            $attributeArr[$attrTmp['name']] = "";
+            foreach ($v as $k2=>$v2) {
+                $parTmp = ProductCategoryAttrParaModel::db()->getById($v2);
+                $str .= $parTmp['name'] . " ";
+            }
+            $attributeArr[$attrTmp['name']] = $str;
+        }
+        return $attributeArr;
+    }
+
     static function getStatusSelectOptionHtml(){
         $html = "";
         foreach (self::STATUS as $k=>$v) {

@@ -12,6 +12,43 @@ class CategoryAttrCtrl extends BaseCtrl{
         $this->getData();
     }
 
+    function add(){
+        $cid  = _g("cid");
+        if(!$cid){
+            $this->notice("cid is null");
+        }
+
+        $category = ProductCategoryModel::db()->getById($cid);
+        if(!$category ){
+            $this->notice("cid not in db");
+        }
+
+        if(_g("opt")){
+            $name = _g("name");
+            if(!$name){
+                $this->notice("name is null");
+            }
+
+            $exist = ProductCategoryAttrModel::db()->getRow(" pc_id = $cid and name = '$name'");
+            if($exist){
+                $this->notice("重复:".$name);
+            }
+
+            $data = array(
+                'name'=>$name,
+                'pc_id'=>$cid,
+            );
+
+            $newId = ProductCategoryAttrModel::db()->add($data);
+            var_dump($newId);exit;
+        }
+
+        $this->assign("category",$category);
+
+        $this->addHookJS("/product/category_attr_add_hook.html");
+        $this->display("/product/category_attr_add.html");
+    }
+
     function getWhere(){
         $where = " 1 ";
         if($mobile = _g("mobile"))
@@ -79,7 +116,7 @@ class CategoryAttrCtrl extends BaseCtrl{
                     $v['id'],
                     $v['name'],
                     json_encode($para,JSON_UNESCAPED_UNICODE),
-                    "",
+                    '<a href="/product/no/categoryAttrPara/add/pca_id='.$v['id'].'" class="btn yellow btn-xs margin-bottom-5"><i class="fa fa-edit"></i> 添加参数 </a>',
                 );
 
                 $records["data"][] = $row;

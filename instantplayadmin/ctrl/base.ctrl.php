@@ -209,6 +209,13 @@ class BaseCtrl{
         $this->addJs('/assets/global/plugins/bootbox/bootbox.min.js');
     }
 
+    function notice($msg,$backUrl = ""){
+        $this->assign("msg",$msg);
+        $this->assign("backUrl",$backUrl);
+
+        $this->display("layout/notice.html");
+        exit;
+    }
 
     function display($file){
         $ac = $this->ac;

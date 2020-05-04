@@ -12,6 +12,29 @@ class CategoryCtrl extends BaseCtrl{
         $this->getData();
     }
 
+    function add(){
+        if(_g("opt")){
+            $name = _g("name");
+            if(!$name){
+                $this->notice("name is null");
+            }
+
+            $exist = ProductCategoryModel::db()->getOneByOneField("name",$name);
+            if($exist){
+                $this->notice("重复:".$name);
+            }
+
+            $data = array(
+                'name'=>$name
+            );
+
+            $newId = ProductCategoryModel::db()->add($data);
+            var_dump($newId);exit;
+        }
+        $this->addHookJS("/product/category_add_hook.html");
+        $this->display("/product/category_add.html");
+    }
+
     function getWhere(){
         $where = " 1 ";
         if($mobile = _g("mobile"))
@@ -79,7 +102,7 @@ class CategoryCtrl extends BaseCtrl{
                     $v['id'],
                     $v['name'],
                     json_encode($attr,JSON_UNESCAPED_UNICODE),
-                    "",
+                    '<a href="/product/no/categoryAttr/add/cid='.$v['id'].'" class="btn yellow btn-xs margin-bottom-5"><i class="fa fa-edit"></i> 添加属性 </a>',
                 );
 
                 $records["data"][] = $row;

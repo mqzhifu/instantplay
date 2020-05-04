@@ -83,6 +83,19 @@ class OrderModel {
         return $html;
     }
 
+    static function getSomePayTypeDesc($payTypeIds ){
+	    if(!is_array($payTypeIds)){
+            $payTypeIds = explode(",",$payTypeIds);
+        }
+
+        $rs = array();
+        foreach ($payTypeIds as $k=>$v) {
+            $rs[$v] = self::PAY_TYPE_DESC[$v];
+        }
+        return $rs;
+
+    }
+
     static function addReq($adminId,$cate,$sub,$ctrl,$ac){
 	    $request = null;
 	    if($_REQUEST){

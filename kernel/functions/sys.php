@@ -90,30 +90,6 @@ function sendToUid($uid,$data,$json = 0,$logType = ''){
     LogLib::wsWriteFileHash(["@@@send ok!",'fd',$fd,'uid',$uid,'rs',$rs,$data]);
 }
 
-//脚本结束，或者触发了fatal
-function shutdown_function()
-{
-    $e = error_get_last();
-    if($e){
-        $type = getErrInfo($e['type']);
-        $str = "[type]:".$type.",[msg]:".$e['message'].",[file]:".$e['file'].",[line]".$e['line'];
-
-        if(RUN_ENV == 'WEBSOCKET'){
-            LogLib::wsWriteFileHash([$str]);
-        }else {
-            LogLib::systemWriteFileHash("fatal",$str);
-            if (!DEBUG) {
-                $arr = array("code" => 9993, 'msg' => 'fatal');
-                echo json_encode($arr);
-                exit;
-            } else {
-                var_dump($str);
-                exit;
-            }
-        }
-    }
-}
-
 function getErrInfo($errno){
     $type = $errno;
     switch ($errno){
@@ -290,7 +266,7 @@ function out_pc($code = 200,$msg = '',$appKey = APP_NAME){
             }
         }
     }
-    return out($code,$msg,'pc');
+    return array('code'=>$code,'msg'=>$msg);
 }
 function out_ajax($code = 500,$msg = "",$appKey = APP_NAME){
 //    header('Content-Type:application/json; charset=utf-8');
@@ -300,30 +276,21 @@ function out_ajax($code = 500,$msg = "",$appKey = APP_NAME){
     return out($code,$msg,'ajax',0,1);
 }
 //输出
-function out($code = 999,$msg = '',$type = 'ajax',$uid = 0,$isLog = 0){
-    if($type == 'pc'){
-        return array('msg'=>$msg,'code'=>$code);
-    }else{
-        if(RUN_ENV == 'WEBSOCKET'){
-
+function out($info ,$br = 1){
+    $msg = $info;
+    if($br){
+        $os = getOs();
+        if (preg_match("/cli/i", php_sapi_name())){
+            if($os == "WIN"){
+                $msg .= "\r\n";
+            }else{
+                $msg .= "\n";
+            }
         }else{
-            echo json_encode(array('code'=>$code,"msg"=>$msg));
-            exit;
+            $msg .=  "<br/>";
         }
-
-//        if($isLog){
-//            if(!$uid){
-//                    $uid = 0;
-//            }
-//            $exec_time = $GLOBALS['start_time'] - microtime(TRUE);
-//            $data = array(
-//                'uid'=>$uid,
-//                'return_info'=>$code."##".json_encode($msg),
-//                'exec_time'=>$exec_time
-//            );
-//            AccesslogModel::db()->upById(ACCESS_ID,$data);
-//        }
     }
+    echo $msg;
 }
 
 function getEmailHref($email){
@@ -451,11 +418,23 @@ function send_http_status($code) {
 	}
 }
 
+function getOs(){
+    $os = strtoupper(substr(PHP_OS,0,3));
+    return $os;
+}
+
 function getAppSmarty($path = ''){
 	$Template = get_instance_of('TemplateLib');
 	$Template->setPath(APP_DIR."/view/");
 	$Template->setCompilePath( APP_SMARTY_COMPILE_DIR);
 	return $Template;
+}
+
+function getKernelSmarty($path = ''){
+    $Template = get_instance_of('TemplateLib');
+    $Template->setPath(KERNEL_DIR."/view/");
+    $Template->setCompilePath( KERNEL_SMARTY_COMPILE_DIR);
+    return $Template;
 }
 
 

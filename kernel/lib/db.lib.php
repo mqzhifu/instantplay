@@ -538,6 +538,15 @@ class DbLib{
         return $rs;
     }
 
+    function getOneFieldValueById($id,$fieldName,$defaultValue = '---'){
+        $row = $this->getById($id,null,null,$fieldName);
+        if(!$row){
+            return $defaultValue;
+        }
+
+        return $row[$fieldName];
+    }
+
     //根据主键ID(字段名必须 为:id)，获得一条记录
     function getByIds($ids = '',$table = '' ,$filed = '*'){
         $table = $this->getTable($table);

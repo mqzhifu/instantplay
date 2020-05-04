@@ -12,6 +12,47 @@ class CategoryAttrParaCtrl extends BaseCtrl{
         $this->getData();
     }
 
+    function add(){
+        $pcaId  = _g("pca_id");
+        if(!$pcaId){
+            $this->notice("pcaId is null");
+        }
+
+        $categoryAttr = ProductCategoryAttrModel::db()->getById($pcaId);
+        if(!$categoryAttr ){
+            $this->notice("pcaId not in db");
+        }
+
+        $category = ProductCategoryModel::db()->getById($categoryAttr['pc_id']);
+
+        if(_g("opt")){
+            $name = _g("name");
+            if(!$name){
+                $this->notice("name is null");
+            }
+
+            $exist = ProductCategoryAttrParaModel::db()->getRow(" pca_id = $pcaId and name = '$name'");
+            if($exist){
+                $this->notice("重复:".$name);
+            }
+
+            $data = array(
+                'name'=>$name,
+                'pca_id'=>$pcaId,
+            );
+
+            $newId = ProductCategoryAttrParaModel::db()->add($data);
+            var_dump($newId);exit;
+        }
+
+        $this->assign("category",$category);
+        $this->assign("categoryAttr",$categoryAttr);
+
+
+        $this->addHookJS("/product/category_attr_para_add_hook.html");
+        $this->display("/product/category_attr_para_add.html");
+    }
+
     function getWhere(){
         $where = " 1 ";
         if($mobile = _g("mobile"))

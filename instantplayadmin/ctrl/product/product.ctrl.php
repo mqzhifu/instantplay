@@ -12,9 +12,47 @@ class ProductCtrl extends BaseCtrl{
         $this->display("/product/product_list.html");
     }
 
+    function detail(){
+        $id = _g("id");
+        if(!$id){
+            $this->notice("id is null");
+        }
+
+        $product = ProductModel::db()->getById($id);
+        $product['dt'] = get_default_date($product['a_time']);
+
+        $category = ProductCategoryModel::db()->getById($product['category_id']);
+        $product['category_name'] = $category['name'];
+
+        $admin = AdminUserModel::db()->getById($product['admin_id']);
+        $product['admin_name'] = $admin['uname'];
+
+        $product['status_desc'] = ProductModel::STATUS[$product['status']];
+
+        $product['pic_url'] = get_product_url($product['pic']);
+
+        $goodsList = GoodsModel::getListByPid($id);
+        $product['goods_num'] = 0;
+        if($goodsList){
+            $product['goods_num'] = count($goodsList);
+        }
+
+        $attributeArr = ProductModel::attrParaParserToName($product['attribute']);
+
+
+        $this->assign("attributeArr",$attributeArr);
+        $this->assign("goodsList",$goodsList);
+        $this->assign("product",$product);
+
+        $this->display("/product/product_detail.html");
+    }
 
     function add(){
         if(_g('opt')){
+
+            if(ProductModel::db()->getOneByOneField("title",_g('title'))){
+                $this->notice("标题重复:"._g('title'));
+            }
 
             $data['title']= _g("title");
             $data['desc'] = _g("desc");
@@ -22,17 +60,25 @@ class ProductCtrl extends BaseCtrl{
             $data['notice']  = _g("notice");
             $data['category_id'] = _g("category_id");
             $data['status'] = _g("status");
+            $data['a_time'] = time();
             $data['admin_id']  = $this->_adminid;
+            $data['pv'] =0;
+            $data['uv'] =0;
+            $data['lowest_price'] = 0;
+
             $categoryAttrPara  = _g("categoryAttrPara");
             if(!$categoryAttrPara){
-                exit(" categoryAttrPara is null ");
+                $this->notice("categoryAttrPara is null ");
             }
-            $data['attribute'] = json_encode($categoryAttrPara);
 
+            $attribute = [];
+            foreach ($categoryAttrPara as $k=>$v) {
+                $tmp = explode("_",$v );
+                $attribute[$tmp[1]][] = $tmp[2];
+            }
 
-//            if(ProductModel::db()->getOneByOneField("title",$data['title'])){
-//
-//            }
+            $data['attribute'] = json_encode($attribute);
+
 
             $uploadService = new UploadService();
             $uploadRs = $uploadService->product('pic');
@@ -57,8 +103,6 @@ class ProductCtrl extends BaseCtrl{
 
                 ProductLinkCategoryAttrModel::db()->add($addData);
             }
-
-
 
             exit("成功");
         }
@@ -159,6 +203,9 @@ class ProductCtrl extends BaseCtrl{
                 if($v['status'] == ProductModel::STATUS_ON){
                     $statusBnt = "下架";
                 }
+
+
+                $attributeArr = ProductModel::attrParaParserToName($v['attribute']);
                 $row = array(
                     '<input type="checkbox" name="id[]" value="'.$v['id'].'">',
                     $v['id'],
@@ -166,7 +213,7 @@ class ProductCtrl extends BaseCtrl{
 //                    $v['subtitle'],
                     $v['desc'],
                     $v['brand'],
-                    $v['attribute'],
+                    json_encode($attributeArr,JSON_UNESCAPED_UNICODE),
                     '<img height="30" width="30" src="'.get_product_url($v['pic']).'" />',
                     ProductCategoryModel::getNameById($v['category_id']),
 //                    $v['status'],
@@ -178,9 +225,11 @@ class ProductCtrl extends BaseCtrl{
                     $v['uv'],
                     $v['recommend'],
                     get_default_date($v['a_time']),
-                    '<button class="btn btn-xs default" data-id="'.$v['id'].'" onclick="recover2(this)">详情</button>'.
-                    '<button class="btn btn-xs default red" data-id="'.$v['id'].'" onclick="recover2(this)">'.$statusBnt.'</button>'.
-                    '<a href="/product/no/goods/add/pid='.$v['id'].' ">添加商品</a>',
+                    '<a href="/product/no/product/detail/id='.$v['id'].'" class="btn blue btn-xs margin-bottom-5" data-id="'.$v['id'].'"><i class="fa fa-file-o"></i> 详情 </a>'.
+                    '<button class="btn btn-xs default red btn blue btn-xs margin-bottom-5" data-id="'.$v['id'].'"><i class="fa fa-link"></i>'.$statusBnt.'</button>'.
+                    '<a href="/product/no/goods/add/pid='.$v['id'].'" class="btn purple btn-xs btn blue btn-xs margin-bottom-5"><i class="fa fa-plus"></i>   </i> 添加商品 </a>'.
+                    '<a href="" class="btn yellow btn-xs margin-bottom-5" data-id="'.$v['id'].'"><i class="fa fa-edit"></i> 编辑 </a>',
+
                 );
 
                 $records["data"][] = $row;
