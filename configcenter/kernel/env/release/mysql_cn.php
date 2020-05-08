@@ -5,7 +5,7 @@ $db_config =  array(
             'type'=>'mysql',
             'host'=>'127.0.0.1',
             'user'=>'root',
-            'pwd'=>'root',
+            'pwd'=>'mqzhifu',
             'port'=>'3306',
             'db_name'=>'instantplay',
             'db_preifx'=>'',
@@ -17,7 +17,7 @@ $db_config =  array(
             'type'=>'mysql',
             'host'=>'127.0.0.1',
             'user'=>'root',
-            'pwd'=>'root',
+            'pwd'=>'mqzhifu',
             'port'=>'3306',
             'db_name'=>'instantplay',
             'db_preifx'=>'',
@@ -28,4 +28,4 @@ $db_config =  array(
         'master_slave_switch'=>1,
     ),
 );
-$GLOBALS[APP_NAME]['db_config'] = $db_config;
+$GLOBALS[KERNEL_DIR]['db_config'] = $db_config;

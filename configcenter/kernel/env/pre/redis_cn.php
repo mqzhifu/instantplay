@@ -9,4 +9,4 @@ $redis  = array(
     ),
 );
 
-$GLOBALS[APP_NAME]['redis'] = $redis;
+$GLOBALS[KERNEL_DIR]['redis'] = $redis;

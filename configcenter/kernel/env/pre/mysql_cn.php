@@ -28,4 +28,4 @@ $db_config =  array(
         'master_slave_switch'=>1,
     ),
 );
-$GLOBALS[APP_NAME]['db_config'] = $db_config;
+$GLOBALS[KERNEL_DIR]['db_config'] = $db_config;
