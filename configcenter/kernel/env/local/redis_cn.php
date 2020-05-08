@@ -9,4 +9,5 @@ $redis  = array(
     ),
 );
 
-$GLOBALS[KERNEL_DIR]['redis'] = $redis;
+$GLOBALS[KERNEL_NAME]['redis'] = $redis;
+return $redis;
