@@ -5,7 +5,8 @@ $redis  = array(
         'port'=>6379,
         'ps'=>'',
         'timeout'=>30,
+        'database'=>1,
     ),
 );
 
-$GLOBALS[KERNEL_NAME]['redis'] = $redis;
+$GLOBALS[APP_NAME]['redis'] = $redis;
