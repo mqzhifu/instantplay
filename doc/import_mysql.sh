@@ -1,5 +1,29 @@
+HOST="127.0.0.1"
+DB="instantplay"
+PORT="3306"
+User="root"
+PS="mqzhifu"
+DIR=`pwd`
+
+
+export MYSQL_PWD=${PS}
+
+
+echo "$HOST:$PORT $DB $USER $PS $DIR";
+
+DEL_DB="drop database ${DB}"
+ADD_DB="create database ${DB} charset=utf8"
+
+mysql  -h${HOST} -u${USER} -p${MYSQL_PWD} --default-character-set=utf8  -e"${DEL_DB};${ADD_DB};"
+echo ${DEL_DB}
+echo ${ADD_DB}
+
+mysql  -h${HOST} -u${USER} -p${MYSQL_PWD} --default-character-set=utf8 -D${DB}  -e "source ${DIR}/structure.sql"
+echo "source ${DIR}/structure.sql"
+
+
+
 for file in ./init_data/*
 do
 echo $file
-#mysql  -u'root' -p'wangbin' --default-character-set=utf8  -e"load data local infile '$file' into table yiche.yiche_core fields terminated by ',' lines terminated by '\n';"
-done
+mysql  -h${HOST} -u${USER} -p${MYSQL_PWD} --default-character-set=utf8 -D${DB} -e"source ${DIR}/${file}"
