@@ -27,6 +27,7 @@ class Z{
         Z::checkConst();
         Z::checkExt();
 
+
         include_once FUNC_DIR.DS.'sys.php';//公共函数 - 系统
 		include_once FUNC_DIR.DS.'datetime.php';//公共函数 - 时间日期
 		include_once FUNC_DIR.DS.'path_file.php';//公共函数 -

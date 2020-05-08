@@ -81,6 +81,9 @@ define("APP_SMARTY_COMPILE_DIR",STORAGE_DIR.DS."view_c".DS.APP_NAME.DS );
 //项目-文件上传路径
 define('APP_FILE_UPLOAD_DIR', FILE_UPLOAD_DIR . DS .APP_NAME);
 
+
+//项目-文件上传路径
+define('APP_SHELL_DIR', APP_DIR . DS . "shell");
 ////头像-相对路径 不分应用
 //defined('USER_AVATAR_IMG_VIRTUAL') or define('USER_AVATAR_IMG_VIRTUAL', 'avatar/user/');
 ////头像上传路径

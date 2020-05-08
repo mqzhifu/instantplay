@@ -51,10 +51,8 @@ class CmdlineLib {
 		}
 		
 		
-		
-		
-		
-		$rs = include_once APP_SHELL_DIR . DS .  $command;
+//		$rs = include_once APP_SHELL_DIR . DS .  $command;
+        $rs = include_once  $command;
 // 		echo $command;var_dump($name);exit;
 		$commandClass = new $name($this->commands);
 		return $commandClass->run($this->attribute);

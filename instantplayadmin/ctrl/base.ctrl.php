@@ -217,6 +217,14 @@ class BaseCtrl{
         exit;
     }
 
+    function ok($msg = "",$backUrl = ""){
+        $this->assign("msg",$msg);
+        $this->assign("backUrl",$backUrl);
+
+        $this->display("layout/success.html");
+        exit;
+    }
+
     function display($file){
         $ac = $this->ac;
         $ctrl = $this->ctrl;

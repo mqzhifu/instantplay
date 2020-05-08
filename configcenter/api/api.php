@@ -123,19 +123,6 @@ $arr = array(
 
     ),
 
-    'agent'=>array(
-        'title'=>'1/2级代理',
-
-        'index'=>array(
-            'ws'=>array('request_code'=>1001,'response_code'=>1002),
-            'title'=>'test',
-            'request'=>array(),
-            'return'=>array(
-            ),
-        ),
-
-    ),
-
     'goods'=>array(
         'title'=>'默认',
 

@@ -62,6 +62,9 @@ class RouterLib{
             $ac = _g(PARA_AC);
             if(defined("IS_ADMIN") && IS_ADMIN){
                 $cate = _g("cate");
+                if(!$cate){
+                    $cate = "index";
+                }
                 $sub = _g("sub");
             }
 		}
@@ -85,7 +88,7 @@ class RouterLib{
             if($cate != 'no'){
                 $dir =  APP_DIR .DS. C_DIR_NAME . DS  .$cate .DS;
             }else{
-                $dir =  APP_DIR .DS. C_DIR_NAME . DS ;
+                $dir =  APP_DIR .DS .C_DIR_NAME.DS."index" . DS ;
             }
         }else{
             $dir =  APP_DIR .DS. C_DIR_NAME . DS ;
