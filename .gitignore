@@ -4,10 +4,6 @@ storage/session/*
 storage/view_c/*
 storage/view_c/product_tb
 
-configcenter/kernel/env/pre/*
-configcenter/instantplay/env/pre/*
-configcenter/api/env/pre/*
-
 static/upload/
 
 kernel/plugins/structure/testData
