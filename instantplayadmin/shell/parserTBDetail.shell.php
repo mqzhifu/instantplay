@@ -50,7 +50,7 @@ class parserTBDetail{
         $mysqlData = array('a_time'=>time());
 
         out("file_name:$fileName");
-        $productTxt = file_get_contents(APP_SHELL_DIR."/tb_product/$fileName");
+        $productTxt = file_get_contents(STORAGE_DIR."/tb_product/$fileName");
 //        $encode = mb_detect_encoding($productTxt, array("ASCII",'UTF-8',"GB2312","GBK",'BIG5'));
 //        var_dump($encode);exit;
 //        $productTxt = mb_convert_encoding($productTxt,"CP936","UTF-8");
