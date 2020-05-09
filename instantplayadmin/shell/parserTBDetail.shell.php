@@ -138,7 +138,7 @@ class parserTBDetail{
             }
 
             $mysqlData['data_detail'] = $dataPriceMath;
-            $mysqlData['price'] = json_encode($priceInfo);
+            $mysqlData['price'] = htmlspecialchars_decode(json_encode($priceInfo));
             $mysqlData['category_attr_para'] = "";
             $mysqlData['category_attr'] = "";
             out("detailDataArr".json_encode($dataPriceMath));
@@ -189,13 +189,13 @@ class parserTBDetail{
             $categoryAttrName = "";
             $paraData = [];
             foreach ($detailDataArr['skuProps'] as $k=>$v) {
-                $categoryAttrName .= $v['prop'] . " , ";
+                $categoryAttrName .= trim($v['prop']) . ",";
                 foreach ($v['value'] as $k2=>$v2) {
                     $para = array('name'=>$v2['name']);
                     if(arrKeyIssetAndExist($v2,'imageUrl')){
                         $para['img_url'] = $v2['imageUrl'];
                     }
-                    $paraData[$k][] = $para;
+                    $paraData[trim($v['prop'])][] = $para;
                 }
             }
 
@@ -206,7 +206,14 @@ class parserTBDetail{
 
                 $priceInfo = [];
                 foreach ($detailDataArr['skuMap'] as $k=>$v) {
-                    $priceInfo[$k] = $v['price'];
+                    if(isset($v['price'])){
+                        $priceInfo[$k] = $v['price'];
+                    }elseif(isset($v['discountPrice'])){
+                        $priceInfo[$k] = $v['discountPrice'];
+                    }else{
+                        exit("err:skuMap price is null");
+                    }
+
                 }
             }elseif(arrKeyIssetAndExist($detailDataArr,'priceRange')){
                 $priceInfo = $detailDataArr['priceRange'];
@@ -215,9 +222,9 @@ class parserTBDetail{
             }
 
             $mysqlData['data_detail'] = json_encode($detailDataArr);
-            $mysqlData['price'] = json_encode($priceInfo);
+            $mysqlData['price'] = htmlspecialchars_decode(json_encode($priceInfo));
             $mysqlData['category_attr_para'] = json_encode($paraData);
-            $mysqlData['category_attr'] = substr( $categoryAttrName,0,strlen($categoryAttrName));
+            $mysqlData['category_attr'] = trim(substr( $categoryAttrName,0,strlen($categoryAttrName)));
             out("detailDataArr".json_encode($detailDataArr));
         }
         //产品属性
@@ -241,10 +248,13 @@ class parserTBDetail{
     }
 
     public function run(){
-        $fileList = get_dir(APP_SHELL_DIR .DS ."tb_product");
+        $fileList = get_dir(STORAGE_DIR .DS ."tb_product");
         foreach ($fileList as $k=>$files) {
             out("k:",$k);
             foreach ($files as $k=>$file) {
+                if($file == "demo.txt"){
+                    continue;
+                }
                 $this->processOneFile($file);
             }
         }

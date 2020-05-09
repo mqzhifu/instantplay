@@ -42,15 +42,15 @@ class CmdlineLib {
 			if(isset($this->commands[$name]))
 				$command= $this->commands[$name];
 			else{
-				$command = 'Help.shell.php';
+				$command = APP_SHELL_DIR.DS.'Help.shell.php';
 				$name = 'Help';
 			}
 		}else{
-				$command = 'Help.shell.php';
+				$command = APP_SHELL_DIR.DS.'Help.shell.php';
 				$name = 'Help';
 		}
-		
-		
+
+
 //		$rs = include_once APP_SHELL_DIR . DS .  $command;
         $rs = include_once  $command;
 // 		echo $command;var_dump($name);exit;

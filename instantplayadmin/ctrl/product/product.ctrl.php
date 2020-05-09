@@ -29,7 +29,14 @@ class ProductCtrl extends BaseCtrl{
 
         $product['status_desc'] = ProductModel::STATUS[$product['status']];
 
-        $product['pic_url'] = get_product_url($product['pic']);
+
+        if(arrKeyIssetAndExist($product,'pic')){
+            $pics = explode(",",$product['pic']);
+            foreach ($pics as $k=>$v) {
+                $product['pics'][] = get_product_url($v);
+            }
+
+        }
 
         $goodsList = GoodsModel::getListByPid($id);
         $product['goods_num'] = 0;
@@ -54,6 +61,7 @@ class ProductCtrl extends BaseCtrl{
                 $this->notice("标题重复:"._g('title'));
             }
 
+            $data['sort'] = _g('sort');
             $data['title']= _g("title");
             $data['desc'] = _g("desc");
             $data['brand'] = _g("brand");
@@ -67,19 +75,13 @@ class ProductCtrl extends BaseCtrl{
             $data['lowest_price'] = 0;
             $data['factory_uid'] = _g("factory_uid");
 
+            //两个参数，只会有一个是存在的,categoryAttrNull:为特殊参数，空属性
             $categoryAttrPara  = _g("categoryAttrPara");
-            if(!$categoryAttrPara){
+            $categoryAttrNull = _g("categoryAttrNull");
+
+            if(!$categoryAttrPara && !$categoryAttrNull){
                 $this->notice("categoryAttrPara is null ");
             }
-
-            $attribute = [];
-            foreach ($categoryAttrPara as $k=>$v) {
-                $tmp = explode("_",$v );
-                $attribute[$tmp[1]][] = $tmp[2];
-            }
-
-            $data['attribute'] = json_encode($attribute);
-
 
             $uploadService = new UploadService();
             $uploadRs = $uploadService->product('pic');
@@ -89,24 +91,14 @@ class ProductCtrl extends BaseCtrl{
 
             $data['pic'] = $uploadRs['msg'];
 
-            $addId = ProductModel::db()->add($data);
-
-            foreach ( $categoryAttrPara as $k=>$v) {
-                $exp = explode("_",$v);
-                $categoryAttr = $exp[1];
-                $categoryAttrPara = $exp[2];
-                $addData = array(
-                    'pid'=>$addId,
-                    'pc_id'=>$data['category_id'],
-                    'pca_id'=>$categoryAttr,
-                    'pcap_id'=>$categoryAttrPara,
-                );
-
-                ProductLinkCategoryAttrModel::db()->add($addData);
-            }
+            ProductModel::addOne($data,$categoryAttrNull,$categoryAttrPara);
 
             exit("成功");
         }
+
+        $factory = FactoryModel::db()->getById(FACTORY_UID_DEFAULT);
+        $this->assign("factory",$factory);
+
         $statusSelectOptionHtml = ProductModel::getStatusSelectOptionHtml();
         $this->assign("statusSelectOptionHtml",$statusSelectOptionHtml);
         $this->assign("categoryOptions", ProductCategoryModel::getSelectOptionHtml());
@@ -124,8 +116,17 @@ class ProductCtrl extends BaseCtrl{
             exit;
         }
         $list = CategoryModel::getProductRelationByCid($this->_request['categoryId']);
+        $paraMax = 0;
+        foreach ($list as $k=>$v) {
+            if(arrKeyIssetAndExist($v,'para')){
+                if(count($v['para']) > $paraMax){
+                    $paraMax = count($v['para']);
+                }
+            }
+        }
 
-        echo json_encode($list);
+        $arr = array('list'=>$list,'paraMax'=>$paraMax);
+        echo json_encode($arr);
         exit;
     }
 
@@ -205,6 +206,10 @@ class ProductCtrl extends BaseCtrl{
                     $statusBnt = "下架";
                 }
 
+//                $desc = $v['desc'];
+//                if(mb_strlen($desc) >=128){
+//                    $desc .= mb_substr($desc,0,128);
+//                }
 
                 $attributeArr = ProductModel::attrParaParserToName($v['attribute']);
                 $row = array(
@@ -212,14 +217,14 @@ class ProductCtrl extends BaseCtrl{
                     $v['id'],
                     $v['title'],
 //                    $v['subtitle'],
-                    $v['desc'],
+                    $v['goods_total'],
                     $v['brand'],
                     json_encode($attributeArr,JSON_UNESCAPED_UNICODE),
                     '<img height="30" width="30" src="'.get_product_url($v['pic']).'" />',
                     ProductCategoryModel::getNameById($v['category_id']),
 //                    $v['status'],
                     ProductModel::getStatusDescById( $v['status']),
-                    $v['lables'],
+//                    $v['lables'],
 //                    $v['is_search'],
                     $v['admin_id'],
                     $v['pv'],

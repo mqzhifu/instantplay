@@ -40,7 +40,6 @@ defined('DEBUG') or define('DEBUG',0);
 
 //默认30秒为超时,shell模式下 不限制
 defined('TIME_LIMIT') or define('TIME_LIMIT',30);
-set_time_limit(TIME_LIMIT);
 //时区
 defined('TIME_ZONE') or define('TIME_ZONE', 'Asia/shanghai' ) ;
 ini_set("date.timezone",TIME_ZONE);

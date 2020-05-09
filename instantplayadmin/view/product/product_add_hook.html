@@ -173,23 +173,33 @@
 
                 $("#replace_div").html("|checkbox|");
 
-                var resultObj=eval("("+result+")");
-                var checkBoxHtml = "";
+                var resultObjData=eval("("+result+")");
+                var resultObj = resultObjData['list'];
+                var paraMax = resultObjData['paraMax'];
+                var checkBoxHtml = '<table class="table table-hover table-bordered table-striped">';
                 for(var i= 0 ;i <resultObj.length;i++){
-                    checkBoxHtml += "<div  >" + resultObj[i]['name'] ;
-
-                    if(resultObj[i]['para']){
-                        for(var j= 0 ;j <resultObj[i]['para'].length;j++){
-                            checkBoxHtml += "<input type='checkbox' name='categoryAttrPara[]' value="+ categoryId+"_"+resultObj[i]['id'] + "_" + resultObj[i]['para'][j]['id'] + " />&nbsp;"+resultObj[i]['para'][j]['name'];
+                    var paraMaxTdNum = 1;
+                    checkBoxHtml += "<tr  ><td>" + resultObj[i]['name'] +"</td>" ;
+                    if(resultObj[i]['is_no'] == 1){
+                        checkBoxHtml += "<td><input name='categoryAttrNull' value='"+resultObj[i]['id']+"' type='checkbox' onclick='categoryAttrNullTrigger(this)' ></td>";
+                        paraMaxTdNum++;
+                    }else{
+                        if(resultObj[i]['para']){
+                            for(var j= 0 ;j <resultObj[i]['para'].length;j++){
+                                // checkBoxHtml += "<td><input type='checkbox' name='categoryAttrPara[]' value="+ categoryId+"_"+resultObj[i]['id'] + "_" + resultObj[i]['para'][j]['id'] + " />&nbsp;"+resultObj[i]['para'][j]['name'] +"</td>";
+                                checkBoxHtml += "<td><input type='checkbox' name='categoryAttrPara[]' value="+ resultObj[i]['id'] + "_" + resultObj[i]['para'][j]['id'] + " />&nbsp;"+resultObj[i]['para'][j]['name'] +"</td>";
+                                paraMaxTdNum++;
+                            }
                         }
                     }
 
-                    checkBoxHtml += "</div>";
-                }
-                // var replaceHtml = $("#categoryAttrPara").html();
-                // alert(replaceHtml);
-                // replaceHtml = replaceHtml.replace("|checkbox|",checkBoxHtml);
+                    for(var x=paraMaxTdNum;x<=paraMax;x++){
+                        checkBoxHtml += "<td></td>";
+                    }
 
+                    checkBoxHtml += "</tr>";
+                }
+                checkBoxHtml += "</table>";
                 $("#categoryAttrPara").css("display",'block');
                 $("#replace_div").html(checkBoxHtml);
             },
@@ -205,6 +215,20 @@
         FormValidation.init();
 
     });
+
+    function categoryAttrNullTrigger(obj){
+        var isChecked = $(obj).prop("checked");
+        if(isChecked){
+            $('input[name="categoryAttrPara[]"]').each(function(){
+                $(this).attr("checked",false);
+                $(this).attr("disabled",true);
+            });
+        }else{
+            $('input[name="categoryAttrPara[]"]').each(function(){
+                $(this).attr("disabled",false);
+            });
+        }
+    }
 
     // var categoryAttr = '<div class="form-group">'+
     //     // '<label class="control-label col-md-3">描述图片 <span class="required">'+

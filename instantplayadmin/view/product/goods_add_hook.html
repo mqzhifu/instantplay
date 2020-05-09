@@ -153,6 +153,7 @@
 
 <script>
 
+    {if ($product['category_attr_null'] == 2)}
     var productLinkCategoryAttr = eval ({$productLinkCategoryAttr});
     function initCategoryAttrPara(obj){
         var radioBoxHtml = "";
@@ -174,5 +175,5 @@
         $("#categoryAttrPara").html(radioBoxHtml);
     }
     initCategoryAttrPara(productLinkCategoryAttr);
-
+    {/if}
 </script>

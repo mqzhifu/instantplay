@@ -25,6 +25,7 @@
                         <div class="portlet-body form">
                             <!-- BEGIN FORM-->
                             <form action="?opt=1" method="post" id="form_sample_3" class="form-horizontal" enctype="multipart/form-data">
+                                <input type="hidden" value="{$factory['id']}" name="factory_uid" />
                                 <div class="form-body">
                                     <div class="alert alert-danger display-hide">
                                         <button class="close" data-close="alert"></button>
@@ -33,6 +34,14 @@
                                     <div class="alert alert-success display-hide">
                                         <button class="close" data-close="alert"></button>
                                         表单验证成功
+                                    </div>
+
+
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3">工厂</label>
+                                        <div class="col-md-4">
+                                            {$factory['title']}
+                                        </div>
                                     </div>
 
 

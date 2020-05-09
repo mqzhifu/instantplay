@@ -110,13 +110,17 @@ class CategoryAttrCtrl extends BaseCtrl{
             $data = CategoryAttrModel::db()->getAll($where .  $order. " limit $iDisplayStart,$end");
 
             foreach($data as $k=>$v){
+                $addBnt = "";
+                if($v['is_no'] == 2){
+                    $addBnt = '<a href="/product/no/categoryAttrPara/add/pca_id='.$v['id'].'" class="btn yellow btn-xs margin-bottom-5"><i class="fa fa-edit"></i> 添加参数 </a>';
+                }
                 $para = CategoryAttrModel::getProductRelationByAid($v['id']);
                 $row = array(
                     '<input type="checkbox" name="id[]" value="'.$v['id'].'">',
                     $v['id'],
                     $v['name'],
                     json_encode($para,JSON_UNESCAPED_UNICODE),
-                    '<a href="/product/no/categoryAttrPara/add/pca_id='.$v['id'].'" class="btn yellow btn-xs margin-bottom-5"><i class="fa fa-edit"></i> 添加参数 </a>',
+                    $addBnt,
                 );
 
                 $records["data"][] = $row;

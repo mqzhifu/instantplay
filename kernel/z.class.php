@@ -70,6 +70,9 @@ class Z{
         ConfigCenter::getEnv(APP_NAME,"domain_".LANG);
         ConfigCenter::getEnv(APP_NAME,"mysql_".LANG);
         ConfigCenter::getEnv(APP_NAME,"redis_".LANG);
+
+
+        ConfigCenter::get(APP_NAME,"constant");
 	}
 	//指令行方式运行RUN_ENV
 	static function runConsoleApp(){
@@ -98,6 +101,7 @@ class Z{
 	static function runWebApp(){
         self::checkWebConst();
 
+        set_time_limit(TIME_LIMIT);
 		//****************session***************************
 		if(SESS_TYPE == 'DB'){
 			if(ini_get('session.save_handler') != 'user')
@@ -108,6 +112,7 @@ class Z{
                 mkdir(APP_SESS_STORE_DIR, 0777, true);
             }
         }
+
         //****************session***************************
 		//控制器 参数名
 		define('PARA_CTRL', 'ctrl');
@@ -123,6 +128,7 @@ class Z{
 		new SessionLib();
 		//初始化路由
         $router = new RouterLib();
+
         //获取redis 实例，并缓存到容器里.主要是给kernel 网关 过滤数据
         $kernelRedisObj = new RedisPHPLib($GLOBALS[KERNEL_NAME]['redis']['instantplay']);
         ContainerLib::set("kernelRedisObj",$kernelRedisObj);

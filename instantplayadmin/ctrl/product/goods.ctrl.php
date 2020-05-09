@@ -34,6 +34,10 @@ class GoodsCtrl extends BaseCtrl{
             exit("pid is not in db");
         }
 
+//        $productAttribute= json_decode($product['attribute'],true);
+//        foreach ($productAttribute as $k=>$v) {
+//            $productAttributeId = $k;
+//        }
         if(_g("opt")){
 
             $data = array(
@@ -49,25 +53,13 @@ class GoodsCtrl extends BaseCtrl{
                 'a_time'=>time(),
             );
 
-            $attrParaGroup = ProductLinkCategoryAttrModel::getAttrParaGroup($pid);
+            $attrParaGroup = ProductLinkCategoryAttrModel::getAttrParaGroup($product['id']);
             $attrPara = [];
             foreach ($attrParaGroup as $k=>$v) {
                 $attrPara[$k] = _g("categoryAttrPara_".$k);
             }
 
-            $product_attr_ids = "";
-            foreach ($attrPara as $k=>$v) {
-                $product_attr_ids .= $k . "-" .$v . ",";
-            }
-
-            $product_attr_ids = substr($product_attr_ids,0,strlen($product_attr_ids)-1);
-            $data['product_attr_ids'] = $product_attr_ids;
-
-            $newId = GoodsModel::db()->add($data);
-
-
-            ProductModel::upLowestPriceByGoods($pid);
-
+            $newId = GoodsModel::addOne($data,$product,$attrPara);
             var_dump($newId);exit;
 
         }
@@ -76,6 +68,9 @@ class GoodsCtrl extends BaseCtrl{
         $this->assign("payType",OrderModel::PAY_TYPE_DESC);
 
         $productLinkCategoryAttr = ProductLinkCategoryAttrModel::getRelationFormatHtml($pid);
+//        if(!$productLinkCategoryAttr){
+//            $attr = ProductCategoryAttrModel::db()->getById($productAttributeId);
+//        }
         $this->assign("productLinkCategoryAttr",json_encode($productLinkCategoryAttr));
 
 

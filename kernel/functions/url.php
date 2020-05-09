@@ -3,6 +3,10 @@ function get_product_url( $tmpPath , $protocol = 'http'){
     if(!$tmpPath){
         return false;
     }
+    if(substr($tmpPath,0,4) == "http"){
+        return $tmpPath;
+    }
+
     $staticUrl = get_static_url($protocol);
     $url =  $staticUrl . DS . "upload" . DS .APP_NAME . DS . get_upload_cdn_evn() .  DS."product".DS . $tmpPath;
     return $url;

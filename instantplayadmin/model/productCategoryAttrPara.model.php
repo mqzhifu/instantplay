@@ -18,4 +18,9 @@ class ProductCategoryAttrParaModel {
 		return call_user_func_array(array(self::db(),$func), $arguments);
 	}
 
+    static function getRowByNameByCategoryAttrId($name,$pacId){
+        $categoryAttrDb = ProductCategoryAttrParaModel::db()->getRow(" name = '$name' and pca_id = {$pacId}");
+        return $categoryAttrDb;
+    }
+
 }

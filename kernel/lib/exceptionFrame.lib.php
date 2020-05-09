@@ -77,7 +77,6 @@ class ExceptionFrameLib extends Exception {
     }
     //notice 之类的错误
 	static public function appError($errno, $errstr, $errfile, $errline) {
-        var_dump(33);
         $type = getErrInfo($errno);
         $str  = "[type]: $type"."[msg]: $errstr "."[file]: $errfile "."[line]: $errline";
 

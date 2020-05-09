@@ -12,6 +12,36 @@ class ProductModel {
         self::STATUS_OFF => "下架",
     ];
 
+    static  $_field = array(
+            'title'=>'',
+            'subtitle'=>'',
+            'desc'=>'',
+            'brand'=>'',
+            'attribute'=>'',
+            'notice'=>'',
+            'category_id'=>0,
+            'status'=>1,
+            'a_time'=>0,
+            'lables'=>'',
+            'admin_id'=>0,
+            'pv'=>0,
+            'uv'=>0,
+            'recommend'=>2,
+            'pic'=>'',
+            'lowest_price'=>0,
+            'factory_uid'=>1,
+            'desc_attr'=>'',
+            'spider_source_type'=>1,
+            'spider_source_pid'=>"",
+            'category_attr_null'=>2,
+    );
+
+    const SPIDER_TYPE_1688 = 1;
+
+    const CATE_ATTR_NULL_TRUE = 1;
+    const CATE_ATTR_NULL_FALSE = 2;
+
+
 	static function db(){
 		if(self::$_db)
 			return self::$_db;
@@ -26,6 +56,22 @@ class ProductModel {
 
 	static function getStatusDescById($id){
         return self::STATUS[$id];
+    }
+
+    static function upGoodsTotal($pid){
+        $total = GoodsModel::db()->getCount(" pid = $pid");
+        if(!$total){
+            $rs = self::db()->upById($pid,array('goods_total'=>0));
+        }else{
+            $rs = self::db()->upById($pid,array('goods_total'=>$total));
+        }
+
+        return $rs;
+    }
+
+    static function upTotal($pid){
+        self::upLowestPriceByGoods($pid);
+        self::upGoodsTotal($pid);
     }
 
     static function upLowestPriceByGoods($pid){
@@ -61,6 +107,47 @@ class ProductModel {
             $html .= "<option value='{$k}'>{$v}</option>";
         }
         return $html;
+    }
+
+    static function getField(){
+	    $rs =  self::db()->getFieldsByTable();
+	    return $rs;
+    }
+
+    static function addOne($data,$categoryAttrNull = 0,$categoryAttrPara = []){
+        $attribute = [];
+        if($categoryAttrNull){
+            $attribute[$categoryAttrNull] = [];
+            $data['category_attr_null'] = 1;
+        }else{
+            foreach ($categoryAttrPara as $k=>$v) {
+                $tmp = explode("_",$v );
+                $attribute[$tmp[0]][] = $tmp[1];
+            }
+            $data['category_attr_null'] = 2;
+        }
+
+        $data['attribute'] = json_encode($attribute);
+
+        $addId = ProductModel::db()->add($data);
+
+        if($categoryAttrPara){
+            foreach ( $categoryAttrPara as $k=>$v) {
+                $exp = explode("_",$v);
+                $categoryAttr = $exp[0];
+                $categoryAttrPara = $exp[1];
+                $addData = array(
+                    'pid'=>$addId,
+                    'pc_id'=>$data['category_id'],
+                    'pca_id'=>$categoryAttr,
+                    'pcap_id'=>$categoryAttrPara,
+                );
+
+                ProductLinkCategoryAttrModel::db()->add($addData);
+            }
+        }
+
+        return $addId;
     }
 
 }

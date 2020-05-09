@@ -25,12 +25,12 @@ class RouterLib{
         if($checkCtrlAc['code'] != 200){
             return out_pc($checkCtrlAc['code'],KERNEL_NAME);
         }
+
         //检查IP是否在黑名单中
         $checkIp = FilterLib::checkIPRequest();
         if(!$checkIp){
             exit("IP限制");
         }
-
         $this->initPara();
 
         $this->clientHeader = get_client_info();
@@ -95,13 +95,13 @@ class RouterLib{
         }
 
         $ctrl_file = ($dir . $ctrl .C_EXT);
+
 		if( !file_exists($ctrl_file))
             return out_pc(9202,'ctrl文件不存在:'.$ctrl_file,KERNEL_NAME);
 
         if(defined("IS_ADMIN") && IS_ADMIN){
             include_once $ctrl_file;
         }
-
 		if ( !class_exists($ctrl.C_CLASS))
             return out_pc(9203,'ctrl类不存在:'.$ctrl.C_CLASS,KERNEL_NAME);
 

@@ -629,10 +629,32 @@ class DbLib{
 
         return $rs;
     }
+
+    public function getFieldsByTable(){
+        $fields =  $this->getFields("",array($this->_table));
+        $fields = $fields[$this->_table];
+        $typeArr = array("int",'bigint','tinyint','smallint','mediumint',);
+        $rs = [];
+        foreach ($fields as $k=>$v) {
+            $defaultValue = "";
+            foreach ($typeArr as $k2=>$v2) {
+                if(strpos($v['COLUMN_TYPE'],$v2) !== false){
+                    $defaultValue = 0;
+                    break;
+                }
+            }
+            $rs[$v['COLUMN_NAME']] = $defaultValue;
+        }
+
+        return $rs;
+    }
+
     //取得数据库字段信息
     public function getFields($dbName = '',$table='') {
-        if(!$dbName)
-            $dbName = $this->config['db_name'];
+        if(!$dbName){
+            $config =  $GLOBALS[APP_NAME]['db_config'][$this->_configMapKey];
+            $dbName = $config['master']['db_name'];
+        }
 
         if(!$table)
             $table = $this->showTablesList();
