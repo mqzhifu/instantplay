@@ -55,6 +55,9 @@ class OrderModel {
         self::WITHDRAW_MONEY_STATUS_OK =>"已提现",
     ];
 
+    const WITHDRAW_MONEY_AGENT_WAIT = 1;
+    const WITHDRAW_MONEY_FACTORY_WAIT = 1;
+
 	static function db(){
 		if(self::$_db)
 			return self::$_db;

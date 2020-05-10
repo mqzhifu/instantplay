@@ -67,7 +67,8 @@ class parserTBDetail{
         foreach ($boxImgArr as $k=>$v) {
             $boxImg .= $v . ",";
         }
-
+        $boxImg = substr($boxImg,0,strlen($boxImg)-1);
+        $boxImg = str_replace(".60x60","",$boxImg);
         $mysqlData['box_img'] = $boxImg;
 
 
@@ -235,7 +236,12 @@ class parserTBDetail{
         $table = $match[2][0];
         preg_match_all( $ge,$table,$match);
         $attr = $match[2];
-        $mysqlData['attr'] = json_encode($attr);
+        $attrArr = null;
+        for ($i=0 ; $i < count($attr) -1 ; $i++) {
+            $attrArr[$attr[$i]] = $attr[++$i];
+        }
+
+        $mysqlData['attr'] = json_encode($attrArr);
 
 //        <meta name="description" content="阿里巴巴1号猫果蔬清洗剂1.08KG 家用果蔬清洗剂清洁液一件代发oem贴牌，洗洁精，这里云集了众多的供应商，采购商，制造商。这是1号猫果蔬清洗剂1.08KG 家用果蔬清洗剂清洁液一件代发oem贴牌的详细页面。品牌:1号猫，是否进口:否，品牌类型:国货品牌，产地:河南郑州，适用范围:果蔬专用，净含量:1080ml，货号:05，是否促销装:否，是否跨境货源:否，货源类别:现货，商品条形码:6970477648866。我们还为您精选了洗洁精公司黄页、行业资讯、价格行情、展会信息等，欲了解更多详细信息,请点击访问!"/>
 

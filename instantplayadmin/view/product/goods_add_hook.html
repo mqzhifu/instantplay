@@ -156,18 +156,22 @@
     {if ($product['category_attr_null'] == 2)}
     var productLinkCategoryAttr = eval ({$productLinkCategoryAttr});
     function initCategoryAttrPara(obj){
-        var radioBoxHtml = "";
+        // var radioBoxHtml = "";
+        var radioBoxHtml = '<table class="table table-hover table-bordered table-striped">';
         for(var i= 0 ;i <obj.length;i++){
-            radioBoxHtml += "<div  >" + obj[i]['name'] ;
+            radioBoxHtml += "<tr  ><td>" + obj[i]['name'] +"</td>" ;
+            // radioBoxHtml += "<div  >" + obj[i]['name'] ;
 
             if(obj[i]['para']){
                 for(var j= 0 ;j <obj[i]['para'].length;j++){
-                    radioBoxHtml += "<input type='radio' name='categoryAttrPara_"+obj[i]['id']+"' value=" + obj[i]['para'][j]['id'] + " />&nbsp;"+obj[i]['para'][j]['name'];
+                    radioBoxHtml += "<td><input type='radio' name='categoryAttrPara_"+obj[i]['id']+"' value=" + obj[i]['para'][j]['id'] + " />&nbsp;"+obj[i]['para'][j]['name'] + "</td>";
                 }
             }
 
-            radioBoxHtml += "</div>";
+            radioBoxHtml += "</tr>";
+            // radioBoxHtml += "</div>";
         }
+        radioBoxHtml += "</table>";
         // var replaceHtml = $("#categoryAttrPara").html();
         // alert(replaceHtml);
         // replaceHtml = replaceHtml.replace("|checkbox|",checkBoxHtml);

@@ -21,21 +21,49 @@ class OrderCtrl extends BaseCtrl{
             $goods_id =_g("goods_id");
             $agent_uid = _g("agent_uid");
             $num = _g("num");
+            $uid = _g("uid");
+
+            if(!$goods_id)
+                $this->notice("goods_id null");
+
+            if(!$agent_uid)
+                $this->notice("agent_uid null");
+
+            if(!$num)
+                $this->notice("num null");
+
+            if(!$uid)
+                $this->notice("uid null");
+
             $goods = GoodsModel::db()->getById($goods_id);
+            $agent = AgentModel::db()->getById($agent_uid);
+            $user = UserModel::db()->getById($uid);
+
+            if(!$goods)
+                $this->notice("goods_id not in db");
+
+            if(!$agent)
+                $this->notice("agent_uid not in db");
+
+            if(!$user)
+                $this->notice("uid not in db");
+
             $agentAddr = AgentModel::getAddrStrById($agent_uid);
             $data = array(
                 'no'=>OrderModel::getNo(),
-                'uid'=>_g("uid"),
+                'uid'=>$uid,
+                'pid'=>$goods['pid'],
                 'goods_id'=>$goods_id,
-                'pay_type'=>$goods['pay_type'],
                 'agent_uid'=>$agent_uid,
                 'a_time'=> time(),
-                'status'=>1,
+                'status'=>OrderModel::STATUS_WAIT_PAY,
                 'pay_type'=>0,
+                'pay_time'=>time(),
                 'express_no'=>"",
                 'address_agent'=>$agentAddr,
-                'agent_withdraw_money_status'=> 1,
-                'factory_withdraw_money_status'=>1,
+                'agent_withdraw_money_status'=> OrderModel::WITHDRAW_MONEY_AGENT_WAIT,
+                'factory_withdraw_money_status'=>OrderModel::WITHDRAW_MONEY_FACTORY_WAIT,
+                'num'=>$num,
             );
             $price = $goods['sale_price'] * $num;
             $data['price'] = $price;
@@ -45,7 +73,10 @@ class OrderCtrl extends BaseCtrl{
             var_dump($newId);exit;
         }
 
+        $this->addJs('/assets/global/plugins/jquery-validation/js/jquery.validate.min.js');
+        $this->addJs('/assets/global/plugins/jquery-validation/js/additional-methods.min.js');
 
+        $this->addHookJS("/finance/order_add_hook.html");
         $this->display("/finance/order_add.html");
     }
 
@@ -134,6 +165,7 @@ class OrderCtrl extends BaseCtrl{
                     $v['address_agent'],
                     get_default_date($v['a_time']),
                     get_default_date($v['pay_time']),
+                    $v['num'],
                     '<a href="/finance/no/withdraw/add/role='.AgentModel::ROLE_LEVEL_ONE.'&oids='.$v['id'].'&uid=1" class="btn red btn-xs margin-bottom-5" data-id="'.$v['id'].'"><i class="fa fa-file-o"></i> 一级代理提现 </a>'.
                     '<a href="/finance/no/withdraw/add/role='.AgentModel::ROLE_LEVEL_TWO.'&oids='.$v['id'].'&uid=2" class="btn blue btn-xs margin-bottom-5" data-id="'.$v['id'].'"><i class="fa fa-file-o"></i> 二级代理提现 </a>',
                     '<a href="/finance/no/withdraw/add/role='.AgentModel::ROLE_FACTORY.'&oids='.$v['id'].'&fid=3" class="btn blue btn-xs margin-bottom-5" data-id="'.$v['id'].'"><i class="fa fa-file-o"></i> 工厂提现 </a>',

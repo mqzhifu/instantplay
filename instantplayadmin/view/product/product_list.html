@@ -72,6 +72,10 @@
                                             商品总数
                                         </th>
 
+                                        <th width="5%">
+                                            最低价
+                                        </th>
+
 
                                         <th width="5%">
                                             品牌
@@ -79,7 +83,7 @@
 
 
                                         <th width="5%">
-                                            属性
+                                            属性个数
                                         </th>
 
                                         <th width="5%">
@@ -106,6 +110,10 @@
                                             管理员ID
                                         </th>
 
+                                        <th width="5%">
+                                            厂商ID
+                                        </th>
+
                                         <th width="3%">
                                             pv
                                         </th>
@@ -130,17 +138,20 @@
                                         <td>
                                         </td>
                                         <td>
-
+                                            <input type="text" class="form-control form-filter input-sm" name="id" >
                                         </td>
                                         <td>
-                                            <input type="text" class="form-control form-filter input-sm" name="uid" >
+                                            <input type="text" class="form-control form-filter input-sm" name="title" >
                                         </td>
                                         <!--<td>-->
                                             <!--<input type="text" class="form-control form-filter input-sm" name="ctrlName" >-->
                                         <!--</td>-->
                                         <td>
-                                            <input type="text" class="form-control form-filter input-sm" name="acName" >
+                                            <input type="text" class="form-control form-filter input-sm" name="goods_total_from" >
+                                            <input type="text" class="form-control form-filter input-sm" name="goods_total_to" >
                                         </td>
+
+                                        <td></td>
 
                                         <td>
                                         </td>
@@ -165,9 +176,16 @@
 
                                         <td></td>
                                         <!--<td></td>-->
-                                        <!--<td></td>-->
                                         <td></td>
-                                        <td></td>
+
+                                        <td>
+                                            <input type="text" class="form-control form-filter input-sm" name="pv_from" >
+                                            <input type="text" class="form-control form-filter input-sm" name="pv_to" >
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control form-filter input-sm" name="uv_from" >
+                                            <input type="text" class="form-control form-filter input-sm" name="uv_to" >
+                                        </td>
                                         <td></td>
                                         <td>
                                             <div class="input-group date form_datetime margin-bottom-5">
@@ -252,7 +270,7 @@
                         [10, 20, 50, 100, 150 , 999999],
                         [10, 20, 50, 100, 150 , '所有(会很慢)'] // change per page values here
                     ],
-                    "pageLength": 10, // default record count per page
+                    "pageLength": 20, // default record count per page
                     "ajax": {
                         "url": "/product/no/product/getlist/" // ajax sourcedelBat
                     },

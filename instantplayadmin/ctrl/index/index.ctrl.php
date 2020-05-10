@@ -4,6 +4,7 @@ class indexCtrl extends BaseCtrl{
     function index(){
         $this->setTitle('test');
 
+        $this->addHookJS("/index/index_hook.html");
         $this->display("/index/index.html");
 
     }

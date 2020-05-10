@@ -29,13 +29,16 @@ class ProductCtrl extends BaseCtrl{
 
         $product['status_desc'] = ProductModel::STATUS[$product['status']];
 
+        $product['desc_attr_arr'] = "";
+        if(arrKeyIssetAndExist($product,'desc_attr')){
+            $product['desc_attr_arr'] = json_decode($product['desc_attr'],true);
+        }
 
         if(arrKeyIssetAndExist($product,'pic')){
             $pics = explode(",",$product['pic']);
             foreach ($pics as $k=>$v) {
                 $product['pics'][] = get_product_url($v);
             }
-
         }
 
         $goodsList = GoodsModel::getListByPid($id);
@@ -79,9 +82,15 @@ class ProductCtrl extends BaseCtrl{
             $categoryAttrPara  = _g("categoryAttrPara");
             $categoryAttrNull = _g("categoryAttrNull");
 
+            if(!$data['title'])
+                $this->notice("title is null ");
+
             if(!$categoryAttrPara && !$categoryAttrNull){
                 $this->notice("categoryAttrPara is null ");
             }
+
+
+
 
             $uploadService = new UploadService();
             $uploadRs = $uploadService->product('pic');
@@ -163,7 +172,6 @@ class ProductCtrl extends BaseCtrl{
         $sEcho = intval($_REQUEST['draw']);
 
         $where = $this->getDataListTableWhere();
-
         $cnt = ProductModel::db()->getCount($where);
 
         $iTotalRecords = $cnt;//DB中总记录数
@@ -194,11 +202,11 @@ class ProductCtrl extends BaseCtrl{
 
             $iDisplayStart = intval($_REQUEST['start']);//limit 起始
 
-
             $end = $iDisplayStart + $iDisplayLength;
             $end = $end > $iTotalRecords ? $iTotalRecords : $end;
 
-            $data = ProductModel::db()->getAll($where . $order);
+            $limit = " limit $iDisplayStart,$end";
+            $data = ProductModel::db()->getAll($where . $order . $limit);
 
             foreach($data as $k=>$v){
                 $statusBnt = "上架";
@@ -211,6 +219,12 @@ class ProductCtrl extends BaseCtrl{
 //                    $desc .= mb_substr($desc,0,128);
 //                }
 
+                $pic = "";
+                if(arrKeyIssetAndExist($v,'pic')){
+                    $pics = explode(",",$v['pic']);
+                    $pic = get_product_url($pics[0]);
+                }
+
                 $attributeArr = ProductModel::attrParaParserToName($v['attribute']);
                 $row = array(
                     '<input type="checkbox" name="id[]" value="'.$v['id'].'">',
@@ -218,15 +232,18 @@ class ProductCtrl extends BaseCtrl{
                     $v['title'],
 //                    $v['subtitle'],
                     $v['goods_total'],
+                    $v['lowest_price'],
                     $v['brand'],
-                    json_encode($attributeArr,JSON_UNESCAPED_UNICODE),
-                    '<img height="30" width="30" src="'.get_product_url($v['pic']).'" />',
+//                    json_encode($attributeArr,JSON_UNESCAPED_UNICODE),
+                    count($attributeArr),
+                    '<img height="30" width="30" src="'.$pic.'" />',
                     ProductCategoryModel::getNameById($v['category_id']),
 //                    $v['status'],
                     ProductModel::getStatusDescById( $v['status']),
 //                    $v['lables'],
 //                    $v['is_search'],
                     $v['admin_id'],
+                    $v['factory_uid'],
                     $v['pv'],
                     $v['uv'],
                     $v['recommend'],
@@ -252,54 +269,39 @@ class ProductCtrl extends BaseCtrl{
 
     function getDataListTableWhere(){
         $where = 1;
-        $openid = _g("openid");
-        $sex = _g("sex");
-        $status = _g("status");
-
-        $nickname = _g('name');
-//        $nickname_byoid = _g('nickname_byoid');
-//        $content = _g('content');
-//        $is_online = _g('is_online');
-//        $uname = _g('uname');
-
-        $from = _g("from");
-        $to = _g("to");
-
-//        $trigger_time_from = _g("trigger_time_from");
-//        $trigger_time_to = _g("trigger_time_to");
-
-
-//        $uptime_from = _g("uptime_from");
-//        $uptime_to = _g("uptime_to");
-
 
         $id = _g("id");
+        $title = _g("title");
+        $category_id = _g('category_id');
+        $status = _g('status');
+        $recommend = _g('recommend');
+
+        $from = _g("atime_from");
+        $to = _g("atime_to");
+
+        $pv_from = _g('pv_from');
+        $pv_to = _g('pv_to');
+
+        $uv_from = _g('uv_from');
+        $uv_to = _g('uv_to');
+
+        $goods_total_from = _g('goods_total_from');
+        $goods_total_to = _g('goods_total_to');
+
         if($id)
             $where .=" and id = '$id' ";
 
-        if($openid)
-            $where .=" and openid = '$openid' ";
+        if($title)
+            $where .=" and title like '%$title%' ";
 
-        if($sex)
-            $where .=" and sex = '$sex' ";
+        if($category_id)
+            $where .=" and category_id =$category_id ";
 
         if($status)
             $where .=" and status = '$status' ";
 
-        if($nickname)
-            $where .=" and nickname = '$nickname' ";
-
-//        if($nickname_byoid){
-//            $user = wxUserModel::db()->getRow(" nickname='$nickname_byoid'");
-//            if(!$user){
-//                $where .= " and 0 ";
-//            }else{
-//                $where .=  " and openid = '{$user['openid']}' ";
-//            }
-//        }
-
-//        if($content)
-//            $where .= " and content like '%$content%'";
+        if($recommend)
+            $where .=" and recommend =$recommend ";
 
         if($from)
             $where .=" and a_time >=  ".strtotime($from);
@@ -307,26 +309,26 @@ class ProductCtrl extends BaseCtrl{
         if($to)
             $where .=" and a_time <= ".strtotime($to);
 
-//        if($trigger_time_from)
-//            $where .=" and trigger_time_from >=  ".strtotime($trigger_time_from);
-//
-//        if($trigger_time_to)
-//            $where .=" and trigger_time_to <= ".strtotime($trigger_time_to);
-//
-//        if($uptime_from)
-//            $where .=" and up_time >=  ".strtotime($uptime_from);
-//
-//        if($uptime_to)
-//            $where .=" and up_time <= ".strtotime($uptime_to);
+        if($uv_from)
+            $where .=" and uv >=  $uv_from";
+
+        if($uv_to)
+            $where .=" and uv <=  $uv_from";
+
+        if($pv_from)
+            $where .=" and pv >=  $pv_from";
+
+        if($pv_to)
+            $where .=" and pv <=  $pv_to";
 
 
+        if($goods_total_from)
+            $where .=" and goods_total >=  $goods_total_from";
 
-//        if($is_online)
-//            $where .=" and is_online = '$is_online' ";
+        if($goods_total_to)
+            $where .=" and goods_total <=  $goods_total_from";
 
 
-//        if($uname)
-//            $where .=" and uname = '$uname' ";
 
         return $where;
     }

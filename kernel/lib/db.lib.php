@@ -539,7 +539,7 @@ class DbLib{
     }
 
     function getOneFieldValueById($id,$fieldName,$defaultValue = '---'){
-        $row = $this->getById($id,null,null,$fieldName);
+        $row = $this->getById($id,null,$this->_table,$fieldName);
         if(!$row){
             return $defaultValue;
         }

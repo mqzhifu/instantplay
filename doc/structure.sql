@@ -7,7 +7,7 @@
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
- SET NAMES utf8mb4 ;
+ SET NAMES utf8 ;
 /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
 /*!40103 SET TIME_ZONE='+00:00' */;
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
@@ -64,25 +64,25 @@ DROP TABLE IF EXISTS `agent`;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `agent` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `title` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '店面名称',
-  `id_card_num` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '身份证码',
-  `real_name` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '真实姓名',
-  `status` tinyint(1) DEFAULT NULL COMMENT '1未审批2已通过3拒绝',
-  `type` tinyint(1) DEFAULT NULL COMMENT '1一级代理2二级代理',
-  `address` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '详细地址',
-  `province_id` int(11) DEFAULT NULL COMMENT '省',
-  `city_id` int(11) DEFAULT NULL COMMENT '市',
-  `county_id` int(11) DEFAULT NULL COMMENT '县',
-  `towns_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '乡镇',
-  `villages` varchar(255) DEFAULT NULL COMMENT '村',
-  `sex` tinyint(1) DEFAULT NULL COMMENT '1男2女',
-  `pic` varchar(255) DEFAULT NULL COMMENT '店面照片',
-  `mobile` varchar(15) DEFAULT NULL COMMENT '手机号',
-  `u_time` int(11) DEFAULT NULL,
-  `a_time` int(11) DEFAULT NULL,
-  `audit_admin_id` int(11) DEFAULT NULL COMMENT '审核人',
-  `audit_time` int(11) DEFAULT NULL COMMENT '审核通过时间',
-  `fee_percent` int(11) DEFAULT NULL COMMENT '佣金比例',
+  `title` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '店面名称',
+  `id_card_num` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '身份证码',
+  `real_name` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '真实姓名',
+  `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '1未审批2已通过3拒绝',
+  `type` tinyint(1) NOT NULL DEFAULT '0' COMMENT '1一级代理2二级代理',
+  `address` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '详细地址',
+  `province_id` int(11) NOT NULL DEFAULT '0' COMMENT '省',
+  `city_id` int(11) NOT NULL DEFAULT '0' COMMENT '市',
+  `county_id` int(11) NOT NULL DEFAULT '0' COMMENT '县',
+  `towns_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '0' COMMENT '乡镇',
+  `villages` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '村',
+  `sex` tinyint(1) NOT NULL DEFAULT '0' COMMENT '1男2女',
+  `pic` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '店面照片',
+  `mobile` varchar(15) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '手机号',
+  `u_time` int(11) NOT NULL DEFAULT '0',
+  `a_time` int(11) NOT NULL DEFAULT '0',
+  `audit_admin_id` int(11) NOT NULL DEFAULT '0' COMMENT '审核人',
+  `audit_time` int(11) NOT NULL DEFAULT '0' COMMENT '审核通过时间',
+  `fee_percent` int(11) NOT NULL DEFAULT '0' COMMENT '佣金比例',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='代理人员';
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -232,27 +232,28 @@ DROP TABLE IF EXISTS `goods`;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `goods` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `pid` int(11) DEFAULT NULL COMMENT '产品ID',
+  `pid` int(11) NOT NULL COMMENT '产品ID',
   `type` tinyint(4) NOT NULL COMMENT '类型,预留',
   `status` tinyint(4) NOT NULL COMMENT '状态1已上架2已下架',
-  `a_time` int(11) NOT NULL COMMENT '添加时间',
-  `u_time` int(11) NOT NULL COMMENT '最后更新时间',
+  `a_time` int(11) NOT NULL DEFAULT '0' COMMENT '添加时间',
+  `u_time` int(11) NOT NULL DEFAULT '0' COMMENT '最后更新时间',
   `product_attr_ids` varchar(255) NOT NULL COMMENT 'SKU属性',
   `third_id` varchar(100) NOT NULL COMMENT '3方ID,可获取详细信息',
-  `stock` int(11) NOT NULL COMMENT '库存数，-1忽略',
-  `is_del` tinyint(4) NOT NULL COMMENT '1未删除2已删除',
-  `sale_price` int(11) NOT NULL COMMENT '销售价格-单位-分',
-  `original_price` int(11) DEFAULT NULL COMMENT '原价-分',
-  `use_max_point` tinyint(4) NOT NULL COMMENT '可使用最多积分0关闭',
+  `stock` int(11) NOT NULL DEFAULT '0' COMMENT '库存数，-1忽略',
+  `is_del` tinyint(4) NOT NULL DEFAULT '1' COMMENT '1未删除2已删除',
+  `sale_price` int(11) NOT NULL DEFAULT '0' COMMENT '销售价格-单位-分',
+  `original_price` int(11) NOT NULL DEFAULT '0' COMMENT '原价-分',
+  `use_max_point` tinyint(4) NOT NULL DEFAULT '0' COMMENT '可使用最多积分0关闭',
   `pay_type` varchar(50) NOT NULL COMMENT '支付类型1微信2支付宝',
-  `use_max_coin` int(11) DEFAULT NULL COMMENT '可使用最多金币数0关闭',
-  `use_coupon_types` tinyint(4) DEFAULT NULL COMMENT '可以使用优惠卷种类0关闭',
-  `order_price_zero` tinyint(4) DEFAULT NULL COMMENT '0忽略1可以2不可以',
-  `admin_id` int(11) DEFAULT NULL COMMENT '添加者ID',
+  `use_max_coin` int(11) DEFAULT '0' COMMENT '可使用最多金币数0关闭',
+  `use_coupon_types` tinyint(4) DEFAULT '0' COMMENT '可以使用优惠卷种类0关闭',
+  `order_price_zero` tinyint(4) DEFAULT '0' COMMENT '0忽略1可以2不可以',
+  `admin_id` int(11) DEFAULT '0' COMMENT '添加者ID',
   `source` tinyint(1) DEFAULT NULL COMMENT '来源',
   `is_search` tinyint(4) DEFAULT NULL COMMENT '支持搜索引擎收录',
-  `sort` int(11) DEFAULT NULL COMMENT '排序',
-  `haulage` int(11) DEFAULT NULL COMMENT '运费',
+  `sort` int(11) NOT NULL DEFAULT '0' COMMENT '排序',
+  `haulage` int(11) NOT NULL DEFAULT '0' COMMENT '运费',
+  `order_total` int(11) NOT NULL DEFAULT '0' COMMENT '用户购买订单数',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='商品';
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -374,22 +375,22 @@ DROP TABLE IF EXISTS `orders`;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `orders` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `no` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '编号',
-  `pid` int(11) DEFAULT NULL COMMENT '归属产品ID',
-  `goods_id` int(11) DEFAULT NULL COMMENT '商品ID',
-  `price` int(11) DEFAULT NULL COMMENT '单位:分',
-  `pay_type` tinyint(2) DEFAULT NULL,
-  `status` tinyint(1) DEFAULT NULL COMMENT '1未支付2已支付3已发货4已签收5已退款',
-  `uid` int(1) DEFAULT NULL COMMENT '用户ID',
-  `address_id` int(11) DEFAULT NULL COMMENT '用户-收货地址ID',
-  `express_no` varchar(100) DEFAULT NULL COMMENT '快递单号',
-  `agent_uid` int(11) DEFAULT NULL COMMENT '代理ID',
-  `address_agent` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '代理-收货地址',
-  `a_time` int(11) DEFAULT NULL COMMENT '添加时间',
-  `pay_time` int(11) DEFAULT NULL COMMENT '支付时间',
-  `agent_withdraw_money_status` tinyint(1) DEFAULT NULL COMMENT '1未操作2已提取',
-  `factory_withdraw_money_status` tinyint(1) DEFAULT NULL COMMENT '1未操作2已提取',
-  `num` int(11) DEFAULT NULL COMMENT '数量',
+  `no` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '编号',
+  `pid` int(11) NOT NULL DEFAULT '0' COMMENT '归属产品ID',
+  `goods_id` int(11) NOT NULL DEFAULT '0' COMMENT '商品ID',
+  `price` int(11) NOT NULL DEFAULT '0' COMMENT '单位:分',
+  `pay_type` tinyint(2) NOT NULL DEFAULT '0',
+  `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '1未支付2已支付3已发货4已签收5已退款',
+  `uid` int(1) NOT NULL DEFAULT '0' COMMENT '用户ID',
+  `address_id` int(11) NOT NULL DEFAULT '0' COMMENT '用户-收货地址ID',
+  `express_no` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '快递单号',
+  `agent_uid` int(11) NOT NULL DEFAULT '0' COMMENT '代理ID',
+  `address_agent` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '代理-收货地址',
+  `a_time` int(11) NOT NULL DEFAULT '0' COMMENT '添加时间',
+  `pay_time` int(11) NOT NULL DEFAULT '0' COMMENT '支付时间',
+  `agent_withdraw_money_status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '1未操作2已提取',
+  `factory_withdraw_money_status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '1未操作2已提取',
+  `num` int(11) NOT NULL DEFAULT '0' COMMENT '数量',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='订单';
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -418,7 +419,7 @@ CREATE TABLE `product` (
   `pv` int(11) NOT NULL DEFAULT '0',
   `uv` int(11) NOT NULL DEFAULT '0',
   `recommend` tinyint(1) NOT NULL DEFAULT '2' COMMENT '1是2否,推荐',
-  `pic` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '产品描述图',
+  `pic` text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '产品描述图',
   `lowest_price` int(11) NOT NULL DEFAULT '0' COMMENT '取商品中最低的价格，单位:分',
   `factory_uid` int(11) NOT NULL DEFAULT '0' COMMENT '工厂Id',
   `desc_attr` text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '产品描述的详细参数',
@@ -426,7 +427,7 @@ CREATE TABLE `product` (
   `spider_source_pid` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '抓取来源-产品ID',
   `sort` int(11) NOT NULL DEFAULT '1' COMMENT '排序',
   `category_attr_null` tinyint(4) NOT NULL DEFAULT '2' COMMENT '1是2否',
-  `goods_total` int(11) DEFAULT NULL COMMENT '包含总商品数',
+  `goods_total` int(11) NOT NULL DEFAULT '0' COMMENT '包含总商品数',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='产品';
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -613,20 +614,20 @@ DROP TABLE IF EXISTS `user`;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `user` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `uname` varchar(50) DEFAULT NULL,
-  `nickname` varchar(50) DEFAULT NULL,
-  `sex` tinyint(1) DEFAULT NULL COMMENT '0未知1男2女',
-  `realname` varbinary(50) DEFAULT NULL,
-  `mobile` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
-  `email` varchar(100) DEFAULT NULL,
-  `birthday` int(11) DEFAULT NULL,
-  `a_time` int(11) DEFAULT NULL,
-  `avatar` varchar(100) DEFAULT NULL,
-  `type` tinyint(1) DEFAULT NULL COMMENT '1普通2一级代理2二级代理3合伙人',
-  `experience` int(11) DEFAULT NULL COMMENT '经验值',
-  `point` int(11) DEFAULT NULL COMMENT '积分',
-  `coin` int(11) DEFAULT NULL COMMENT '金币',
-  `third_uid` varchar(50) DEFAULT NULL,
+  `uname` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `nickname` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `sex` tinyint(1) NOT NULL DEFAULT '0' COMMENT '0未知1男2女',
+  `realname` varbinary(50) NOT NULL,
+  `mobile` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `email` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `birthday` int(11) NOT NULL,
+  `a_time` int(11) NOT NULL DEFAULT '0',
+  `avatar` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `type` tinyint(1) NOT NULL DEFAULT '0' COMMENT '1普通2一级代理2二级代理3合伙人',
+  `experience` int(11) NOT NULL DEFAULT '0' COMMENT '经验值',
+  `point` int(11) NOT NULL DEFAULT '0' COMMENT '积分',
+  `coin` int(11) NOT NULL DEFAULT '0' COMMENT '金币',
+  `third_uid` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户';
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -738,4 +739,4 @@ CREATE TABLE `withdraw_money` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-05-10  1:25:28
+-- Dump completed on 2020-05-10 17:03:10

@@ -24,63 +24,46 @@
                 focusInvalid: false, // do not focus the last invalid input
                 ignore: "", // validate all fields including form hidden input
                 rules: {
-                    name: {
+                    title: {
                         minlength: 2,
                         maxlength: 50,
                         required: true
                     },
-                    category: {
+                    category_id: {
                         required: true
                     },
-                    is_online: {
+                    status: {
                         required: true,
                     },
-                    small_img: {
+                    pic: {
                         required: true
                     },
                     list_img: {
                         required: true
-                    },
-                    index_reco_img: {
-                        required: true
-                    },
-                    screen: {
-                        required: true
-                    },
-                    sort: {
-                        integer:true,
-                        maxlength: 4,
-                        required: true
-                    },
-                    background_color: {
-                        minlength: 7,
-                        maxlength: 7,
-                        required: true
-                    },
-                    play_url: {
-                        required: true
-                    },
-
-
-
-
-
+                    }
+                    // ,
+                    // index_reco_img: {
+                    //     required: true
+                    // },
+                    // screen: {
+                    //     required: true
+                    // },
+                    // sort: {
+                    //     integer:true,
+                    //     maxlength: 4,
+                    //     required: true
+                    // },
+                    // background_color: {
+                    //     minlength: 7,
+                    //     maxlength: 7,
+                    //     required: true
+                    // },
+                    // play_url: {
+                    //     required: true
+                    // },
                 },
 
                 messages: { // custom messages for radio buttons and checkboxes
-                    // old_ps: {
-                    //     minlength: '最少6个字符',
-                    //     required: '不能为空'
-                    // },
-                    // ps: {
-                    //     minlength: '最少6个字符',
-                    //     required: '不能为空'
-                    // },
-                    // ps_sure: {
-                    //     minlength: '最少6个字符',
-                    //     required: '不能为空',
-                    //     equalTo:'两次密码不一致'
-                    // }
                 },
 
                 errorPlacement: function (error, element) { // render error placement for each input type

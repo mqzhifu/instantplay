@@ -34,7 +34,7 @@ class inserTBDb{
 
     function insertProduct($products){
         ProductModel::db()->delete(" id > 1 limit 1000 ");
-        GoodsModel::db()->delete(" id > 1 limit 1000 ");
+        GoodsModel::db()->delete(" id > 1 limit 4000 ");
         ProductLinkCategoryAttrModel::db()->delete(" pid > 1 limit 1000 ");
 
         $newProductData = ProductModel::getField();
