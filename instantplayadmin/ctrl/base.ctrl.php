@@ -191,6 +191,11 @@ class BaseCtrl{
         $this->addJs('/assets/admin/pages/scripts/tasks.js');
 
         //=====================================上面都是公共的==========================
+        $this->addJs('/assets/admin/pages/scripts/tasks.js');
+//        <link rel="stylesheet" type="text/css" href="../../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css"/>
+
+        $this->addCss('/assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css');
+
         $this->addCss('/assets/global/plugins/select2/select2.css');
         $this->addCss('/assets/global/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.css');
         $this->addCss('/assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css');

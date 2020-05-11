@@ -24,9 +24,17 @@ class UserModel {
     static $_online_true = 1;
     static $_online_false = 2;
 
-
     static $_sex_male = 1;//男
     static $_sex_female = 2;//女
+
+    const STATUS_NORMAL = 1;
+    const STATUS_DISABLE = 2;
+
+    const STATUS_DESC = [
+        self::STATUS_NORMAL=>'正常',
+        self::STATUS_DISABLE=>'已禁用',
+    ];
+
 
     static function getTypeDesc(){
         return array(
@@ -137,6 +145,11 @@ class UserModel {
     static function getNearUserByGeoHash($userGeoCode,$n = 6){
         $likeGeohash = substr($userGeoCode, 0, $n);
         $sql = 'select uid, from '.self::$_table.' where geo_code like "'.$likeGeohash.'%"';
+    }
+
+    static function upTotal($uid,$orderPrice){
+        $data = array('consume_total'=>array($orderPrice) ,'order_num'=>array(1));
+        return self::db()->upById($uid,$data);
     }
 
 }

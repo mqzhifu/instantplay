@@ -128,5 +128,10 @@ class OrderModel {
         return $id;
     }
 
+    static function getListByUid($uid){
+	    $list = self::db()->getAll(" uid = $uid");
+	    return $list;
+    }
+
 
 }

@@ -19,17 +19,17 @@ class AreaCityModel {
 	}
 
     static function getSelectOptionsHtml(){
-        $list = self::db()->getAll(1,self::$_table,"city_code,short_name");
+        $list = self::db()->getAll(1,self::$_table,"code,short_name");
         $html = "";
         foreach ($list as $k=>$v) {
-            $html .= "<option value='{$v['city_code']}'>{$v['short_name']}</option>";
+            $html .= "<option value='{$v['code']}'>{$v['short_name']}</option>";
         }
         return $html;
     }
 
     static function getJsSelectOptions(){
         self::db()->_fetchArray = 1;
-        $data = self::db()->getAll(" 1 order by sort ","","province_code,short_name,city_code");
+        $data = self::db()->getAll(" 1 order by sort ","","province_code,short_name,code");
         self::db()->_fetchArray = 0;
         $rs = [];
         foreach ($data as $k=>$v) {
@@ -41,7 +41,7 @@ class AreaCityModel {
     }
 
     static function getNameByCode($code){
-        $row = self::db()->getRow(" city_code = '$code'");
-        return $row['city_name'];
+        $row = self::db()->getRow(" code = '$code'");
+        return $row['shot_name'];
     }
 }

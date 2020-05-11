@@ -4,140 +4,223 @@
 
 
         // advance validation
-        var handleValidation3 = function() {
+        var handleValidation3 = function()
+        // {
+        //     // for more info visit the official plugin documentation:
+        //     // http://docs.jquery.com/Plugins/Validation
+        //
+        //     var form3 = $('#form_sample_3');
+        //     var error3 = $('.alert-danger', form3);
+        //     var success3 = $('.alert-success', form3);
+        //
+        //     form3.validate({
+        //         errorElement: 'span', //default input error message container
+        //         errorClass: 'help-block help-block-error', // default input error message class
+        //         focusInvalid: false, // do not focus the last invalid input
+        //         ignore: "", // validate all fields including form hidden input
+        //         rules: {
+        //             title: {
+        //                 required: true
+        //             },
+        //             pic: {
+        //                 required: true
+        //             },
+        //             realname: {
+        //                 required: true,
+        //             },
+        //             id_card_num: {
+        //                 required: true
+        //             },
+        //             sex: {
+        //                 required: true
+        //             },
+        //             mobile: {
+        //                 required: true
+        //             },
+        //             fee_percent: {
+        //                 required: true
+        //             },
+        //             address: {
+        //                 required: true
+        //             },
+        //             province: {
+        //                 required: true
+        //             },
+        //
+        //             city: {
+        //                 required: true
+        //             },
+        //
+        //             county: {
+        //                 required: true
+        //             },
+        //
+        //             town: {
+        //                 required: true
+        //             },
+        //
+        //             villages: {
+        //                 required: true
+        //             },
+        //
+        //         },
+        //
+        //         messages: { // custom messages for radio buttons and checkboxes
+        //             // old_ps: {
+        //             //     minlength: '最少6个字符',
+        //             //     required: '不能为空'
+        //             // },
+        //             // ps: {
+        //             //     minlength: '最少6个字符',
+        //             //     required: '不能为空'
+        //             // },
+        //             // ps_sure: {
+        //             //     minlength: '最少6个字符',
+        //             //     required: '不能为空',
+        //             //     equalTo:'两次密码不一致'
+        //             // }
+        //         },
+        //
+        //         errorPlacement: function (error, element) { // render error placement for each input type
+        //             if (element.parent(".input-group").size() > 0) {
+        //                 error.insertAfter(element.parent(".input-group"));
+        //             } else if (element.attr("data-error-container")) {
+        //                 error.appendTo(element.attr("data-error-container"));
+        //             } else if (element.parents('.radio-list').size() > 0) {
+        //                 error.appendTo(element.parents('.radio-list').attr("data-error-container"));
+        //             } else if (element.parents('.radio-inline').size() > 0) {
+        //                 error.appendTo(element.parents('.radio-inline').attr("data-error-container"));
+        //             } else if (element.parents('.checkbox-list').size() > 0) {
+        //                 error.appendTo(element.parents('.checkbox-list').attr("data-error-container"));
+        //             } else if (element.parents('.checkbox-inline').size() > 0) {
+        //                 error.appendTo(element.parents('.checkbox-inline').attr("data-error-container"));
+        //             } else {
+        //                 error.insertAfter(element); // for other inputs, just perform default behavior
+        //             }
+        //         },
+        //
+        //         invalidHandler: function (event, validator) { //display error alert on form submit
+        //             success3.hide();
+        //             error3.show();
+        //             Metronic.scrollTo(error3, -200);
+        //         },
+        //
+        //         highlight: function (element) { // hightlight error inputs
+        //             $(element)
+        //                 .closest('.form-group').addClass('has-error'); // set error class to the control group
+        //         },
+        //
+        //         unhighlight: function (element) { // revert the change done by hightlight
+        //             $(element)
+        //                 .closest('.form-group').removeClass('has-error'); // set error class to the control group
+        //         },
+        //
+        //         success: function (label) {
+        //             label
+        //                 .closest('.form-group').removeClass('has-error'); // set success class to the control group
+        //         },
+        //
+        //         submitHandler: function (form) {
+        //             var btn = $(this);
+        //             btn.button('loading');
+        //
+        //             success3.show();
+        //             error3.hide();
+        //             form[0].submit(); // submit the form
+        //         }
+        //
+        //     });
+        //
+        // }
+
+
+        {
             // for more info visit the official plugin documentation:
             // http://docs.jquery.com/Plugins/Validation
 
-            var form3 = $('#form_sample_3');
-            var error3 = $('.alert-danger', form3);
-            var success3 = $('.alert-success', form3);
+            var form2 = $('#form_sample_3');
+            // var error2 = $('.alert-danger', form2);
+            // var success2 = $('.alert-success', form2);
 
-            //IMPORTANT: update CKEDITOR textarea with actual content before submit
-            form3.on('submit', function() {
-//                for(var instanceName in CKEDITOR.instances) {
-//                    CKEDITOR.instances[instanceName].updateElement();
-//                }
-            });
-
-            form3.validate({
+            form2.validate({
                 errorElement: 'span', //default input error message container
                 errorClass: 'help-block help-block-error', // default input error message class
                 focusInvalid: false, // do not focus the last invalid input
-                ignore: "", // validate all fields including form hidden input
+                ignore: "",  // validate all fields including form hidden input
                 rules: {
                     title: {
-                        required: true
-                    },
-                    pic: {
-                        required: true
-                    },
-                    realname: {
-                        required: true,
-                    },
-                    id_card_num: {
-                        required: true
-                    },
-                    sex: {
-                        required: true
-                    },
-                    mobile: {
-                        required: true
-                    },
-                    fee_percent: {
-                        required: true
-                    },
-                    address: {
+                        minlength: 2,
                         required: true
                     },
                     province: {
                         required: true
                     },
-
                     city: {
                         required: true
                     },
-
                     county: {
                         required: true
                     },
-
-                    street: {
-                        required: true
+                    town: {
+                        required: true,
                     },
-
-                    villages: {
-                        required: true
+                    realname: {
+                        required: true,
                     },
-
-                },
-
-                messages: { // custom messages for radio buttons and checkboxes
-                    // old_ps: {
-                    //     minlength: '最少6个字符',
-                    //     required: '不能为空'
-                    // },
-                    // ps: {
-                    //     minlength: '最少6个字符',
-                    //     required: '不能为空'
-                    // },
-                    // ps_sure: {
-                    //     minlength: '最少6个字符',
-                    //     required: '不能为空',
-                    //     equalTo:'两次密码不一致'
-                    // }
-                },
-
-                errorPlacement: function (error, element) { // render error placement for each input type
-                    if (element.parent(".input-group").size() > 0) {
-                        error.insertAfter(element.parent(".input-group"));
-                    } else if (element.attr("data-error-container")) {
-                        error.appendTo(element.attr("data-error-container"));
-                    } else if (element.parents('.radio-list').size() > 0) {
-                        error.appendTo(element.parents('.radio-list').attr("data-error-container"));
-                    } else if (element.parents('.radio-inline').size() > 0) {
-                        error.appendTo(element.parents('.radio-inline').attr("data-error-container"));
-                    } else if (element.parents('.checkbox-list').size() > 0) {
-                        error.appendTo(element.parents('.checkbox-list').attr("data-error-container"));
-                    } else if (element.parents('.checkbox-inline').size() > 0) {
-                        error.appendTo(element.parents('.checkbox-inline').attr("data-error-container"));
-                    } else {
-                        error.insertAfter(element); // for other inputs, just perform default behavior
+                    pic: {
+                        required: true,
+                    },
+                    id_card_num: {
+                        required: true,
+                    },
+                    sex: {
+                        required: true,
+                    },
+                    fee_percent: {
+                        required: true,
+                    },
+                    mobile: {
+                        required: true,
                     }
                 },
 
                 invalidHandler: function (event, validator) { //display error alert on form submit
-                    success3.hide();
-                    error3.show();
-                    Metronic.scrollTo(error3, -200);
+                    // success2.hide();
+                    // error2.show();
+                    // Metronic.scrollTo(error2, -200);
+                },
+
+                errorPlacement: function (error, element) { // render error placement for each input type
+                    var icon = $(element).parent('.input-icon').children('i');
+                    icon.removeClass('fa-check').addClass("fa-warning");
+                    icon.attr("data-original-title", error.text()).tooltip({'container': 'body'});
                 },
 
                 highlight: function (element) { // hightlight error inputs
                     $(element)
-                        .closest('.form-group').addClass('has-error'); // set error class to the control group
+                        .closest('.form-group').removeClass("has-success").addClass('has-error'); // set error class to the control group
                 },
 
                 unhighlight: function (element) { // revert the change done by hightlight
-                    $(element)
-                        .closest('.form-group').removeClass('has-error'); // set error class to the control group
+
                 },
 
-                success: function (label) {
-                    label
-                        .closest('.form-group').removeClass('has-error'); // set success class to the control group
+                success: function (label, element) {
+                    var icon = $(element).parent('.input-icon').children('i');
+                    $(element).closest('.form-group').removeClass('has-error').addClass('has-success'); // set success class to the control group
+                    icon.removeClass("fa-warning").addClass("fa-check");
                 },
 
                 submitHandler: function (form) {
-                    var btn = $(this);
-                    btn.button('loading');
-
-                    success3.show();
-                    error3.hide();
+                    // success2.show();
+                    // error2.hide();
                     form[0].submit(); // submit the form
                 }
-
             });
 
+
         }
+
 
         return {
             //main function to initiate the module
@@ -159,7 +242,6 @@
 
 
 <script>
-
     var areaSelectedProvince = 0;
     var areaSelectedCity = 0;
     var areaSelectedCounty = 0;
@@ -168,16 +250,16 @@
     var city = eval({$cityJs});
     var county = eval({$countyJs});
     var ajaxStreetData = null;
-    function area(type,obj){
+    function areaChange(type,obj){
         if(type == 'province'){
             $("#city").html("<option value=''>请选择</option>");
             $("#county").html("<option value=''>请选择</option>");
             $("#street").html("<option value=''>请选择</option>");
 
             areaSelectedProvince = $(obj).val();
-
+            console.log(areaSelectedProvince);
             var cityList = city[areaSelectedProvince];
-            // return alert(cityList[0]);
+            console.log(cityList);
             var optionHtml = "";
             for(var i=0;i<cityList.length;i++){
                 optionHtml += "<option value='"+cityList[i][2]+"'>"+cityList[i][1]+"</option>";
@@ -202,9 +284,9 @@
             // alert(streetData[0]['street_code']);
             var optionHtml = "";
             for(var i=0;i<streetData.length;i++){
-                optionHtml += "<option value='"+streetData[i]['street_code']+"'>"+streetData[i]['short_name']+"</option>";
+                optionHtml += "<option value='"+streetData[i]['town_code']+"'>"+streetData[i]['short_name']+"</option>";
             }
-            $("#street").html(optionHtml);
+            $("#town").html(optionHtml);
         }else{
             return alert(" type error");
         }
@@ -235,4 +317,206 @@
         });
     }
 
+</script>
+
+<script>
+
+    /* ===========================================================
+ * Bootstrap: fileinput.js v3.1.3
+ * http://jasny.github.com/bootstrap/javascript/#fileinput
+ * ===========================================================
+ * Copyright 2012-2014 Arnold Daniels
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License")
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * ========================================================== */
+
+    +function ($) { "use strict";
+
+        var isIE = window.navigator.appName == 'Microsoft Internet Explorer'
+
+        // FILEUPLOAD PUBLIC CLASS DEFINITION
+        // =================================
+
+        var Fileinput = function (element, options) {
+            this.$element = $(element)
+
+            this.$input = this.$element.find(':file')
+            if (this.$input.length === 0) return
+
+            this.name = this.$input.attr('name') || options.name
+
+            this.$hidden = this.$element.find('input[type=hidden][name="' + this.name + '"]')
+            if (this.$hidden.length === 0) {
+                this.$hidden = $('<input type="hidden">').insertBefore(this.$input)
+            }
+
+            this.$preview = this.$element.find('.fileinput-preview')
+            var height = this.$preview.css('height')
+            if (this.$preview.css('display') !== 'inline' && height !== '0px' && height !== 'none') {
+                this.$preview.css('line-height', height)
+            }
+
+            this.original = {
+                exists: this.$element.hasClass('fileinput-exists'),
+                preview: this.$preview.html(),
+                hiddenVal: this.$hidden.val()
+            }
+
+            this.listen()
+        }
+
+        Fileinput.prototype.listen = function() {
+            this.$input.on('change.bs.fileinput', $.proxy(this.change, this))
+            $(this.$input[0].form).on('reset.bs.fileinput', $.proxy(this.reset, this))
+
+            this.$element.find('[data-trigger="fileinput"]').on('click.bs.fileinput', $.proxy(this.trigger, this))
+            this.$element.find('[data-dismiss="fileinput"]').on('click.bs.fileinput', $.proxy(this.clear, this))
+        },
+
+            Fileinput.prototype.change = function(e) {
+                var files = e.target.files === undefined ? (e.target && e.target.value ? [{ name: e.target.value.replace(/^.+\\/, '')}] : []) : e.target.files
+
+                e.stopPropagation()
+
+                if (files.length === 0) {
+                    this.clear()
+                    return
+                }
+
+                this.$hidden.val('')
+                this.$hidden.attr('name', '')
+                this.$input.attr('name', this.name)
+
+                var file = files[0]
+
+                if (this.$preview.length > 0 && (typeof file.type !== "undefined" ? file.type.match(/^image\/(gif|png|jpeg)$/) : file.name.match(/\.(gif|png|jpe?g)$/i)) && typeof FileReader !== "undefined") {
+                    var reader = new FileReader()
+                    var preview = this.$preview
+                    var element = this.$element
+
+                    reader.onload = function(re) {
+                        var $img = $('<img>')
+                        $img[0].src = re.target.result
+                        files[0].result = re.target.result
+
+                        element.find('.fileinput-filename').text(file.name)
+
+                        // if parent has max-height, using `(max-)height: 100%` on child doesn't take padding and border into account
+                        if (preview.css('max-height') != 'none') $img.css('max-height', parseInt(preview.css('max-height'), 10) - parseInt(preview.css('padding-top'), 10) - parseInt(preview.css('padding-bottom'), 10)  - parseInt(preview.css('border-top'), 10) - parseInt(preview.css('border-bottom'), 10))
+
+                        preview.html($img)
+                        element.addClass('fileinput-exists').removeClass('fileinput-new')
+
+                        element.trigger('change.bs.fileinput', files)
+                    }
+
+                    reader.readAsDataURL(file)
+                } else {
+                    this.$element.find('.fileinput-filename').text(file.name)
+                    this.$preview.text(file.name)
+
+                    this.$element.addClass('fileinput-exists').removeClass('fileinput-new')
+
+                    this.$element.trigger('change.bs.fileinput')
+                }
+            },
+
+            Fileinput.prototype.clear = function(e) {
+                if (e) e.preventDefault()
+
+                this.$hidden.val('')
+                this.$hidden.attr('name', this.name)
+                this.$input.attr('name', '')
+
+                //ie8+ doesn't support changing the value of input with type=file so clone instead
+                if (isIE) {
+                    var inputClone = this.$input.clone(true);
+                    this.$input.after(inputClone);
+                    this.$input.remove();
+                    this.$input = inputClone;
+                } else {
+                    this.$input.val('')
+                }
+
+                this.$preview.html('')
+                this.$element.find('.fileinput-filename').text('')
+                this.$element.addClass('fileinput-new').removeClass('fileinput-exists')
+
+                if (e !== undefined) {
+                    this.$input.trigger('change')
+                    this.$element.trigger('clear.bs.fileinput')
+                }
+            },
+
+            Fileinput.prototype.reset = function() {
+                this.clear()
+
+                this.$hidden.val(this.original.hiddenVal)
+                this.$preview.html(this.original.preview)
+                this.$element.find('.fileinput-filename').text('')
+
+                if (this.original.exists) this.$element.addClass('fileinput-exists').removeClass('fileinput-new')
+                else this.$element.addClass('fileinput-new').removeClass('fileinput-exists')
+
+                this.$element.trigger('reset.bs.fileinput')
+            },
+
+            Fileinput.prototype.trigger = function(e) {
+                this.$input.trigger('click')
+                e.preventDefault()
+            }
+
+
+        // FILEUPLOAD PLUGIN DEFINITION
+        // ===========================
+
+        var old = $.fn.fileinput
+
+        $.fn.fileinput = function (options) {
+            return this.each(function () {
+                var $this = $(this),
+                    data = $this.data('bs.fileinput')
+                if (!data) $this.data('bs.fileinput', (data = new Fileinput(this, options)))
+                if (typeof options == 'string') data[options]()
+            })
+        }
+
+        $.fn.fileinput.Constructor = Fileinput
+
+
+        // FILEINPUT NO CONFLICT
+        // ====================
+
+        $.fn.fileinput.noConflict = function () {
+            $.fn.fileinput = old
+            return this
+        }
+
+
+        // FILEUPLOAD DATA-API
+        // ==================
+
+        $(document).on('click.fileinput.data-api', '[data-provides="fileinput"]', function (e) {
+            var $this = $(this)
+            if ($this.data('bs.fileinput')) return
+            $this.fileinput($this.data())
+
+            var $target = $(e.target).closest('[data-dismiss="fileinput"],[data-trigger="fileinput"]');
+            if ($target.length > 0) {
+                e.preventDefault()
+                $target.trigger('click.bs.fileinput')
+            }
+        })
+
+    }(window.jQuery);
 </script>

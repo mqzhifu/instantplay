@@ -18,29 +18,6 @@ class UserCtrl extends BaseCtrl{
         $this->getData();
     }
 
-    function getWhere(){
-        $where = " 1 ";
-        if($mobile = _g("mobile"))
-            $where .= " and mobile = '$mobile'";
-
-        if($message = _g("message"))
-            $where .= " and mobile like '%$message%'";
-
-        if($from = _g("from")){
-            $from .= ":00";
-            $where .= " and add_time >= '".strtotime($from)."'";
-        }
-
-        if($to = _g("to")){
-            $to .= ":59";
-            $where .= " and add_time <= '".strtotime($to)."'";
-        }
-
-
-        return $where;
-    }
-
-
     function getData(){
         $records = array();
         $records["data"] = array();
@@ -82,7 +59,8 @@ class UserCtrl extends BaseCtrl{
             $end = $iDisplayStart + $iDisplayLength;
             $end = $end > $iTotalRecords ? $iTotalRecords : $end;
 
-            $data = UserModel::db()->getAll($where . $order);
+            $limit = " limit $iDisplayStart,$end";
+            $data = UserModel::db()->getAll($where . $order . $limit);
 
             foreach($data as $k=>$v){
                 $row = array(
@@ -90,17 +68,17 @@ class UserCtrl extends BaseCtrl{
                     $v['id'],
                     $v['uname'],
                     $v['nickname'],
-                    $v['sex'],
-                    $v['realname'],
+                    UserModel::getSexDescByKey($v['sex']),
+                    $v['order_num'],
                     $v['mobile'],
                     $v['email'],
-                    $v['birthday'],
+                    get_default_date($v['birthday']),
                     get_default_date($v['a_time']),
                     $v['avatar'],
-                    $v['type'],
+                    UserModel::getTypeDescByKey($v['type']),
                     $v['third_uid'],
-                    "",
-                    "",
+                    $v['consume_total'],
+                    '<a href="/people/no/user/detail/id='.$v['id'].'" class="btn blue btn-xs margin-bottom-5"><i class="fa fa-file-o"></i> 详情 </a>',
                 );
 
                 $records["data"][] = $row;
@@ -115,83 +93,149 @@ class UserCtrl extends BaseCtrl{
         exit;
     }
 
+    function add(){
+        if(_g('opt')){
+            $data =array(
+                'uname'=> _g('uname'),
+                'realname'=> _g('realname'),
+                'nickname'=> _g('nickname'),
+                'mobile'=> _g('mobile'),
+                'sex'=> _g('sex'),
+                'email'=> _g('email'),
+                'birthday'=> _g('birthday'),
+                'status'=>_g('status'),
+                'type'=>_g('type'),
+                'third_uid'=>_g('third_uid'),
+                'a_time'=>time(),
+                'city_id'=> _g('city'),
+                'county_id'=> _g('county'),
+                'town_id'=> _g('street'),
+                'province_id'=> _g('province'),
+            );
+
+            $uploadService = new UploadService();
+            $uploadRs = $uploadService->agent('avatar');
+            if($uploadRs['code'] != 200){
+                exit(" uploadService->avatar error ".json_encode($uploadRs));
+            }
+
+            $data['avatar'] = $uploadRs['msg'];
+
+            $newId = UserModel::db()->add($data);
+
+            var_dump($newId);exit;
+
+        }
+
+        $cityJs = json_encode(AreaCityModel::getJsSelectOptions());
+        $countryJs = json_encode(AreaCountyModel::getJsSelectOptions());
+
+        $this->assign("provinceOption",AreaProvinceModel::getSelectOptionsHtml());
+        $this->assign("cityJs",$cityJs);
+        $this->assign("countyJs",$countryJs);
+
+        $this->assign("sexOption",UserModel::getSexOptions());
+        $this->assign("typeOption",UserModel::getTypeOptions());
+        $this->assign("statusOpen",UserModel::STATUS_DESC);
+
+        $this->addJs('/assets/global/plugins/jquery-validation/js/jquery.validate.min.js');
+        $this->addJs('/assets/global/plugins/jquery-validation/js/additional-methods.min.js');
+
+        $this->addHookJS("/people/user_add_hook.html");
+        $this->display("/people/user_add.html");
+    }
+
+    function detail(){
+        $uid = _g("id");
+        $user = UserModel::db()->getById($uid);
+        $user['dt'] = get_default_date($user['a_time']);
+        $user['status_desc'] = UserModel::STATUS_DESC[$user['status']];
+
+
+
+        $orders = OrderModel::getListByUid($uid);
+        $userLog = UserLogModel::getListByUid($uid);
+
+        $this->assign("user",$user);
+        $this->assign("orders",$orders);
+        $this->assign("userLog",$userLog);
+
+        $this->display("/people/user_detail.html");
+    }
+
     function getDataListTableWhere(){
         $where = 1;
-        $openid = _g("openid");
-        $sex = _g("sex");
-        $status = _g("status");
-
-        $nickname = _g('name');
-//        $nickname_byoid = _g('nickname_byoid');
-//        $content = _g('content');
-//        $is_online = _g('is_online');
-//        $uname = _g('uname');
-
-        $from = _g("from");
-        $to = _g("to");
-
-//        $trigger_time_from = _g("trigger_time_from");
-//        $trigger_time_to = _g("trigger_time_to");
-
-
-//        $uptime_from = _g("uptime_from");
-//        $uptime_to = _g("uptime_to");
-
 
         $id = _g("id");
+        $uname = _g("uname");
+        $nickname = _g('nickname');
+        $sex = _g('sex');
+        $mobile = _g('mobile');
+
+        $email = _g("email");
+        $type = _g("type");
+
+        $birthday_from = _g('birthday_from');
+        $birthday_to = _g('birthday_to');
+
+        $from = _g('from');
+        $to = _g('to');
+
+        $consume_total = _g('consume_total');
+        $order_num = _g('order_num');
+
+        if($consume_total)
+            $where .=" and consume_total = '$consume_total' ";
+
+        if($order_num)
+            $where .=" and order_num = '$order_num' ";
+
+
         if($id)
             $where .=" and id = '$id' ";
 
-        if($openid)
-            $where .=" and openid = '$openid' ";
-
-        if($sex)
-            $where .=" and sex = '$sex' ";
-
-        if($status)
-            $where .=" and status = '$status' ";
+        if($uname)
+            $where .=" and uname like '%$uname%' ";
 
         if($nickname)
-            $where .=" and nickname = '$nickname' ";
+            $where .=" and nickname like '%$nickname%' ";
 
-//        if($nickname_byoid){
-//            $user = wxUserModel::db()->getRow(" nickname='$nickname_byoid'");
-//            if(!$user){
-//                $where .= " and 0 ";
-//            }else{
-//                $where .=  " and openid = '{$user['openid']}' ";
-//            }
+        if($sex)
+            $where .=" and sex =$sex ";
+
+        if($mobile)
+            $where .=" and mobile = '$mobile' ";
+
+        if($email)
+            $where .=" and recommend ='$email' ";
+
+        if($type)
+            $where .=" and mobile = '$type' ";
+
+
+//        if($from = _g("from")){
+//            $from .= ":00";
+//            $where .= " and add_time >= '".strtotime($from)."'";
+//        }
+//
+//        if($to = _g("to")){
+//            $to .= ":59";
+//            $where .= " and add_time <= '".strtotime($to)."'";
 //        }
 
-//        if($content)
-//            $where .= " and content like '%$content%'";
 
-        if($from)
+        if($from){
             $where .=" and a_time >=  ".strtotime($from);
+        }
 
         if($to)
             $where .=" and a_time <= ".strtotime($to);
 
-//        if($trigger_time_from)
-//            $where .=" and trigger_time_from >=  ".strtotime($trigger_time_from);
-//
-//        if($trigger_time_to)
-//            $where .=" and trigger_time_to <= ".strtotime($trigger_time_to);
-//
-//        if($uptime_from)
-//            $where .=" and up_time >=  ".strtotime($uptime_from);
-//
-//        if($uptime_to)
-//            $where .=" and up_time <= ".strtotime($uptime_to);
+        if($birthday_from)
+            $where .=" and birthday >=  $birthday_from";
 
-
-
-//        if($is_online)
-//            $where .=" and is_online = '$is_online' ";
-
-
-//        if($uname)
-//            $where .=" and uname = '$uname' ";
+        if($birthday_to)
+            $where .=" and birthday <=  $birthday_to";
 
         return $where;
     }

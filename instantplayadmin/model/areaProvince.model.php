@@ -19,22 +19,24 @@ class AreaProvinceModel {
 	}
 
     static function getSelectOptionsHtml(){
-	    $list = self::db()->getAll(1,self::$_table,"province_code,short_name");
+	    $list = self::db()->getAll(1,self::$_table,"code,short_name");
 	    $html = "";
 	    foreach ($list as $k=>$v) {
-            $html .= "<option value='{$v['province_code']}'>{$v['short_name']}</option>";
+            $html .= "<option value='{$v['code']}'>{$v['short_name']}</option>";
 	    }
 	    return $html;
     }
 
-    static function getJsSelectOptions(){
-        $rs = AreaProvinceModel::db()->getAll(" 1 order by sort ","","province_code,short_name");
-        var_dump(array_values($rs));exit;
+    static function getNameByCode($code){
+        $row = self::db()->getRow(" code = '$code'");
+        return $row['sort_name'];
     }
 
-    static function getNameByCode($code){
-        $row = self::db()->getRow(" province_code = '$code'");
-        return $row['province_name'];
-    }
+//    static function getJsSelectOptions(){
+//        $rs = AreaProvinceModel::db()->getAll(" 1 order by sort ","","code,short_name");
+//        var_dump(array_values($rs));exit;
+//    }
+
+
 
 }

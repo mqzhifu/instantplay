@@ -19,17 +19,17 @@ class AreaCountyModel {
 	}
 
     static function getSelectOptionsHtml(){
-        $list = self::db()->getAll(1,self::$_table,"area_code,short_name");
+        $list = self::db()->getAll(1,self::$_table,"code,short_name");
         $html = "";
         foreach ($list as $k=>$v) {
-            $html .= "<option value='{$v['area_code']}'>{$v['short_name']}</option>";
+            $html .= "<option value='{$v['code']}'>{$v['short_name']}</option>";
         }
         return $html;
     }
 
     static function getJsSelectOptions(){
         self::db()->_fetchArray = 1;
-        $data = self::db()->getAll(" 1 order by sort ","","city_code, area_code,short_name");
+        $data = self::db()->getAll(" 1 order by sort ","","city_code, code,short_name");
         self::db()->_fetchArray = 0;
         $rs = [];
         foreach ($data as $k=>$v) {
@@ -43,7 +43,7 @@ class AreaCountyModel {
     }
 
     static function getNameByCode($code){
-        $row = self::db()->getRow(" area_code = '$code'");
-        return $row['area_name'];
+        $row = self::db()->getRow(" code = '$code'");
+        return $row['short_name'];
     }
 }

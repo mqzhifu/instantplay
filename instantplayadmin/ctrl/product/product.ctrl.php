@@ -303,8 +303,22 @@ class ProductCtrl extends BaseCtrl{
         if($recommend)
             $where .=" and recommend =$recommend ";
 
-        if($from)
+
+//        if($from = _g("from")){
+//            $from .= ":00";
+//            $where .= " and add_time >= '".strtotime($from)."'";
+//        }
+//
+//        if($to = _g("to")){
+//            $to .= ":59";
+//            $where .= " and add_time <= '".strtotime($to)."'";
+//        }
+
+
+        if($from){
             $where .=" and a_time >=  ".strtotime($from);
+        }
+
 
         if($to)
             $where .=" and a_time <= ".strtotime($to);
@@ -327,8 +341,6 @@ class ProductCtrl extends BaseCtrl{
 
         if($goods_total_to)
             $where .=" and goods_total <=  $goods_total_from";
-
-
 
         return $where;
     }

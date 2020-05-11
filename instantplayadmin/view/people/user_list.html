@@ -15,28 +15,14 @@
                         <div class="portlet-title">
                             <div class="actions">
                                 <div class="btn-group">
-                                    <a class="btn btn-default btn-circle" href="javascript:;" data-toggle="dropdown">
-                                        <i class="fa fa-share"></i> 导出 <i class="fa fa-angle-down"></i>
+                                    <a href="/people/no/user/add/">
+                                        <button class="btn green">
+                                            添加 <i class="fa fa-plus"></i>
+                                        </button>
                                     </a>
 
-                                    <ul class="dropdown-menu pull-right">
-                                        <li>
-                                            <a href="javascript:void(0);" onclick="export_data();">
-                                                Excel </a>
-                                        </li>
-                                        <li class="divider">
-                                        </li>
-                                        <li>
-                                            <a href="javascript:;">
-                                                PDF </a>
-                                        </li>
-                                        <li>
-                                            <a href="javascript:;">
-                                                WORD </a>
-                                        </li>
-
-                                    </ul>
                                 </div>
+
                             </div>
                         </div>
                         <div class="portlet-body">
@@ -63,15 +49,15 @@
                                         <th width="5%">
                                             用户名
                                         </th>
-                                        <th width="10%">
+                                        <th width="5%">
                                             昵称
                                         </th>
-                                        <th width="10%">
+                                        <th width="5%">
                                             性别
                                         </th>
 
                                         <th width="5%">
-                                            真实姓名
+                                            订单数
                                         </th>
 
                                         <th width="5%">
@@ -82,11 +68,11 @@
                                             邮箱
                                         </th>
 
-                                        <th width="5%">
+                                        <th width="10%">
                                             生日
                                         </th>
 
-                                        <th width="5%">
+                                        <th width="10%">
                                             注册时间
                                         </th>
 
@@ -95,7 +81,7 @@
                                         </th>
 
                                         <th width="5%">
-                                            类型
+                                            注册类型
                                         </th>
 
                                         <th width="5%">
@@ -113,15 +99,16 @@
                                     <tr role="row" class="filter">
                                         <td>
                                         </td>
-                                        <td>
 
+                                        <td>
+                                            <input type="text" class="form-control form-filter input-sm" name="id" >
                                         </td>
                                         <td>
-                                            <input type="text" class="form-control form-filter input-sm" name="uid" >
+                                            <input type="text" class="form-control form-filter input-sm" name="uname" >
                                         </td>
                                         <td>
 
-                                            <input type="text" class="form-control form-filter input-sm" name="ctrlName" >
+                                            <input type="text" class="form-control form-filter input-sm" name="nickname" >
                                         </td>
                                         <td>
                                             <select name="type">
@@ -132,15 +119,35 @@
                                         </td>
 
                                         <td>
+                                            <input type="text" class="form-control form-filter input-sm" name="order_num" >
                                         </td>
 
 
                                         <td>
-
+                                            <input type="text" class="form-control form-filter input-sm" name="mobile" >
                                         </td>
 
-                                        <td></td>
-                                        <td></td>
+                                        <td>
+                                            <input type="text" class="form-control form-filter input-sm" name="email" >
+                                        </td>
+                                        <td>
+
+                                            <div class="input-group date form_datetime margin-bottom-5">
+                                                <input type="text" class="form-control form-filter input-sm" style="height: 34px" readonly name="birthday_from" id="birthday_from" placeholder="From">
+                                                <span class="input-group-btn">
+                                                    <button class="btn default date-set" type="button" style="margin-right: 0"><i class="fa fa-calendar"></i></button>
+                                                </span>
+                                            </div>
+
+
+                                            <div class="input-group date form_datetime margin-bottom-5">
+                                                <input type="text" class="form-control form-filter input-sm" style="height: 34px"  readonly name="birthday_to" id="birthday_to" placeholder="to">
+                                                <span class="input-group-btn">
+                                                    <button class="btn default date-set" type="button"  style="margin-right: 0"><i class="fa fa-calendar"></i></button>
+                                                </span>
+                                            </div>
+
+                                        </td>
                                         <td>
 
                                             <div class="input-group date form_datetime margin-bottom-5">
@@ -172,7 +179,9 @@
 
                                         </td>
                                         <td></td>
-                                        <td></td>
+                                        <td>
+                                            <input type="text" class="form-control form-filter input-sm" name="consume_total" >
+                                        </td>
 
 
                                         <td>

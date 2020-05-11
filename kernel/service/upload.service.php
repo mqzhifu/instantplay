@@ -22,6 +22,10 @@ class UploadService
         return $rs;
     }
 
+    function avatar($postInputName){
+
+    }
+
 
 
     function upAvatar($uid=0, $avatar=''){

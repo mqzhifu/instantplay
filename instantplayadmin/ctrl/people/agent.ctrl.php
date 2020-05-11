@@ -12,7 +12,7 @@ class AgentCtrl extends BaseCtrl{
 
     function getCountyData(){
         $id = _g("countyId");
-        $data = AreaStreetModel::db()->getAll("area_code=$id");
+        $data = AreaTownModel::db()->getAll("county_code=$id");
         echo json_encode($data);
     }
 
@@ -28,13 +28,15 @@ class AgentCtrl extends BaseCtrl{
                 'id_card_num'=> _g('id_card_num'),
                 'mobile'=> _g('mobile'),
                 'fee_percent'=> _g('fee_percent'),
-                'address'=> _g('address'),
-                'province_id'=> _g('province'),
                 'status'=>1,
-                'city_id'=> _g('city'),
-                'county_id'=> _g('county'),
-                'towns_id'=> _g('street'),
+
+                'address'=> _g('address'),
+                'province_code'=> _g('province'),
+                'city_code'=> _g('city'),
+                'county_code'=> _g('county'),
+                'towns_code'=> _g('town'),
                 'villages'=> _g('villages'),
+
                 'a_time'=>time(),
             );
 
@@ -52,10 +54,15 @@ class AgentCtrl extends BaseCtrl{
 
         }
 
+        $sexOption = UserModel::getSexOptions();
+
+        $this->assign("sexOption",$sexOption);
+
+        $province = AreaProvinceModel::getSelectOptionsHtml();
         $cityJs = json_encode(AreaCityModel::getJsSelectOptions());
         $countryJs = json_encode(AreaCountyModel::getJsSelectOptions());
 
-        $this->assign("provinceOption",AreaProvinceModel::getSelectOptionsHtml());
+        $this->assign("provinceOption",$province);
         $this->assign("cityJs",$cityJs);
         $this->assign("countyJs",$countryJs);
 
@@ -138,14 +145,14 @@ class AgentCtrl extends BaseCtrl{
                     $v['id'],
                     $v['title'],
                     $v['real_name'],
-                    $v['status'],
-                    $v['type'],
+                    AgentModel::STATUS[$v['status']],
+                    AgentModel::ROLE[$v['type']],
                     AreaProvinceModel::db()->getOneByOneField('province_code',$v['province_id'])['short_name'],
                     AreaCityModel::db()->getOneByOneField('city_code',$v['city_id'])['short_name'],
                     AreaCountyModel::db()->getOneByOneField('area_code',$v['county_id'])['short_name'],
-                    $v['towns_id'],
+                    AreaStreetModel::db()->getOneByOneField('street_code',$v['towns_id'])['short_name'],
                     $v['villages'],
-                    $v['sex'],
+                    UserModel::getSexDescByKey($v['type']),
                     '<img height="30" width="30" src="'.get_agent_url($v['pic']).'" />',
                     $v['mobile'],
                     $v['fee_percent'],

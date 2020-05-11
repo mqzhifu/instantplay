@@ -1,6 +1,6 @@
 <?php
-class AreaStreetModel {
-	static $_table = 'area_street';
+class AreaTownModel {
+	static $_table = 'area_town';
 	static $_pk = 'id';
 	static $_db = null;
     static $_db_key = "instantplay";
