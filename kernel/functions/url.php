@@ -21,7 +21,27 @@ function get_agent_url( $tmpPath , $protocol = 'http'){
     return $url;
 }
 
+function get_avatar_url_by_uid($uid){
+    $user = UserModel::db()->getById($uid);
+}
 
+function get_avatar_url($tmp_path,$protocol = 'http'){
+    if(!$tmp_path){
+        return get_default_user_url();
+    }
+
+    if(substr($tmp_path,0,4) == "http"){
+        return $tmp_path;
+    }
+    $staticUrl = get_static_url($protocol);
+    $url =  $staticUrl . DS . "upload" . DS .APP_NAME . DS . get_upload_cdn_evn() .  DS."avatar".DS . $tmp_path;
+    return $url;
+}
+
+function get_default_user_url(){
+    $staticUrl = get_static_url("http");
+    return $staticUrl . "/nouser.png";
+}
 
 
 

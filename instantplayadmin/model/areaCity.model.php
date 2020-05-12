@@ -42,6 +42,6 @@ class AreaCityModel {
 
     static function getNameByCode($code){
         $row = self::db()->getRow(" code = '$code'");
-        return $row['shot_name'];
+        return $row['short_name'];
     }
 }

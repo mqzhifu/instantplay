@@ -23,7 +23,9 @@ class UploadService
     }
 
     function avatar($postInputName){
-
+        $lib = new ImageUpLoadLib();
+        $rs = $lib->upLoadOneFile($postInputName,'avatar',array('png','jpg','bmp'),0);
+        return $rs;
     }
 
 

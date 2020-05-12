@@ -17,7 +17,77 @@ class AgentCtrl extends BaseCtrl{
     }
 
     function getList(){
-        $this->getData();
+        //初始化返回数据格式
+        $records = array('data'=>[],'draw'=>$_REQUEST['draw']);
+        $where = $this->getDataListTableWhere();
+        $cnt = AgentModel::db()->getCount($where);
+
+        $iTotalRecords = $cnt;//DB中总记录数
+        if ($iTotalRecords){
+            $order_sort = _g("order");
+
+            $order_column = $order_sort[0]['column'] ?: 0;
+            $order_dir = $order_sort[0]['dir'] ?: "desc";
+
+
+            $sort = array(
+                'id',
+                'id',
+                '',
+                '',
+                '',
+                '',
+                'add_time',
+            );
+            $order = " order by ". $sort[$order_column]." ".$order_dir;
+
+            $iDisplayLength = intval($_REQUEST['length']);//每页多少条记录
+            if(999999 == $iDisplayLength){
+                $iDisplayLength = $iTotalRecords;
+            }else{
+                $iDisplayLength = $iDisplayLength < 0 ? $iTotalRecords : $iDisplayLength;
+            }
+
+            $iDisplayStart = intval($_REQUEST['start']);//limit 起始
+
+
+            $end = $iDisplayStart + $iDisplayLength;
+            $end = $end > $iTotalRecords ? $iTotalRecords : $end;
+
+            $limit = " limit $iDisplayStart,$end";
+            $data = AgentModel::db()->getAll($where . $order . $limit);
+
+            foreach($data as $k=>$v){
+                $row = array(
+                    '<input type="checkbox" name="id[]" value="'.$v['id'].'">',
+                    $v['id'],
+                    $v['title'],
+                    $v['real_name'],
+                    AgentModel::STATUS[$v['status']],
+                    AgentModel::ROLE[$v['type']],
+                    AreaProvinceModel::db()->getOneByOneField('code',$v['province_code'])['short_name'],
+                    AreaCityModel::db()->getOneByOneField('code',$v['city_code'])['short_name'],
+                    AreaCountyModel::db()->getOneByOneField('code',$v['county_code'])['short_name'],
+                    AreaTownModel::db()->getOneByOneField('code',$v['towns_code'])['short_name'],
+                    $v['villages'],
+                    UserModel::getSexDescByKey($v['type']),
+                    '<img height="30" width="30" src="'.get_agent_url($v['pic']).'" />',
+                    $v['mobile'],
+                    $v['fee_percent'],
+                    get_default_date($v['a_time']),
+                    "",
+                    "",
+                );
+
+                $records["data"][] = $row;
+            }
+        }
+
+        $records["recordsTotal"] = $iTotalRecords;
+        $records["recordsFiltered"] = $iTotalRecords;
+
+        echo json_encode($records);
+        exit;
     }
 
     function add(){
@@ -30,6 +100,7 @@ class AgentCtrl extends BaseCtrl{
                 'fee_percent'=> _g('fee_percent'),
                 'status'=>1,
 
+                'type'=>AgentModel::ROLE_LEVEL_ONE,
                 'address'=> _g('address'),
                 'province_code'=> _g('province'),
                 'city_code'=> _g('city'),
@@ -70,6 +141,9 @@ class AgentCtrl extends BaseCtrl{
         $this->addJs('/assets/global/plugins/jquery-validation/js/additional-methods.min.js');
 
         $this->addHookJS("/people/agent_add_hook.html");
+
+        $this->addHookJS("/layout/place.js.html");
+        $this->addHookJS("/layout/file_upload.js.html");
         $this->display("/people/agent_add.html");
     }
 
@@ -96,82 +170,7 @@ class AgentCtrl extends BaseCtrl{
     }
 
 
-    function getData(){
-        $records = array();
-        $records["data"] = array();
-        $sEcho = intval($_REQUEST['draw']);
 
-        $where = $this->getDataListTableWhere();
-
-        $cnt = AgentModel::db()->getCount($where);
-
-        $iTotalRecords = $cnt;//DB中总记录数
-        if ($iTotalRecords){
-            $order_sort = _g("order");
-
-            $order_column = $order_sort[0]['column'] ?: 0;
-            $order_dir = $order_sort[0]['dir'] ?: "desc";
-
-
-            $sort = array(
-                'id',
-                'id',
-                '',
-                '',
-                '',
-                '',
-                'add_time',
-            );
-            $order = " order by ". $sort[$order_column]." ".$order_dir;
-
-            $iDisplayLength = intval($_REQUEST['length']);//每页多少条记录
-            if(999999 == $iDisplayLength){
-                $iDisplayLength = $iTotalRecords;
-            }else{
-                $iDisplayLength = $iDisplayLength < 0 ? $iTotalRecords : $iDisplayLength;
-            }
-
-            $iDisplayStart = intval($_REQUEST['start']);//limit 起始
-
-
-            $end = $iDisplayStart + $iDisplayLength;
-            $end = $end > $iTotalRecords ? $iTotalRecords : $end;
-
-            $data = AgentModel::db()->getAll($where . $order);
-
-            foreach($data as $k=>$v){
-                $row = array(
-                    '<input type="checkbox" name="id[]" value="'.$v['id'].'">',
-                    $v['id'],
-                    $v['title'],
-                    $v['real_name'],
-                    AgentModel::STATUS[$v['status']],
-                    AgentModel::ROLE[$v['type']],
-                    AreaProvinceModel::db()->getOneByOneField('province_code',$v['province_id'])['short_name'],
-                    AreaCityModel::db()->getOneByOneField('city_code',$v['city_id'])['short_name'],
-                    AreaCountyModel::db()->getOneByOneField('area_code',$v['county_id'])['short_name'],
-                    AreaStreetModel::db()->getOneByOneField('street_code',$v['towns_id'])['short_name'],
-                    $v['villages'],
-                    UserModel::getSexDescByKey($v['type']),
-                    '<img height="30" width="30" src="'.get_agent_url($v['pic']).'" />',
-                    $v['mobile'],
-                    $v['fee_percent'],
-                    get_default_date($v['a_time']),
-                    "",
-                    "",
-                );
-
-                $records["data"][] = $row;
-            }
-        }
-
-        $records["draw"] = $sEcho;
-        $records["recordsTotal"] = $iTotalRecords;
-        $records["recordsFiltered"] = $iTotalRecords;
-
-        echo json_encode($records);
-        exit;
-    }
 
     function getDataListTableWhere(){
         $where = 1;

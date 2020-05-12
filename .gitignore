@@ -4,6 +4,6 @@ storage/session/*
 storage/view_c/*
 storage/view_c/product_tb
 
-static/upload/
+
 
 kernel/plugins/structure/testData

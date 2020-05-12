@@ -28,8 +28,8 @@ class AreaTownModel {
     }
 
     static function getNameByCode($code){
-        $row = self::db()->getRow(" street_code = '$code'");
-        return $row['street_name'];
+        $row = self::db()->getRow(" code = '$code'");
+        return $row['short_name'];
     }
 
 

@@ -4,7 +4,7 @@ class BaseCtrl{
     public $_js = array();
     public $_css = array();
     public $_title = '';
-    public $_hook_js = '';
+    public $_hook_js = array();
     public $_assign = array();
     public $_adminid = "";
     public $_request = null;
@@ -99,7 +99,7 @@ class BaseCtrl{
     }
 
     function addHookJS($js){
-        $this->_hook_js = $js;
+        $this->_hook_js[] = $js;
     }
 
     function addCss($dir_file){
@@ -241,7 +241,6 @@ class BaseCtrl{
                 $$k = $v;
             }
         }
-
 
         $header_html = $this->_st->compile("layout/header.html");
         $index_html = $this->_st->compile($file);

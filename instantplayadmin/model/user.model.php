@@ -151,5 +151,42 @@ class UserModel {
         $data = array('consume_total'=>array($orderPrice) ,'order_num'=>array(1));
         return self::db()->upById($uid,$data);
     }
+    //获取一个用户的 所在地信息
+    static function getLivePlaceDesc($uid,$default = '--'){
+        $user = self::db()->getById($uid);
+        if(!$user){
+            return $default;
+        }
+
+        if(arrKeyIssetAndExist($user,'province_code')){
+            $province = AreaProvinceModel::getNameByCode($user['province_code']);
+            $rs = $province;
+        }else{
+            $rs = $default;
+        }
+
+        if(arrKeyIssetAndExist($user,'city_code')){
+            $city = AreaCityModel::getNameByCode($user['city_code']);
+            $rs .= $city;
+        }else{
+            $rs .= $default;
+        }
+
+        if(arrKeyIssetAndExist($user,'county_code')){
+            $county = AreaCountyModel::getNameByCode($user['county_code']);
+            $rs .= $county;
+        }else{
+            $rs .= $default;
+        }
+
+        if(arrKeyIssetAndExist($user,'town_code')){
+            $town = AreaTownModel::getNameByCode($user['town_code']);
+            $rs .= $town;
+        }else{
+            $rs .= $default;
+        }
+
+        return $rs;
+    }
 
 }

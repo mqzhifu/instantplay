@@ -5,44 +5,38 @@ class UserCtrl extends BaseCtrl{
             $this->getList();
         }
 
-
-
         $this->assign("typeOptions",UserModel::getTypeOptions());
         $this->assign("sexOptions", UserModel::getSexOptions());
 
         $this->display("/people/user_list.html");
     }
 
-
     function getList(){
-        $this->getData();
-    }
-
-    function getData(){
-        $records = array();
-        $records["data"] = array();
-        $sEcho = intval($_REQUEST['draw']);
-
+        //初始化返回数据格式
+        $records = array('data'=>[],'draw'=>$_REQUEST['draw']);
+        //获取搜索条件
         $where = $this->getDataListTableWhere();
-
-        $cnt = UserModel::db()->getCount($where);
-
-        $iTotalRecords = $cnt;//DB中总记录数
+        //计算 总数据数 DB中总记录数
+        $iTotalRecords = UserModel::db()->getCount($where);
         if ($iTotalRecords){
+            //按照某个字段 排序
             $order_sort = _g("order");
-
             $order_column = $order_sort[0]['column'] ?: 0;
             $order_dir = $order_sort[0]['dir'] ?: "desc";
-
 
             $sort = array(
                 'id',
                 'id',
-                '',
-                '',
-                '',
-                '',
-                'add_time',
+                'uname',
+                'nickname',
+                'sex',
+                'order_num',
+                'mobile',
+                'email',
+                'birthday',
+                'a_time',
+                'type',
+                'consume_total',
             );
             $order = " order by ". $sort[$order_column]." ".$order_dir;
 
@@ -54,27 +48,31 @@ class UserCtrl extends BaseCtrl{
             }
 
             $iDisplayStart = intval($_REQUEST['start']);//limit 起始
-
-
             $end = $iDisplayStart + $iDisplayLength;
             $end = $end > $iTotalRecords ? $iTotalRecords : $end;
 
             $limit = " limit $iDisplayStart,$end";
             $data = UserModel::db()->getAll($where . $order . $limit);
 
+
+
             foreach($data as $k=>$v){
+                $avatar = get_avatar_url($v['avatar']);
+                $userLiveplaceDesc = UserModel::getLivePlaceDesc($v['id']);
+
                 $row = array(
                     '<input type="checkbox" name="id[]" value="'.$v['id'].'">',
                     $v['id'],
                     $v['uname'],
                     $v['nickname'],
+                    $userLiveplaceDesc,
                     UserModel::getSexDescByKey($v['sex']),
                     $v['order_num'],
                     $v['mobile'],
                     $v['email'],
                     get_default_date($v['birthday']),
                     get_default_date($v['a_time']),
-                    $v['avatar'],
+                    '<img height="30" width="30" src="'.$avatar.'" />',
                     UserModel::getTypeDescByKey($v['type']),
                     $v['third_uid'],
                     $v['consume_total'],
@@ -85,13 +83,14 @@ class UserCtrl extends BaseCtrl{
             }
         }
 
-        $records["draw"] = $sEcho;
         $records["recordsTotal"] = $iTotalRecords;
         $records["recordsFiltered"] = $iTotalRecords;
 
         echo json_encode($records);
         exit;
     }
+
+
 
     function add(){
         if(_g('opt')){
@@ -107,14 +106,14 @@ class UserCtrl extends BaseCtrl{
                 'type'=>_g('type'),
                 'third_uid'=>_g('third_uid'),
                 'a_time'=>time(),
-                'city_id'=> _g('city'),
-                'county_id'=> _g('county'),
-                'town_id'=> _g('street'),
-                'province_id'=> _g('province'),
+                'city_code'=> _g('city'),
+                'county_code'=> _g('county'),
+                'town_code'=> _g('street'),
+                'province_code'=> _g('province'),
             );
 
             $uploadService = new UploadService();
-            $uploadRs = $uploadService->agent('avatar');
+            $uploadRs = $uploadService->avatar('pic');
             if($uploadRs['code'] != 200){
                 exit(" uploadService->avatar error ".json_encode($uploadRs));
             }
@@ -130,6 +129,8 @@ class UserCtrl extends BaseCtrl{
         $cityJs = json_encode(AreaCityModel::getJsSelectOptions());
         $countryJs = json_encode(AreaCountyModel::getJsSelectOptions());
 
+
+
         $this->assign("provinceOption",AreaProvinceModel::getSelectOptionsHtml());
         $this->assign("cityJs",$cityJs);
         $this->assign("countyJs",$countryJs);
@@ -142,6 +143,8 @@ class UserCtrl extends BaseCtrl{
         $this->addJs('/assets/global/plugins/jquery-validation/js/additional-methods.min.js');
 
         $this->addHookJS("/people/user_add_hook.html");
+        $this->addHookJS("/layout/place.js.html");
+        $this->addHookJS("/layout/file_upload.js.html");
         $this->display("/people/user_add.html");
     }
 
@@ -152,7 +155,9 @@ class UserCtrl extends BaseCtrl{
         $user['status_desc'] = UserModel::STATUS_DESC[$user['status']];
 
 
-
+        $user['avatar_url'] = get_avatar_url($user['avatar']);
+        $user['birthday_dt'] =  get_default_date($user['birthday']);
+        $user['type_desc'] = UserModel::getTypeDescByKey($user['type']);
         $orders = OrderModel::getListByUid($uid);
         $userLog = UserLogModel::getListByUid($uid);
 

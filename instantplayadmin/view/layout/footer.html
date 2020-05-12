@@ -28,7 +28,9 @@
 </script>
 
 {if $hook_js}
-{include $hook_js}
+    {foreach ($hook_js as $k=>$v) }
+        {include $v}
+    {/foreach}
 {/if}
 <!-- END JAVASCRIPTS -->
 </body>
