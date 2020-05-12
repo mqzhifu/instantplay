@@ -158,29 +158,35 @@ class UserModel {
             return $default;
         }
 
-        if(arrKeyIssetAndExist($user,'province_code')){
-            $province = AreaProvinceModel::getNameByCode($user['province_code']);
+        return self::getPlace($user,$default);
+    }
+
+    static function getPlace($data,$default){
+
+
+        if(arrKeyIssetAndExist($data,'province_code')){
+            $province = AreaProvinceModel::getNameByCode($data['province_code']);
             $rs = $province;
         }else{
             $rs = $default;
         }
 
-        if(arrKeyIssetAndExist($user,'city_code')){
-            $city = AreaCityModel::getNameByCode($user['city_code']);
+        if(arrKeyIssetAndExist($data,'city_code')){
+            $city = AreaCityModel::getNameByCode($data['city_code']);
             $rs .= $city;
         }else{
             $rs .= $default;
         }
 
-        if(arrKeyIssetAndExist($user,'county_code')){
-            $county = AreaCountyModel::getNameByCode($user['county_code']);
+        if(arrKeyIssetAndExist($data,'county_code')){
+            $county = AreaCountyModel::getNameByCode($data['county_code']);
             $rs .= $county;
         }else{
             $rs .= $default;
         }
 
-        if(arrKeyIssetAndExist($user,'town_code')){
-            $town = AreaTownModel::getNameByCode($user['town_code']);
+        if(arrKeyIssetAndExist($data,'town_code')){
+            $town = AreaTownModel::getNameByCode($data['town_code']);
             $rs .= $town;
         }else{
             $rs .= $default;
@@ -189,4 +195,12 @@ class UserModel {
         return $rs;
     }
 
+    static function getAgentLivePlaceDesc($uid,$default = '--'){
+        $user = AgentModel::db()->getById($uid);
+        if(!$user){
+            return $default;
+        }
+
+        return self::getPlace($user,$default);
+    }
 }

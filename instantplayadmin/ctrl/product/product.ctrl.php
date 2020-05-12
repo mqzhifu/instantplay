@@ -140,36 +140,8 @@ class ProductCtrl extends BaseCtrl{
     }
 
     function getList(){
-        $this->getData();
-    }
-
-    function getWhere(){
-        $where = " 1 ";
-        if($mobile = _g("mobile"))
-            $where .= " and mobile = '$mobile'";
-
-        if($message = _g("message"))
-            $where .= " and mobile like '%$message%'";
-
-        if($from = _g("from")){
-            $from .= ":00";
-            $where .= " and add_time >= '".strtotime($from)."'";
-        }
-
-        if($to = _g("to")){
-            $to .= ":59";
-            $where .= " and add_time <= '".strtotime($to)."'";
-        }
-
-
-        return $where;
-    }
-
-
-    function getData(){
-        $records = array();
-        $records["data"] = array();
-        $sEcho = intval($_REQUEST['draw']);
+        //初始化返回数据格式
+        $records = array('data'=>[],'draw'=>$_REQUEST['draw']);
 
         $where = $this->getDataListTableWhere();
         $cnt = ProductModel::db()->getCount($where);
@@ -210,9 +182,14 @@ class ProductCtrl extends BaseCtrl{
 
             foreach($data as $k=>$v){
                 $statusBnt = "上架";
+                $type = 2;
+                $statusCssColor = "green";
                 if($v['status'] == ProductModel::STATUS_ON){
                     $statusBnt = "下架";
+                    $type = 1;
+                    $statusCssColor = 'red';
                 }
+
 
 //                $desc = $v['desc'];
 //                if(mb_strlen($desc) >=128){
@@ -249,8 +226,9 @@ class ProductCtrl extends BaseCtrl{
                     $v['recommend'],
                     get_default_date($v['a_time']),
                     '<a href="/product/no/product/detail/id='.$v['id'].'" class="btn blue btn-xs margin-bottom-5" data-id="'.$v['id'].'"><i class="fa fa-file-o"></i> 详情 </a>'.
-                    '<button class="btn btn-xs default red btn blue btn-xs margin-bottom-5" data-id="'.$v['id'].'"><i class="fa fa-link"></i>'.$statusBnt.'</button>'.
+                    '<button class="btn btn-xs default '.$statusCssColor.' btn blue upstatus btn-xs margin-bottom-5" data-id="'.$v['id'].'" data-type="'.$type.'"><i class="fa fa-link"></i>'.$statusBnt.'</button>'.
                     '<a href="/product/no/goods/add/pid='.$v['id'].'" class="btn purple btn-xs btn blue btn-xs margin-bottom-5"><i class="fa fa-plus"></i>   </i> 添加商品 </a>'.
+                    '<button class="btn btn-xs default dark delone margin-bottom-5" data-id="'.$v['id'].'" ><i class="fa fa-scissors"></i>  删除</button>'.
                     '<a href="" class="btn yellow btn-xs margin-bottom-5" data-id="'.$v['id'].'"><i class="fa fa-edit"></i> 编辑 </a>',
 
                 );
@@ -259,12 +237,50 @@ class ProductCtrl extends BaseCtrl{
             }
         }
 
-        $records["draw"] = $sEcho;
         $records["recordsTotal"] = $iTotalRecords;
         $records["recordsFiltered"] = $iTotalRecords;
 
         echo json_encode($records);
         exit;
+    }
+
+    function delOne(){
+        $id = _g("id");
+
+        ProductModel::db()->delById($id);
+        GoodsModel::db()->delete(" pid = $id limit 1000");
+        OrderModel::db()->delete("goods_id = $id");
+    }
+
+    function getWhere(){
+        $where = " 1 ";
+        if($mobile = _g("mobile"))
+            $where .= " and mobile = '$mobile'";
+
+        if($message = _g("message"))
+            $where .= " and mobile like '%$message%'";
+
+        if($from = _g("from")){
+            $from .= ":00";
+            $where .= " and add_time >= '".strtotime($from)."'";
+        }
+
+        if($to = _g("to")){
+            $to .= ":59";
+            $where .= " and add_time <= '".strtotime($to)."'";
+        }
+
+
+        return $where;
+    }
+
+
+
+
+    function upstatus(){
+        $status = _g("type");
+        $id = _g("id");
+        ProductModel::db()->upById($id,array('status'=>$status));
     }
 
     function getDataListTableWhere(){

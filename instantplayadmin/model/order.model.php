@@ -133,5 +133,10 @@ class OrderModel {
 	    return $list;
     }
 
+    static function getListByAgentId($aid){
+        $list = self::db()->getAll(" agent_uid = $aid");
+        return $list;
+    }
+
 
 }

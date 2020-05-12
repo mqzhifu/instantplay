@@ -5,6 +5,8 @@ class AgentCtrl extends BaseCtrl{
             $this->getList();
         }
 
+        $this->addJs('/assets/global/plugins/jquery-validation/js/jquery.validate.min.js');
+        $this->addJs('/assets/global/plugins/jquery-validation/js/additional-methods.min.js');
 
         $this->assign("statusSelectOptionHtml",AgentModel::getStatusSelectOptionHtml());
         $this->display("/people/agent_list.html");
@@ -14,6 +16,42 @@ class AgentCtrl extends BaseCtrl{
         $id = _g("countyId");
         $data = AreaTownModel::db()->getAll("county_code=$id");
         echo json_encode($data);
+    }
+
+    function delOne(){
+        $id = _g("id");
+        AgentModel::db()->delById($id);
+    }
+
+    function detail(){
+        $uid = _g("id");
+        $agent = AgentModel::db()->getById($uid);
+        $agent['dt'] = get_default_date($agent['a_time']);
+        $agent['status_desc'] = AgentModel::STATUS[$agent['status']];
+
+        $agent['pic_url'] = get_agent_url($agent['pic']);
+//        $agent['birthday_dt'] =  get_default_date($agent['birthday']);
+//        $agent['type_desc'] = UserModel::getTypeDescByKey($agent['type']);
+        $orders = OrderModel::getListByAgentId($uid);
+//        $userLog = UserLogModel::getListByUid($uid);
+
+        if($orders){
+            foreach ($orders as $k=>$v) {
+                $row = $v;
+                $row['fee_percent'] = $v['price'] * $agent['fee_percent'];
+                $orders[$k] = $row;
+            }
+
+        }
+
+        $userLivePlaceDesc = UserModel::getAgentLivePlaceDesc($uid);
+        $this->assign("userLivePlaceDesc",$userLivePlaceDesc);
+
+        $this->assign("agent",$agent);
+        $this->assign("orders",$orders);
+//        $this->assign("userLog",$userLog);
+
+        $this->display("/people/agent_detail.html");
     }
 
     function getList(){
@@ -35,8 +73,16 @@ class AgentCtrl extends BaseCtrl{
                 'id',
                 '',
                 '',
+                'status',
+                'province_code',
+                'city_code',
+                'county_code',
+                'town_code',
+                '',
+                'sex',
                 '',
                 '',
+                'fee_percent',
                 'add_time',
             );
             $order = " order by ". $sort[$order_column]." ".$order_dir;
@@ -64,7 +110,6 @@ class AgentCtrl extends BaseCtrl{
                     $v['title'],
                     $v['real_name'],
                     AgentModel::STATUS[$v['status']],
-                    AgentModel::ROLE[$v['type']],
                     AreaProvinceModel::db()->getOneByOneField('code',$v['province_code'])['short_name'],
                     AreaCityModel::db()->getOneByOneField('code',$v['city_code'])['short_name'],
                     AreaCountyModel::db()->getOneByOneField('code',$v['county_code'])['short_name'],
@@ -75,8 +120,9 @@ class AgentCtrl extends BaseCtrl{
                     $v['mobile'],
                     $v['fee_percent'],
                     get_default_date($v['a_time']),
-                    "",
-                    "",
+                    '<a href="/people/no/agent/detail/id='.$v['id'].'" class="btn blue btn-xs margin-bottom-5"><i class="fa fa-file-o"></i> 详情 </a>'.
+                    '<button class="btn btn-xs default red upstatus margin-bottom-5"  data-id="'.$v['id'].'" ><i class="fa fa-female"></i> 审核</button>'. "&nbsp;".
+                    '<button class="btn btn-xs default yellow delone" data-id="'.$v['id'].'" ><i class="fa fa-scissors"></i> 删除</button>',
                 );
 
                 $records["data"][] = $row;
@@ -88,6 +134,33 @@ class AgentCtrl extends BaseCtrl{
 
         echo json_encode($records);
         exit;
+    }
+
+    function upstatus(){
+        $aid = _g("id");
+        $agent = AgentModel::db()->getById($aid);
+
+        if(_g('opt')){
+
+
+            var_dump($_REQUEST);exit;
+            exit;
+        }
+        $statusDesc = AgentModel::STATUS;
+        $statusDescRadioHtml = "";
+        foreach ($statusDesc as $k=>$v) {
+            $statusDescRadioHtml .= "<input name='status' type='radio' value={$k} />".$v;
+        }
+
+        $data = array(
+            'statusDescRadioHtml'=>$statusDescRadioHtml,
+        );
+//        $this->assign("agent",$agent);
+//        $this->assign("statusDescRadioHtml",$statusDescRadioHtml);
+
+        $html = $this->_st->compile("/people/agent_upstatus.html",$data);
+        $html = file_get_contents($html);
+        echo_json($html);
     }
 
     function add(){

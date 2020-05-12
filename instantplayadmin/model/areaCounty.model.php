@@ -29,7 +29,7 @@ class AreaCountyModel {
 
     static function getJsSelectOptions(){
         self::db()->_fetchArray = 1;
-        $data = self::db()->getAll(" 1 order by sort ","","city_code, code,short_name");
+        $data = self::db()->getAll(" 1 order by sort ","","city_code, code,short_name,code");
         self::db()->_fetchArray = 0;
         $rs = [];
         foreach ($data as $k=>$v) {

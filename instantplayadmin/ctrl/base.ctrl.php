@@ -193,6 +193,8 @@ class BaseCtrl{
         //=====================================上面都是公共的==========================
         $this->addJs('/assets/admin/pages/scripts/tasks.js');
 //        <link rel="stylesheet" type="text/css" href="../../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css"/>
+        $this->addJs('/js/pop_bootbox.js');
+        $this->addJs('/js/pop_ajax.js');
 
         $this->addCss('/assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css');
 

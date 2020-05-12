@@ -21,6 +21,15 @@ function get_agent_url( $tmpPath , $protocol = 'http'){
     return $url;
 }
 
+function get_banner_url( $tmpPath , $protocol = 'http'){
+    if(!$tmpPath){
+        return false;
+    }
+    $staticUrl = get_static_url($protocol);
+    $url =  $staticUrl . DS . "upload" . DS .APP_NAME . DS . get_upload_cdn_evn() .  DS."banner".DS . $tmpPath;
+    return $url;
+}
+
 function get_avatar_url_by_uid($uid){
     $user = UserModel::db()->getById($uid);
 }

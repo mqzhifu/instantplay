@@ -27,6 +27,12 @@ class UploadService
         $rs = $lib->upLoadOneFile($postInputName,'avatar',array('png','jpg','bmp'),0);
         return $rs;
     }
+    function banner($postInputName){
+        $lib = new ImageUpLoadLib();
+        $rs = $lib->upLoadOneFile($postInputName,'banner',array('png','jpg','bmp'),0);
+        return $rs;
+    }
+
 
 
 

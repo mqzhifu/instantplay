@@ -369,10 +369,34 @@
                 });
             }
         });
+    });
 
+
+    $("#datatable_products").on("click",".upstatus",function(){
+        var id = $(this).attr("data-id");
+        var type = $(this).attr("data-type");
+        // UTHING.ajax({
+        //     url:"/product/no/product/upstatus/",
+        //     data:"id="+id+"&type="+type,
+        //     title:"产品"
+        // });
+        bootbox.confirm("Are you sure?", function(result) {
+            if(result == true){
+                $.ajax({
+                    type: 'GET',
+                    url:"/product/no/product/upstatus/",
+                    data:"id="+id+"&type="+type,
+                    success: function(data){
+                        location.reload();
+                    }
+
+                });
+            }
+        });
 
 
     });
+
 
     if (!jQuery().datetimepicker) {
         alert(333);
