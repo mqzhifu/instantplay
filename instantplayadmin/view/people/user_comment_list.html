@@ -13,12 +13,11 @@
                 <div class="col-md-12">
                     <div class="portlet light">
                         <div class="portlet-title">
-
                             <div class="actions">
                                 <div class="btn-group">
-                                    <a href="/product/no/category/add/">
+                                    <a href="/people/no/msg/add/">
                                         <button class="btn green">
-                                            添加 <i class="fa fa-plus"></i>
+                                            发送站内信 <i class="fa fa-plus"></i>
                                         </button>
                                     </a>
 
@@ -46,15 +45,24 @@
                                         <th width="5%">
                                             ID
                                         </th>
-                                        <th width="20%">
-                                            名称
-                                        </th>
 
-                                        <th>
-                                            子集
+                                        <th width="20%">
+                                            pic
                                         </th>
 
                                         <th width="20%">
+                                            uid
+                                        </th>
+
+                                        <th>标题</th>
+                                        <th>内容</th>
+                                        <th>pid</th>
+                                        <th>gid</th>
+                                        <th width="20%">
+                                            a_time
+                                        </th>
+
+                                        <th width="5%">
                                             操作
                                         </th>
                                     </tr>
@@ -64,14 +72,39 @@
                                         <td>
 
                                         </td>
-
                                         <td>
-                                            <input type="text" class="form-control form-filter input-sm" name="uid" >
+                                            <input type="text" class="form-control form-filter input-sm" name="from_uid" >
                                         </td>
 
+                                        <td></td>
                                         <td>
-                                        </td>
 
+                                            <input type="text" class="form-control form-filter input-sm" name="to_uid" >
+                                        </td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td>
+
+                                            <div class="input-group date form_datetime margin-bottom-5">
+                                                <input type="text" class="form-control form-filter input-sm" style="height: 34px" readonly name="from" id="from" placeholder="From">
+                                                <span class="input-group-btn">
+                                                    <!--<button class="btn default date-reset" type="button" style="margin-right: 0"><i class="fa fa-times"></i></button>-->
+                                                    <button class="btn default date-set" type="button" style="margin-right: 0"><i class="fa fa-calendar"></i></button>
+                                                </span>
+                                            </div>
+
+
+                                            <div class="input-group date form_datetime margin-bottom-5">
+                                                <input type="text" class="form-control form-filter input-sm" style="height: 34px"  readonly name="to" id="to" placeholder="to">
+                                                <span class="input-group-btn">
+                                                    <!--<button class="btn default date-reset" type="button"  style="margin-right: 0"><i class="fa fa-times"></i></button>-->
+                                                    <button class="btn default date-set" type="button"  style="margin-right: 0"><i class="fa fa-calendar"></i></button>
+                                                </span>
+                                            </div>
+
+
+                                        </td>
                                         <td>
                                             <div class="margin-bottom-5">
                                                 <button class="btn btn-sm yellow filter-submit margin-bottom"><i class="fa fa-search"></i> 搜索</button>
@@ -137,7 +170,7 @@
                     ],
                     "pageLength": 10, // default record count per page
                     "ajax": {
-                        "url": "/product/no/category/getlist/" // ajax sourcedelBat
+                        "url": "/people/no/userComment/getlist/" // ajax sourcedelBat
                     },
                     "aoColumnDefs" : [{  // define columns sorting options(by default all columns are sortable extept the first checkbox column)
                         'bSortable' : false,

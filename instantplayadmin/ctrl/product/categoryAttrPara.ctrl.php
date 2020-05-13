@@ -4,13 +4,9 @@ class CategoryAttrParaCtrl extends BaseCtrl{
         if(_g("getlist")){
             $this->getList();
         }
-        $this->display("product/banner_list.html");
+        $this->display("product/category_attr_para_list.html");
     }
 
-
-    function getList(){
-        $this->getData();
-    }
 
     function add(){
         $pcaId  = _g("pca_id");
@@ -36,9 +32,17 @@ class CategoryAttrParaCtrl extends BaseCtrl{
                 $this->notice("重复:".$name);
             }
 
+
+            $uploadService = new UploadService();
+            $uploadRs = $uploadService->categoryAttrPara('pic');
+            if($uploadRs['code'] != 200){
+                exit(" uploadService->avatar error ".json_encode($uploadRs));
+            }
+
             $data = array(
                 'name'=>$name,
                 'pca_id'=>$pcaId,
+                'img'=>$uploadRs['msg'],
             );
 
             $newId = ProductCategoryAttrParaModel::db()->add($data);
@@ -49,7 +53,9 @@ class CategoryAttrParaCtrl extends BaseCtrl{
         $this->assign("categoryAttr",$categoryAttr);
 
 
+
         $this->addHookJS("/product/category_attr_para_add_hook.html");
+        $this->addHookJS("/layout/file_upload.js.html");
         $this->display("/product/category_attr_para_add.html");
     }
 
@@ -76,14 +82,13 @@ class CategoryAttrParaCtrl extends BaseCtrl{
     }
 
 
-    function getData(){
-        $records = array();
-        $records["data"] = array();
-        $sEcho = _g("draw");
+    function getList(){
+        //初始化返回数据格式
+        $records = array('data'=>[],'draw'=>$_REQUEST['draw']);
 
         $where = $this->getDataListTableWhere();
 
-        $cnt = BannerModel::db()->getCount($where);
+        $cnt = ProductCategoryAttrParaModel::db()->getCount($where);
         $iTotalRecords = $cnt;//DB中总记录数
         if ($iTotalRecords){
             $order_sort = _g("order");
@@ -94,6 +99,7 @@ class CategoryAttrParaCtrl extends BaseCtrl{
 
             $sort = array(
                 'id',
+                'id'
             );
             $order = " order by ". $sort[$order_column]." ".$order_dir;
 
@@ -110,16 +116,16 @@ class CategoryAttrParaCtrl extends BaseCtrl{
             $end = $iDisplayStart + $iDisplayLength;
             $end = $end > $iTotalRecords ? $iTotalRecords : $end;
 
-            $data = BannerModel::db()->getAll($where .  $order. " limit $iDisplayStart,$end");
+            $data = ProductCategoryAttrParaModel::db()->getAll($where .  $order. " limit $iDisplayStart,$end");
 
             foreach($data as $k=>$v){
+                $img = get_category_attr_para_url($v['img']);
                 $row = array(
                     '<input type="checkbox" name="id[]" value="'.$v['id'].'">',
                     $v['id'],
-                    $v['type'],
-                    $v['title'],
-                    $v['pid'],
-                    $v['pic'],
+                    $v['name'],
+                    $v['pca_id'],
+                    '<img height="30" width="30" src="'.$img.'" />',
                     "",
                 );
 
@@ -127,7 +133,6 @@ class CategoryAttrParaCtrl extends BaseCtrl{
             }
         }
 
-        $records["draw"] = $sEcho;
         $records["recordsTotal"] = $iTotalRecords;
         $records["recordsFiltered"] = $iTotalRecords;
 

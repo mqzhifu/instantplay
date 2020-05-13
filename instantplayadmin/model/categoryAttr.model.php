@@ -59,4 +59,18 @@ class CategoryAttrModel {
 
         return $rs;
     }
+    static function getProductRelationByAidHtml($id){
+        $para = CategoryAttrParaModel::getByCategoryAttrId($id);
+        if(!$para)
+            return null;
+
+        $br = "<br/>";
+        $rs = "";
+        foreach ($para as $k=>$v) {
+            $rs .=$v['name'].$br;
+        }
+
+        return $rs;
+    }
+
 }

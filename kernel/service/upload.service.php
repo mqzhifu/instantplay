@@ -33,6 +33,12 @@ class UploadService
         return $rs;
     }
 
+    function categoryAttrPara($postInputName){
+        $lib = new ImageUpLoadLib();
+        $rs = $lib->upLoadOneFile($postInputName,'category_attr_para',array('png','jpg','bmp'),0);
+        return $rs;
+    }
+
 
 
 

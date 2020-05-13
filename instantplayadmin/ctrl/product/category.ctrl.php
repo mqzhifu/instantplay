@@ -96,12 +96,12 @@ class CategoryCtrl extends BaseCtrl{
             $data = CategoryModel::db()->getAll($where .  $order. " limit $iDisplayStart,$end");
 
             foreach($data as $k=>$v){
-                $attr = CategoryModel::getProductRelationByCid($v['id']);
+                $attr = CategoryModel::getProductRelationByCidHtml($v['id']);
                 $row = array(
                     '<input type="checkbox" name="id[]" value="'.$v['id'].'">',
                     $v['id'],
                     $v['name'],
-                    json_encode($attr,JSON_UNESCAPED_UNICODE),
+                    $attr,
                     '<a href="/product/no/categoryAttr/add/cid='.$v['id'].'" class="btn yellow btn-xs margin-bottom-5"><i class="fa fa-edit"></i> 添加属性 </a>',
                 );
 

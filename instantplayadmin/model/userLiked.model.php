@@ -1,6 +1,6 @@
 <?php
-class CategoryModel {
-	static $_table = 'product_category';
+class UserLikedModel {
+	static $_table = 'user_product_liked';
 	static $_pk = 'id';
 	static $_db = null;
     static $_db_key = "instantplay";

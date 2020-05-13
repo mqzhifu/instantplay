@@ -5,6 +5,12 @@ class UserFeedbackModel {
     static $_db = null;
     static $_db_key = "instantplay";
 
+    const STATUS_WAIT = 1;
+    const STATUS_OK = 2;
+    CONST STATUS  = [
+        self::STATUS_WAIT=>"未处理",
+        self::STATUS_OK=>"已处理",
+    ];
 
     static function db(){
         if(self::$_db)

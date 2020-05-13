@@ -13,17 +13,31 @@
                 <div class="col-md-12">
                     <div class="portlet light">
                         <div class="portlet-title">
-
-                            <div class="actions">
+                            <!-- <div class="actions">
                                 <div class="btn-group">
-                                    <a href="/product/no/category/add/">
-                                        <button class="btn green">
-                                            添加 <i class="fa fa-plus"></i>
-                                        </button>
+                                    <a class="btn btn-default btn-circle" href="javascript:;" data-toggle="dropdown">
+                                        <i class="fa fa-share"></i> 导出 <i class="fa fa-angle-down"></i>
                                     </a>
 
+                                    <ul class="dropdown-menu pull-right">
+                                        <li>
+                                            <a href="javascript:void(0);" onclick="export_data();">
+                                                Excel </a>
+                                        </li>
+                                        <li class="divider">
+                                        </li>
+                                        <li>
+                                            <a href="javascript:;">
+                                                PDF </a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:;">
+                                                WORD </a>
+                                        </li>
+
+                                    </ul>
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
                         <div class="portlet-body">
                             <div class="table-container">
@@ -50,11 +64,15 @@
                                             名称
                                         </th>
 
-                                        <th>
-                                            子集
+                                        <th width="20%">
+                                            pca_id
                                         </th>
 
                                         <th width="20%">
+                                            logo
+                                        </th>
+
+                                        <th width="5%">
                                             操作
                                         </th>
                                     </tr>
@@ -72,6 +90,7 @@
                                         <td>
                                         </td>
 
+                                        <td></td>
                                         <td>
                                             <div class="margin-bottom-5">
                                                 <button class="btn btn-sm yellow filter-submit margin-bottom"><i class="fa fa-search"></i> 搜索</button>
@@ -135,9 +154,9 @@
                         [10, 20, 50, 100, 150 , 999999],
                         [10, 20, 50, 100, 150 , '所有(会很慢)'] // change per page values here
                     ],
-                    "pageLength": 10, // default record count per page
+                    "pageLength": 40, // default record count per page
                     "ajax": {
-                        "url": "/product/no/category/getlist/" // ajax sourcedelBat
+                        "url": "/product/no/categoryAttrPara/getlist/" // ajax sourcedelBat
                     },
                     "aoColumnDefs" : [{  // define columns sorting options(by default all columns are sortable extept the first checkbox column)
                         'bSortable' : false,

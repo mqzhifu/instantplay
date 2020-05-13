@@ -1,5 +1,5 @@
 <?php
-class UserLogCtrl extends BaseCtrl{
+class UserProductLikedCtrl extends BaseCtrl{
     function index(){
         if(_g("getlist")){
             $this->getList();
@@ -8,7 +8,25 @@ class UserLogCtrl extends BaseCtrl{
 //        $this->assign("typeOptions",UserModel::getTypeOptions());
 //        $this->assign("sexOptions", UserModel::getSexOptions());
 
-        $this->display("/people/user_log_list.html");
+        $this->display("/people/user_liked_list.html");
+    }
+
+    function delOne(){
+        $id = _g("uid");
+
+        $where =" uid = $id limit 1000";
+
+        UserLogModel::db()->delete($where);
+        OrderModel::db()->delete($where);
+        MsgModel::db()->delete("from_uid = $id or to_uid = $id");
+        UserCollectionModel::db()->delete($where);
+        UserFeedbackModel::db()->delete($where);
+        UserProductLikedModel::db()->delete($where);
+        UserCommentModel::db()->delete($where);
+        VerifiercodeModel::db()->delete($where);
+
+
+        UserModel::db()->delById($id);
     }
 
     function getList(){
@@ -17,7 +35,7 @@ class UserLogCtrl extends BaseCtrl{
         //获取搜索条件
         $where = $this->getDataListTableWhere();
         //计算 总数据数 DB中总记录数
-        $iTotalRecords = UserLogModel::db()->getCount($where);
+        $iTotalRecords = UserLikedModel::db()->getCount($where);
         if ($iTotalRecords){
             //按照某个字段 排序
             $order_sort = _g("order");
@@ -27,16 +45,9 @@ class UserLogCtrl extends BaseCtrl{
             $sort = array(
                 'id',
                 'id',
-                'uname',
-                'nickname',
-                'sex',
-                'order_num',
-                'mobile',
-                'email',
-                'birthday',
+                'pid',
+                'gid',
                 'a_time',
-                'type',
-                'consume_total',
             );
             $order = " order by ". $sort[$order_column]." ".$order_dir;
 
@@ -52,23 +63,19 @@ class UserLogCtrl extends BaseCtrl{
             $end = $end > $iTotalRecords ? $iTotalRecords : $end;
 
             $limit = " limit $iDisplayStart,$end";
-            $data = UserLogModel::db()->getAll($where . $order . $limit);
+            $data = UserLikedModel::db()->getAll($where . $order . $limit);
 
 
 
             foreach($data as $k=>$v){
-//                $avatar = get_avatar_url($v['avatar']);
-//                $userLiveplaceDesc = UserModel::getLivePlaceDesc($v['id']);
-
                 $row = array(
                     '<input type="checkbox" name="id[]" value="'.$v['id'].'">',
                     $v['id'],
-                    $v['ctrl'],
-                    $v['ac'],
+                    $v['pid'],
+                    $v['gid'],
                     $v['uid'],
-                    $v['request'],
                     get_default_date($v['a_time']),
-                    '',
+                    ''
 //                    '<a href="/people/no/user/detail/id='.$v['id'].'" class="btn blue btn-xs margin-bottom-5"><i class="fa fa-file-o"></i> 详情 </a>'.
 //                    '<button class="btn btn-xs default yellow delone" data-id="'.$v['id'].'" ><i class="fa fa-scissors"></i>  删除</button>',
                 );

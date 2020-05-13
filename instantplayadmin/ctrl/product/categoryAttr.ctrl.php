@@ -73,9 +73,8 @@ class CategoryAttrCtrl extends BaseCtrl{
 
 
     function getData(){
-        $records = array();
-        $records["data"] = array();
-        $sEcho = _g("draw");
+        //初始化返回数据格式
+        $records = array('data'=>[],'draw'=>$_REQUEST['draw']);
 
         $where = $this->getDataListTableWhere();
 
@@ -114,12 +113,13 @@ class CategoryAttrCtrl extends BaseCtrl{
                 if($v['is_no'] == 2){
                     $addBnt = '<a href="/product/no/categoryAttrPara/add/pca_id='.$v['id'].'" class="btn yellow btn-xs margin-bottom-5"><i class="fa fa-edit"></i> 添加参数 </a>';
                 }
-                $para = CategoryAttrModel::getProductRelationByAid($v['id']);
+                $para = CategoryAttrModel::getProductRelationByAidHtml($v['id']);
                 $row = array(
                     '<input type="checkbox" name="id[]" value="'.$v['id'].'">',
                     $v['id'],
+                    CategoryModel::db()->getById($v['pc_id'])['name'],
                     $v['name'],
-                    json_encode($para,JSON_UNESCAPED_UNICODE),
+                    $para,
                     $addBnt,
                 );
 
@@ -127,7 +127,6 @@ class CategoryAttrCtrl extends BaseCtrl{
             }
         }
 
-        $records["draw"] = $sEcho;
         $records["recordsTotal"] = $iTotalRecords;
         $records["recordsFiltered"] = $iTotalRecords;
 

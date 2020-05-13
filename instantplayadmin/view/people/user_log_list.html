@@ -47,52 +47,20 @@
                                             ID
                                         </th>
                                         <th width="5%">
-                                            用户名
+                                            ctrl
                                         </th>
                                         <th width="5%">
-                                            昵称
+                                            ac
                                         </th>
                                         <th width="5%">
-                                            居住地
+                                            uid
                                         </th>
                                         <th width="5%">
-                                            性别
+                                            request
                                         </th>
 
                                         <th width="5%">
-                                            订单数
-                                        </th>
-
-                                        <th width="5%">
-                                            手机号
-                                        </th>
-
-                                        <th width="5%">
-                                            邮箱
-                                        </th>
-
-                                        <th width="10%">
-                                            生日
-                                        </th>
-
-                                        <th width="10%">
-                                            注册时间
-                                        </th>
-
-                                        <th width="5%">
-                                            头像
-                                        </th>
-
-                                        <th width="5%">
-                                            注册类型
-                                        </th>
-
-                                        <th width="5%">
-                                            三方UID
-                                        </th>
-
-                                        <th width="5%">
-                                            消费总金额
+                                            a_time
                                         </th>
 
                                         <th width="5%">
@@ -114,45 +82,9 @@
                                             <input type="text" class="form-control form-filter input-sm" name="nickname" >
                                         </td>
                                         <td></td>
-                                        <td>
-                                            <select name="sex" class="form-control form-filter input-sm">
 
-                                                <option value="">选择</option>
-                                                {$sexOptions}
+                                        <td></td>
 
-                                            </select>
-                                        </td>
-
-                                        <td>
-                                            <input type="text" class="form-control form-filter input-sm" name="order_num" >
-                                        </td>
-
-
-                                        <td>
-                                            <input type="text" class="form-control form-filter input-sm" name="mobile" >
-                                        </td>
-
-                                        <td>
-                                            <input type="text" class="form-control form-filter input-sm" name="email" >
-                                        </td>
-                                        <td>
-
-                                            <div class="input-group date form_datetime margin-bottom-5">
-                                                <input type="text" class="form-control form-filter input-sm" style="height: 34px" readonly name="birthday_from" id="birthday_from" placeholder="From">
-                                                <span class="input-group-btn">
-                                                    <button class="btn default date-set" type="button" style="margin-right: 0"><i class="fa fa-calendar"></i></button>
-                                                </span>
-                                            </div>
-
-
-                                            <div class="input-group date form_datetime margin-bottom-5">
-                                                <input type="text" class="form-control form-filter input-sm" style="height: 34px"  readonly name="birthday_to" id="birthday_to" placeholder="to">
-                                                <span class="input-group-btn">
-                                                    <button class="btn default date-set" type="button"  style="margin-right: 0"><i class="fa fa-calendar"></i></button>
-                                                </span>
-                                            </div>
-
-                                        </td>
                                         <td>
 
                                             <div class="input-group date form_datetime margin-bottom-5">
@@ -173,22 +105,6 @@
                                             </div>
 
                                         </td>
-                                        <td></td>
-                                        <td>
-
-                                            <select name="type">
-
-                                                {$typeOptions}
-
-                                            </select>
-
-                                        </td>
-                                        <td></td>
-                                        <td>
-                                            <input type="text" class="form-control form-filter input-sm" name="consume_total" >
-                                        </td>
-
-
                                         <td>
                                             <div class="margin-bottom-5">
                                                 <button class="btn btn-sm yellow filter-submit margin-bottom"><i class="fa fa-search"></i> 搜索</button>
@@ -254,7 +170,7 @@
                     ],
                     "pageLength": 10, // default record count per page
                     "ajax": {
-                        "url": "/people/no/user/getlist/" // ajax sourcedelBat
+                        "url": "/people/no/userLog/getlist/" // ajax sourcedelBat
                     },
                     "aoColumnDefs" : [{  // define columns sorting options(by default all columns are sortable extept the first checkbox column)
                         'bSortable' : false,

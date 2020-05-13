@@ -1,5 +1,5 @@
 <?php
-class UserLogCtrl extends BaseCtrl{
+class UserCommentCtrl extends BaseCtrl{
     function index(){
         if(_g("getlist")){
             $this->getList();
@@ -8,7 +8,7 @@ class UserLogCtrl extends BaseCtrl{
 //        $this->assign("typeOptions",UserModel::getTypeOptions());
 //        $this->assign("sexOptions", UserModel::getSexOptions());
 
-        $this->display("/people/user_log_list.html");
+        $this->display("/people/user_comment_list.html");
     }
 
     function getList(){
@@ -17,7 +17,7 @@ class UserLogCtrl extends BaseCtrl{
         //获取搜索条件
         $where = $this->getDataListTableWhere();
         //计算 总数据数 DB中总记录数
-        $iTotalRecords = UserLogModel::db()->getCount($where);
+        $iTotalRecords = UserCommentModel::db()->getCount($where);
         if ($iTotalRecords){
             //按照某个字段 排序
             $order_sort = _g("order");
@@ -26,17 +26,7 @@ class UserLogCtrl extends BaseCtrl{
 
             $sort = array(
                 'id',
-                'id',
-                'uname',
-                'nickname',
-                'sex',
-                'order_num',
-                'mobile',
-                'email',
-                'birthday',
-                'a_time',
-                'type',
-                'consume_total',
+                'id'
             );
             $order = " order by ". $sort[$order_column]." ".$order_dir;
 
@@ -52,7 +42,7 @@ class UserLogCtrl extends BaseCtrl{
             $end = $end > $iTotalRecords ? $iTotalRecords : $end;
 
             $limit = " limit $iDisplayStart,$end";
-            $data = UserLogModel::db()->getAll($where . $order . $limit);
+            $data = UserCommentModel::db()->getAll($where . $order . $limit);
 
 
 
@@ -63,10 +53,12 @@ class UserLogCtrl extends BaseCtrl{
                 $row = array(
                     '<input type="checkbox" name="id[]" value="'.$v['id'].'">',
                     $v['id'],
-                    $v['ctrl'],
-                    $v['ac'],
+                    $v['pic'],
                     $v['uid'],
-                    $v['request'],
+                    $v['title'],
+                    $v['content'],
+                    $v['pid'],
+                    $v['gid'],
                     get_default_date($v['a_time']),
                     '',
 //                    '<a href="/people/no/user/detail/id='.$v['id'].'" class="btn blue btn-xs margin-bottom-5"><i class="fa fa-file-o"></i> 详情 </a>'.
