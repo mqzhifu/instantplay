@@ -6,13 +6,16 @@ class MsgCtrl extends BaseCtrl{
         if(_g("getlist")){
             $this->getList();
         }
-        $this->display("/system/msg_list.html");
+
+        $categoryOptions = MsgModel::getCategorySelectOptionHtml();
+        $typeOptions = MsgModel::getTypeSelectOptionHtml();
+
+        $this->assign("categoryOptions",$categoryOptions);
+        $this->assign("typeOptions",$typeOptions);
+
+        $this->display("/people/msg_list.html");
     }
 
-
-    function getList(){
-        $this->getData();
-    }
 
     function getWhere(){
         $where = " 1 ";
@@ -36,11 +39,44 @@ class MsgCtrl extends BaseCtrl{
         return $where;
     }
 
+    function add(){
+        if(_g('opt')){
+            $toUid = _g("to_uid");
+            $title = _g("title");
+            $content = _g("content");
+            $fromUid = _g("from_uid");
+            $type = _g("type");
+            $category = _g("category");
+            $data = array(
+                'from_del'=>MsgModel::DEL_FROM_FALSE,
+                'to_del'=>MsgModel::DEL_TO_FALSE,
+                'is_read'=>MsgModel::FROM_READ_FALSE,
+                'type'=>$type,
+                'to_uid'=>$toUid,
+                'from_uid'=>$fromUid,
+                'a_time'=>time(),
+                'title'=>$title,
+                'content'=>$content,
+                'category'=>$category,
+            );
 
-    function getData(){
-        $records = array();
-        $records["data"] = array();
-        $sEcho = intval($_REQUEST['draw']);
+            $msg = MsgModel::db()->add($data);
+            var_dump($msg);exit;
+        }
+
+        $categoryOptions = MsgModel::getCategorySelectOptionHtml();
+        $typeOptions = MsgModel::getTypeSelectOptionHtml();
+
+        $this->assign("categoryOptions",$categoryOptions);
+        $this->assign("typeOptions",$typeOptions);
+
+        $this->addHookJS("people/msg_add_hook.html");
+        $this->display("/people/msg_add.html");
+    }
+
+    function getList(){
+        //初始化返回数据格式
+        $records = array('data'=>[],'draw'=>$_REQUEST['draw']);
 
         $where = $this->getDataListTableWhere();
 
@@ -78,7 +114,8 @@ class MsgCtrl extends BaseCtrl{
             $end = $iDisplayStart + $iDisplayLength;
             $end = $end > $iTotalRecords ? $iTotalRecords : $end;
 
-            $data = MsgModel::db()->getAll($where . $order);
+            $limit = " limit $iDisplayStart,$end";
+            $data = MsgModel::db()->getAll($where . $order . $limit);
 
             foreach($data as $k=>$v){
                 $row = array(
@@ -87,13 +124,16 @@ class MsgCtrl extends BaseCtrl{
                     $v['from_uid'],
                     $v['to_uid'],
                     $v['title'],
-                    $v['type'],
+                    MsgModel::TYPE[$v['type']],
                     $v['content'],
                     get_default_date($v['a_time']),
-                    $v['to_del'],
-                    $v['from_del'],
+
+//                    $v['from_del'],
+//                    $v['to_del'],
+                    MsgModel::DEL_FROM[$v['from_del']],
+                    MsgModel::DEL_TO[$v['to_del']],
                     $v['is_read'],
-                    $v['category'],
+                    MsgModel::TYPE[$v['category']],
                     "",
                 );
 
@@ -101,7 +141,6 @@ class MsgCtrl extends BaseCtrl{
             }
         }
 
-        $records["draw"] = $sEcho;
         $records["recordsTotal"] = $iTotalRecords;
         $records["recordsFiltered"] = $iTotalRecords;
 

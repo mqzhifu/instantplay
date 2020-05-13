@@ -70,10 +70,10 @@ CREATE TABLE `agent` (
   `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '1未审批2已通过3拒绝',
   `type` tinyint(1) NOT NULL DEFAULT '0' COMMENT '1一级代理2二级代理',
   `address` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '详细地址',
-  `province_id` int(11) NOT NULL DEFAULT '0' COMMENT '省',
-  `city_id` int(11) NOT NULL DEFAULT '0' COMMENT '市',
-  `county_id` int(11) NOT NULL DEFAULT '0' COMMENT '县',
-  `towns_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '0' COMMENT '乡镇',
+  `province_code` int(11) NOT NULL DEFAULT '0' COMMENT '省',
+  `city_code` int(11) NOT NULL DEFAULT '0' COMMENT '市',
+  `county_code` int(11) NOT NULL DEFAULT '0' COMMENT '县',
+  `towns_code` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '0' COMMENT '乡镇',
   `villages` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '村',
   `sex` tinyint(1) NOT NULL DEFAULT '0' COMMENT '1男2女',
   `pic` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '店面照片',
@@ -95,16 +95,16 @@ DROP TABLE IF EXISTS `area_city`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `area_city` (
-  `city_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增列',
-  `city_code` varchar(40) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '市代码',
-  `city_name` varchar(40) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '市名称',
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增列',
+  `code` varchar(40) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '市代码',
+  `name` varchar(40) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '市名称',
   `short_name` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '简称',
   `province_code` varchar(40) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '省代码',
   `lng` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '经度',
   `lat` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '纬度',
   `sort` int(6) DEFAULT NULL COMMENT '排序',
-  PRIMARY KEY (`city_id`),
-  KEY `Index_1` (`city_code`)
+  PRIMARY KEY (`id`),
+  KEY `Index_1` (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='城市设置';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -116,16 +116,16 @@ DROP TABLE IF EXISTS `area_county`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `area_county` (
-  `area_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增列',
-  `area_code` varchar(40) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '区代码',
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增列',
+  `code` varchar(40) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '区代码',
   `city_code` varchar(40) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '父级市代码',
-  `area_name` varchar(40) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '市名称',
+  `name` varchar(40) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '市名称',
   `short_name` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '简称',
   `lng` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '经度',
   `lat` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '纬度',
   `sort` int(6) DEFAULT NULL COMMENT '排序',
-  PRIMARY KEY (`area_id`),
-  KEY `Index_1` (`area_code`)
+  PRIMARY KEY (`id`),
+  KEY `Index_1` (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='地区设置';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -137,36 +137,36 @@ DROP TABLE IF EXISTS `area_province`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `area_province` (
-  `prvince_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增列',
-  `province_code` varchar(40) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '省份代码',
-  `province_name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '省份名称',
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增列',
+  `code` varchar(40) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '省份代码',
+  `name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '省份名称',
   `short_name` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '简称',
   `lng` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '经度',
   `lat` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '纬度',
   `sort` int(6) DEFAULT NULL COMMENT '排序',
-  PRIMARY KEY (`prvince_id`),
-  KEY `Index_1` (`province_code`)
+  PRIMARY KEY (`id`),
+  KEY `Index_1` (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='省份设置';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `area_street`
+-- Table structure for table `area_town`
 --
 
-DROP TABLE IF EXISTS `area_street`;
+DROP TABLE IF EXISTS `area_town`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
  SET character_set_client = utf8mb4 ;
-CREATE TABLE `area_street` (
-  `street_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增列',
-  `street_code` varchar(40) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '街道代码',
-  `area_code` varchar(40) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '父级区代码',
-  `street_name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '街道名称',
+CREATE TABLE `area_town` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增列',
+  `code` varchar(40) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '街道代码',
+  `county_code` varchar(40) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '父级区代码',
+  `name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '街道名称',
   `short_name` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '简称',
   `lng` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '经度',
   `lat` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '纬度',
   `sort` int(6) DEFAULT NULL COMMENT '排序',
-  PRIMARY KEY (`street_id`),
-  KEY `Index_1` (`street_code`)
+  PRIMARY KEY (`id`),
+  KEY `Index_1` (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='街道设置';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -183,6 +183,7 @@ CREATE TABLE `banner` (
   `title` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '标题',
   `pid` int(11) DEFAULT NULL COMMENT '推荐的产品',
   `pic` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '图片地址',
+  `a_time` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='首页-轮播图';
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -623,11 +624,19 @@ CREATE TABLE `user` (
   `birthday` int(11) NOT NULL,
   `a_time` int(11) NOT NULL DEFAULT '0',
   `avatar` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `type` tinyint(1) NOT NULL DEFAULT '0' COMMENT '1普通2一级代理2二级代理3合伙人',
+  `type` tinyint(1) NOT NULL DEFAULT '0' COMMENT '1普通2一级代理',
   `experience` int(11) NOT NULL DEFAULT '0' COMMENT '经验值',
   `point` int(11) NOT NULL DEFAULT '0' COMMENT '积分',
   `coin` int(11) NOT NULL DEFAULT '0' COMMENT '金币',
   `third_uid` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `consume_total` int(11) NOT NULL DEFAULT '0' COMMENT '消费总金额',
+  `order_num` int(11) NOT NULL DEFAULT '0' COMMENT '消费订单数',
+  `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '1正常2已禁用',
+  `province_code` int(11) NOT NULL DEFAULT '0' COMMENT '省',
+  `city_code` int(11) NOT NULL DEFAULT '0' COMMENT '市',
+  `county_code` int(11) NOT NULL DEFAULT '0' COMMENT '县',
+  `town_code` int(11) NOT NULL DEFAULT '0' COMMENT '乡镇',
+  `id_card_num` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户';
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -672,6 +681,42 @@ CREATE TABLE `user_collection` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `user_comment`
+--
+
+DROP TABLE IF EXISTS `user_comment`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `user_comment` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `pic` text,
+  `uid` int(11) DEFAULT NULL,
+  `title` varchar(255) DEFAULT NULL,
+  `content` text,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `user_feedback`
+--
+
+DROP TABLE IF EXISTS `user_feedback`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `user_feedback` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) DEFAULT NULL,
+  `mobile` varchar(20) DEFAULT NULL,
+  `content` text,
+  `a_time` int(11) DEFAULT NULL,
+  `uid` int(11) DEFAULT NULL,
+  `pics` text,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `user_log`
 --
 
@@ -684,8 +729,26 @@ CREATE TABLE `user_log` (
   `ctrl` varchar(50) DEFAULT NULL,
   `ac` varchar(50) DEFAULT NULL,
   `request` text COMMENT '请求参数',
+  `uid` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='用户行为日志';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `user_product_liked`
+--
+
+DROP TABLE IF EXISTS `user_product_liked`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `user_product_liked` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `pid` int(11) DEFAULT NULL,
+  `a_time` int(11) DEFAULT NULL,
+  `uid` int(11) DEFAULT NULL,
+  `gid` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='用户点赞';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -739,4 +802,4 @@ CREATE TABLE `withdraw_money` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-05-10 17:03:10
+-- Dump completed on 2020-05-13 16:23:12

@@ -130,7 +130,4 @@ class MsgModel {
         $result = self::db()->add($insertData);
         return $result;
     }
-
-
-
 }
