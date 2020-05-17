@@ -2,7 +2,7 @@
 storage/log/*
 storage/session/*
 storage/view_c/*
-storage/view_c/product_tb
+storage/product_tb/*
 
 static/upload/
 
