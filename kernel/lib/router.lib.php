@@ -94,6 +94,7 @@ class RouterLib{
             $dir =  APP_DIR .DS. C_DIR_NAME . DS ;
         }
 
+
         $ctrl_file = ($dir . $ctrl .C_EXT);
 
 		if( !file_exists($ctrl_file))
@@ -105,8 +106,10 @@ class RouterLib{
 		if ( !class_exists($ctrl.C_CLASS))
             return out_pc(9203,'ctrl类不存在:'.$ctrl.C_CLASS,KERNEL_NAME);
 
+
 		if(! method_exists($ctrl.C_CLASS,$ac))
             return out_pc(9204,'ac方法不存在:'.$ac,KERNEL_NAME);
+
 
 
         $this->ctrl = $ctrl;

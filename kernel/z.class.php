@@ -336,7 +336,7 @@ class ThrowErr {
     static function process($type ,$appName , $code,$replace = []){
         if(!$code && $code !== 0 ){
             $msg = self::$_CODE[$appName][9995];
-        }elseif(isset(self::$_CODE[$appName][$code])){
+        }elseif(!isset(self::$_CODE[$appName][$code])){
             $msg = self::$_CODE[$appName][9994];
             $msg = self::replaceMsg($msg,array($code));
         }else{

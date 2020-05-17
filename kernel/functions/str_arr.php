@@ -58,8 +58,8 @@ function getAccessToken(){
 function uidToOpenId(){
 
 }
-
-function uidIntToStr($uid){
+//uid 转换成一个特殊的字符，可以decode ，算是一层加密吧
+function intToStr($uid){
 
     $arr = "0987654321qwertyuioLKJHGFDSAzxcvbnm";
     $src = 'qAGFrWQZXCNOPYRE';

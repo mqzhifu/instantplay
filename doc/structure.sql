@@ -45,9 +45,9 @@ DROP TABLE IF EXISTS `admin_user`;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `admin_user` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `uname` varbinary(50) DEFAULT NULL COMMENT '姓名',
-  `ps` varbinary(50) DEFAULT NULL COMMENT '密码',
-  `nickname` varbinary(50) DEFAULT NULL COMMENT '昵称',
+  `uname` varchar(50) DEFAULT NULL COMMENT '姓名',
+  `ps` varchar(50) DEFAULT NULL COMMENT '密码',
+  `nickname` varchar(50) DEFAULT NULL COMMENT '昵称',
   `a_time` int(11) DEFAULT NULL COMMENT '添加时间',
   `role_id` int(11) DEFAULT NULL COMMENT '角色',
   `mobile` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '手机号',
@@ -560,7 +560,7 @@ DROP TABLE IF EXISTS `roles`;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `roles` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varbinary(50) DEFAULT NULL,
+  `name` varchar(50) DEFAULT NULL,
   `power` text,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='后台角色';
@@ -618,17 +618,17 @@ CREATE TABLE `user` (
   `uname` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `nickname` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `sex` tinyint(1) NOT NULL DEFAULT '0' COMMENT '0未知1男2女',
-  `realname` varbinary(50) NOT NULL,
-  `mobile` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `realname` varchar(50) NOT NULL COMMENT '真实姓名',
+  `mobile` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '手机号',
   `email` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `birthday` int(11) NOT NULL,
   `a_time` int(11) NOT NULL DEFAULT '0',
-  `avatar` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `avatar` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '头像',
   `type` tinyint(1) NOT NULL DEFAULT '0' COMMENT '1普通2一级代理',
   `experience` int(11) NOT NULL DEFAULT '0' COMMENT '经验值',
   `point` int(11) NOT NULL DEFAULT '0' COMMENT '积分',
   `coin` int(11) NOT NULL DEFAULT '0' COMMENT '金币',
-  `third_uid` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `wx_open_id` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '微信OPENid',
   `consume_total` int(11) NOT NULL DEFAULT '0' COMMENT '消费总金额',
   `order_num` int(11) NOT NULL DEFAULT '0' COMMENT '消费订单数',
   `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '1正常2已禁用',
@@ -637,6 +637,8 @@ CREATE TABLE `user` (
   `county_code` int(11) NOT NULL DEFAULT '0' COMMENT '县',
   `town_code` int(11) NOT NULL DEFAULT '0' COMMENT '乡镇',
   `id_card_num` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '0',
+  `inner_type` tinyint(1) NOT NULL COMMENT '1正常2机器人',
+  `uid_str` varchar(50) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户';
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -693,6 +695,9 @@ CREATE TABLE `user_comment` (
   `uid` int(11) DEFAULT NULL,
   `title` varchar(255) DEFAULT NULL,
   `content` text,
+  `pid` int(11) DEFAULT NULL,
+  `gid` int(11) DEFAULT NULL,
+  `a_time` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -712,6 +717,7 @@ CREATE TABLE `user_feedback` (
   `a_time` int(11) DEFAULT NULL,
   `uid` int(11) DEFAULT NULL,
   `pics` text,
+  `status` tinyint(1) DEFAULT NULL COMMENT '1未处理1已处理',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -802,4 +808,4 @@ CREATE TABLE `withdraw_money` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-05-13 16:23:12
+-- Dump completed on 2020-05-17 19:56:22

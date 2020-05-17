@@ -19,32 +19,29 @@ $main = array(
     ),
 
     'loginAPIExcept'=>        $arr = array(
-        array("login","webSocketLogin",),
+//        array("login","webSocketLogin",),
 //        array("login","cellphoneSMS",),
-        array("login","guest",),
-
-        array("system","sendSMS",),
-
-
-        array(   'index','getServer',),
-        array(   'index','testProtoBuf',),
-        array(   'index','getUiShowConfig',),
-        array(   'system','getAppUpgradeInfo',),
-
-
-        array("game","recommendIndex",),
-        array("game","getRecommends",),
-        array("game","topOnline",),
-        array("game","exceptRecommendIndex",),
-        array("game","getList",),
-        array("bank","WXPayCallback",),
-        array("bank","aliPayCallback",),
-        array("wxopen","push",),
-        array("qqLogin","login"),
-        array("qqLogin","getUserinfo"),
-
-        array("system","banner",),
-//        array("bank","getGoodsList",),
+//        array("login","guest",),
+//
+//        array("system","sendSMS",),
+//
+//        array(   'index','getServer',),
+//        array(   'index','testProtoBuf',),
+//        array(   'index','getUiShowConfig',),
+//        array(   'system','getAppUpgradeInfo',),
+//
+//        array("game","recommendIndex",),
+//        array("game","getRecommends",),
+//        array("game","topOnline",),
+//        array("game","exceptRecommendIndex",),
+//        array("game","getList",),
+//        array("bank","WXPayCallback",),
+//        array("bank","aliPayCallback",),
+//        array("wxopen","push",),
+//        array("qqLogin","login"),
+//        array("qqLogin","getUserinfo"),
+//
+//        array("system","banner",),
 
     ),
 

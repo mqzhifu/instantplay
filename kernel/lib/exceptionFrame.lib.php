@@ -16,9 +16,9 @@ class ExceptionFrameLib extends Exception {
 
             if(RUN_ENV == 'WEBSOCKET'){
                 exit("shutdown_function WEBSOCKET");
-                LogLib::fatal([$str]);
+                LogLib::inc()->fatal([$str]);
             }else {
-                LogLib::fatal($str);
+                LogLib::inc()->fatal($str);
                 if (!DEBUG) {
                     $arr = array("code" => 9993, 'msg' => 'fatal');
                     echo json_encode($arr);
