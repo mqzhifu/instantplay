@@ -4,7 +4,8 @@ PORT="3306"
 User="root"
 PS="mqzhifu"
 DIR=`pwd`
-
+STORAGE_DIR="/home/www/instantplay/storage"
+UPLOAD_DIR="/home/www/instantplay/static/upload"
 
 export MYSQL_PWD=${PS}
 
@@ -28,3 +29,7 @@ do
 echo $file
 mysql  -h${HOST} -u${USER} --default-character-set=utf8 -D${DB} -e"source ${DIR}/${file}"
 done
+
+
+chmod 777 -R $STORAGE_DIR
+chmod 777 -R $UPLOAD_DIR
