@@ -6,9 +6,17 @@ PS="mqzhifu"
 DIR=`pwd`
 STORAGE_DIR="/home/www/instantplay/storage"
 UPLOAD_DIR="/home/www/instantplay/static/upload"
+PRODUCT_DIR="/home/www/instantplay/doc/env.php"
+
+
+/soft/php/bin/php $PRODUCT_DIR pre
+
+chmod 777 -R $STORAGE_DIR
+chmod 777 -R $UPLOAD_DIR
+
+exit
 
 export MYSQL_PWD=${PS}
-
 
 echo "$HOST:$PORT $DB $USER $PS $DIR";
 
@@ -31,5 +39,3 @@ mysql  -h${HOST} -u${USER} --default-character-set=utf8 -D${DB} -e"source ${DIR}
 done
 
 
-chmod 777 -R $STORAGE_DIR
-chmod 777 -R $UPLOAD_DIR
