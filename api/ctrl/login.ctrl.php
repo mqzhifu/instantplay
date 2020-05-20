@@ -36,12 +36,21 @@ class LoginCtrl extends BaseCtrl {
         $wxData = $WxLittleLib->getSession($code);
 
 
-//        var_dump($wxData);
-
+        var_dump($wxData);
+        var_dump($request);
 
         $sessionKey = $wxData['session_key'];
         $openId = $wxData['openid'];
 
+        $loginData = array('thirdId'=>$openId,'type'=>UserModel::$_type_wechat);
+        $loginRs = $this->third($loginData);
+        if($loginRs['code'] == 1006){//DB中找不到此用户
+            $rawData = json_decode($request['rawData'],true);
+            //language city  province country
+            $userInfo = array('nickanme'=>$rawData['nickName'],'avatar'=>$rawData['avatarUrl'],'sex'=>$rawData['gender']);
+            $rs = $this->userService->register($openId,"",UserModel::$_type_wechat,$userInfo);
+            var_dump("new uid :",$rs);
+        }
 
         $rawData = $request['rawData'];
         $iv = $request['iv'];
@@ -58,8 +67,9 @@ class LoginCtrl extends BaseCtrl {
 
 
         $data = $WxLittleLib->decryptData($encryptedData,$iv,$sessionKey);
-
-        return $data;
+        echo "           ";
+        var_dump($data);
+        return json_encode($data);
 
 //        $wxData['session_key'];
 //        var_dump($wxData);exit;

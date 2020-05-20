@@ -1127,6 +1127,7 @@ class UserService{
 //        $data['hidden_gps'] = UserModel::$_gps_open;
 //        $data['is_online'] = UserModel::$_online_true;
 
+        $data['uname'] = '';
         $data['a_time'] = time();
         $data['u_time'] = time();
         $data['inner_type']= UserModel::INNER_TYPE_HUMAN;
