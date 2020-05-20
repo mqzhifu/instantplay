@@ -304,9 +304,6 @@ class ConfigCenter{
     }
 
     static function getEnv($appName ,$file){
-//        if(isset(self::$_configPool["env"][ENV][$appName][$file]) && self::$_configPool["env"][ENV][$appName][$file] ){
-//            return self::$_configPool["env"][ENV][$appName][$file];
-//        }
         if(isset(self::$_configPool[$appName][$file])  && self::$_configPool[$appName][$file] ){
             return self::$_configPool[$appName][$file];
         }

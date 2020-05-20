@@ -34,6 +34,33 @@ class LoginCtrl extends BaseCtrl {
         $code = $request['code'];
         $WxLittleLib = new WxLittleLib();
         $wxData = $WxLittleLib->getSession($code);
+
+
+        var_dump($wxData);
+
+
+        $sessionKey = $wxData['session_key'];
+        $openId = $wxData['openid'];
+
+
+        $rawData = $request['rawData'];
+        $iv = $request['iv'];
+        $signature = $request['signature'];
+        $encryptedData = $request['encryptedData'];
+
+
+        var_dump($request);exit;
+
+        $signature2 =  sha1(htmlspecialchars_decode($rawData).$sessionKey);
+        if($signature != $signature2){
+            exit("$signature != $signature2");
+        }
+
+
+        $WxLittleLib->decryptData($encryptedData,$iv,$sessionKey);
+
+        return $data;
+
         $wxData['session_key'];
         var_dump($wxData);exit;
     }
