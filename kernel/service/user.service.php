@@ -145,9 +145,11 @@ class UserService{
     }
      //3方登陆
     function thirdLogin($thirdUid,$thirdType){
-        $rs = $this->getThirdUser($thirdUid,$thirdType);
-        if($rs){
-            return out_pc(200,$rs);
+        $user = $this->getThirdUser($thirdUid,$thirdType);
+        if($user){
+//            $this->loginRecord($user,$clientInfo,$type);
+            $token = $this->createToken($user['id']);
+            return out_pc(200,$token);
         }
         return out_pc(1006);
     }
@@ -279,9 +281,8 @@ class UserService{
 
     function createToken($uid){
         $token = TokenLib::create($uid);
-        $key = RedisPHPLib::getAppKeyById($GLOBALS['rediskey']['token']['key'],$uid);
-        RedisPHPLib::set($key,$token,$GLOBALS['rediskey']['token']['expire']);
-
+//        $key = RedisPHPLib::getAppKeyById($GLOBALS['rediskey']['token']['key'],$uid);
+//        RedisPHPLib::set($key,$token,$GLOBALS['rediskey']['token']['expire']);
         return $token;
     }
 
@@ -1159,6 +1160,7 @@ class UserService{
         $data['push_token'] = "";
         $data['email'] = "";
         $data['ps'] = "";
+        $data['inner_type'] = UserModel::INNER_TYPE_HUMAN;
 //        $data['point'] = 1000;//测试用
 //        $area= AreaLib::getByIp();
 //        $data['province'] =$area['province'];

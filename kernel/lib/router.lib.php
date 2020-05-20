@@ -213,6 +213,7 @@ class RouterLib{
 	    $data = $this->para;
         $data['rid'] = $this->requestId;
 	    LogLib::inc()->access($this->para);
+	    get_client_info();
         if(RUN_ENV != 'WEBSOCKET'){
 //            $requestMerge = array_merge($_REQUEST,$para);
 //            if(!$requestMerge){

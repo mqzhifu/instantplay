@@ -10,7 +10,7 @@ class WxLittleLib{
         $this->_appSecret = $config['little']['AppSecret'];
     }
 
-    function getSession($code){
+    function getSessionOpenIdByCode($code){
         $url = "https://api.weixin.qq.com/sns/jscode2session?js_code={$code}&grant_type=authorization_code";
         $data = json_decode(  $this->curl($url),true);
         $this->checkError($data);

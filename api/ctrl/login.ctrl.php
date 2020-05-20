@@ -30,66 +30,57 @@ class LoginCtrl extends BaseCtrl {
         return $this->out($rs['code'],$rs['msg']);
     }
 
-    function wxLittleGetSessionInfo($request){
+    function wxLittleLoginByCode($request){
         $code = $request['code'];
         $WxLittleLib = new WxLittleLib();
-        $wxData = $WxLittleLib->getSession($code);
-
-
-        var_dump($wxData);
-        var_dump($request);
-
-        $sessionKey = $wxData['session_key'];
-        $openId = $wxData['openid'];
+        $wxCallbackData = $WxLittleLib->getSessionOpenIdByCode($code);
+//        var_dump($wxData);
+//        var_dump($request);
+        $sessionKey = $wxCallbackData['session_key'];
+        $openId = $wxCallbackData['openid'];
 
         $loginData = array('thirdId'=>$openId,'type'=>UserModel::$_type_wechat);
         $loginRs = $this->third($loginData);
+        if($loginRs['code'] == 200){
+            out_ajax(200,$loginRs['msg']);
+        }
+
         if($loginRs['code'] == 1006){//DB中找不到此用户
             $rawData = json_decode($request['rawData'],true);
             //language city  province country
             $userInfo = array('nickanme'=>$rawData['nickName'],'avatar'=>$rawData['avatarUrl'],'sex'=>$rawData['gender']);
-            $rs = $this->userService->register($openId,"",UserModel::$_type_wechat,$userInfo);
-            var_dump("new uid :",$rs);
+            $newUserInfo = $this->userService->register($openId,"",UserModel::$_type_wechat,$userInfo);
+//            var_dump("new uid :",$newUserInfo['id']);
+            $token = $this->createToken($newUserInfo['id']);
+            out_ajax(200,$token);
+        }else{
+            exit("未知错误");
         }
 
-        $rawData = $request['rawData'];
-        $iv = $request['iv'];
-        $signature = $request['signature'];
-        $encryptedData = $request['encryptedData'];
+//        $rawData = $request['rawData'];
+//        $iv = $request['iv'];
+//        $signature = $request['signature'];
+//        $encryptedData = $request['encryptedData'];
+//
+//        $signature2 =  sha1(htmlspecialchars_decode($rawData).$sessionKey);
+//        if($signature != $signature2){
+//            exit("$signature != $signature2");
+//        }
+//
+//
+//        $data = $WxLittleLib->decryptData($encryptedData,$iv,$sessionKey);
+//        echo "           ";
+//        var_dump($data);
+//        return json_encode($data);
 
-
-//        var_dump($request);exit;
-
-        $signature2 =  sha1(htmlspecialchars_decode($rawData).$sessionKey);
-        if($signature != $signature2){
-            exit("$signature != $signature2");
-        }
-
-
-        $data = $WxLittleLib->decryptData($encryptedData,$iv,$sessionKey);
-        echo "           ";
-        var_dump($data);
-        return json_encode($data);
-
-//        $wxData['session_key'];
-//        var_dump($wxData);exit;
     }
 
     function third($request){
         $thirdId = $request['thirdId'];
         $type = $request['type'];
-//        $thirdId ,$type,$data = []
         if(!$thirdId){
             return $this->out(8030);
         }
-
-//        if(!$nickname){
-//            return $this->out(8031);
-//        }
-
-//        if(!$avatar){
-//            return $this->out(8032);
-//        }
 
         if(!$type){
             return $this->out(8004);

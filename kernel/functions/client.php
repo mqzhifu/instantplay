@@ -1,9 +1,26 @@
 <?php
 function get_client_info()
 {
-    // 过滤掉计划任务/静态文件的请求
-    if ( !isset($_SERVER['HTTP_HOST']) || empty($_SERVER['HTTP_HOST']) || STATIC_URL == $_SERVER['HTTP_HOST'] )
+    if(RUN_ENV == "CLI"){
+
+    }elseif(RUN_ENV == 'WEB'){
+        return get_web_client_data();
+    }elseif(RUN_ENV == 'WEBSOCKET'){
+
+    }else{
+
+    }
+}
+
+function get_web_client_data(){
+    // 这种情况，不太可能出现，可能是 后台脚本，也可能是爬虫
+    if ( !isset($_SERVER['HTTP_HOST']) || empty($_SERVER['HTTP_HOST'])  ){
         return -1;
+    }
+    //静态资源的请求，就没必要记录了
+    if(STATIC_URL == $_SERVER['HTTP_HOST']){
+        return -2;
+    }
 
     $ip = get_client_ip();
 
@@ -19,12 +36,12 @@ function get_client_info()
     $lat = "";//纬度
 
     $app_v = "";//app版本号
-    $sim_imsi = "";
-    $cellphone = "";
-    $dpi = "";
+    $sim_imsi = "";//sim 卡串号
+    $cellphone = "";//手机号
+    $dpi = "";//手机分辨率
 
     $deviceId = "";//设备号，因为有SIM卡、CDMA，同时有些手机会有双SIM卡，这个值安卓端暂定用 getDeviceId  函数，可能会有些不准
-    $channel = "";
+    $channel = "";//
     $f_channel = "";
     $cate = get_request_cate();//类型api wap pc
     if ( $cate =='pc'){
@@ -43,52 +60,55 @@ function get_client_info()
         $browser_model = $browser['browser'];
         $browser_version = $browser['version'];
     }elseif($cate == 'wap'){
-            $browser = get_useragent_browser();
-            if( isset($browser['type']) && $browser['type'] == 'spider'){
-                $is_spider = 1;
-                $os = 'spider';
-                $os_v = 0;
-                $device_model = "spider";
-            }else{
-                $os_info = get_useragent_OS();
-                $os = $os_info['os'];
-                $os_v = $os_info['version'];
+        $browser = get_useragent_browser();
+        if( isset($browser['type']) && $browser['type'] == 'spider'){
+            $is_spider = 1;
+            $os = 'spider';
+            $os_v = 0;
+            $device_model = "spider";
+        }else{
+            $os_info = get_useragent_OS();
+            $os = $os_info['os'];
+            $os_v = $os_info['version'];
 
-                $device_model = get_wap_phone_model();
+            $device_model = get_wap_phone_model();
+        }
+
+        $browser_model = $browser['browser'];
+        $browser_version = $browser['version'];
+
+        $device_version = 0;
+    }elseif($cate == 'api') {
+        $api_type = $_SERVER['HTTP-CLIENT-TYPE'];
+        if($api_type == 1){//项目1  - APP
+//客户端版本号|设备系统|设备系统版本|设备型号|设备型号版本|纬度|经度|sim_imsi|手机号|分辨率
+            $data = explode( "|",$_SERVER['HTTP_CLIENT_DATA']);
+
+            $app_v = $data[0];                // 1.1.1
+            $os = $data[1];   // 设备类型  android/ios
+            $os_v = $data[2];               // 10
+
+
+            $device_model = $data[3] ;     // iphone,ipad
+            $device_version = $data[4];    // X,XS
+            $lat = $data[5];
+            $lon = $data[6];
+            $sim_imsi = $data[7];
+            $cellphone = $data[8];          //135xxxx8907
+            $dpi = $data[9];                //900x1000
+            $imei = $data[10];
+            $deviceId = $data[11];
+
+            if(arrKeyIssetAndExist($data,12)){
+                $channel = $data[12];
             }
 
-            $browser_model = $browser['browser'];
-            $browser_version = $browser['version'];
+            if(arrKeyIssetAndExist($data,13)){
+                $f_channel = $data[13];
+            }
+        }elseif($api_type == 2){//项目2 - 微信 小程序
 
-            $device_version = 0;
-    }elseif($cate == 'api') {
-        //客户端版本号|设备系统|设备系统版本|设备型号|设备型号版本|纬度|经度|sim_imsi|手机号|分辨率
-        $data = explode( "|",$_SERVER['HTTP_CLIENT_DATA']);
-
-        $app_v = $data[0];                // 1.1.1
-        $os = $data[1];   // 设备类型  android/ios
-        $os_v = $data[2];               // 10
-
-
-        $device_model = $data[3] ;     // iphone,ipad
-        $device_version = $data[4];    // X,XS
-        $lat = $data[5];
-        $lon = $data[6];
-        $sim_imsi = $data[7];
-        $cellphone = $data[8];          //135xxxx8907
-        $dpi = $data[9];                //900x1000
-        $imei = $data[10];
-        $deviceId = $data[11];
-
-        if(arrKeyIssetAndExist($data,12)){
-            $channel = $data[12];
         }
-
-        if(arrKeyIssetAndExist($data,13)){
-            $f_channel = $data[13];
-        }
-
-//        LogLib::appWriteFileHash(['divice id :----',$deviceId]);
     }else{
         exit("client info is error.");
     }
@@ -129,6 +149,8 @@ function get_client_info()
         'f_channel'=>$f_channel,
     );
     return $info;
+
+
 //    }else{
 //        $info =
 //            "{$execdate},,t:".time().",,method:$accept_method,,memory:{$p_mem},,exec:{$p_time},,host:$host,,url:$uri,,ctrl:".EXEC_CTRL.",,ac:".EXEC_AC.",,ip:$ip,,".
@@ -142,7 +164,6 @@ function get_client_info()
 //            $mylog->append('http_access', $info) ;
 //        }
 //    }
-
 
 }
 
@@ -634,7 +655,7 @@ function get_useragent_spider(){
 
 //获取用户请求的分类：wap pc api
 function get_request_cate(){
-    if(isset($_SERVER['HTTP_CLIENT_DATA']) && $_SERVER['HTTP_CLIENT_DATA']){
+    if(isset($_SERVER['HTTP-CLIENT-TYPE']) && $_SERVER['HTTP-CLIENT-TYPE']){
         $rs = 'api';
     }elseif (  isMobile() ){
         $rs = 'wap';
