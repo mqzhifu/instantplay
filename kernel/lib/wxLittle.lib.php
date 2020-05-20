@@ -6,7 +6,9 @@ class WxLittleLib{
 
     function getSession($code){
         $url = "https://api.weixin.qq.com/sns/jscode2session?js_code={$code}&grant_type=authorization_code";
-        return $this->curl($url);
+        $data = json_decode(  $this->curl($url));
+        return $data;
+
     }
 
     function curl($url)
