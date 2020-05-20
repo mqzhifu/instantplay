@@ -43,8 +43,9 @@ class WxLittleLib{
         $data = null;
         $errCode = $pc->decryptData($encryptedData, $iv, $data );
 
-        var_dump($errCode);
-        var_dump($data);exit;
+        return $data;
+//        var_dump($errCode);
+//        var_dump($data);exit;
     }
 
 }

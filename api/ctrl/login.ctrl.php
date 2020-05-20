@@ -36,7 +36,7 @@ class LoginCtrl extends BaseCtrl {
         $wxData = $WxLittleLib->getSession($code);
 
 
-        var_dump($wxData);
+//        var_dump($wxData);
 
 
         $sessionKey = $wxData['session_key'];
@@ -49,7 +49,7 @@ class LoginCtrl extends BaseCtrl {
         $encryptedData = $request['encryptedData'];
 
 
-        var_dump($request);exit;
+//        var_dump($request);exit;
 
         $signature2 =  sha1(htmlspecialchars_decode($rawData).$sessionKey);
         if($signature != $signature2){
@@ -57,12 +57,12 @@ class LoginCtrl extends BaseCtrl {
         }
 
 
-        $WxLittleLib->decryptData($encryptedData,$iv,$sessionKey);
+        $data = $WxLittleLib->decryptData($encryptedData,$iv,$sessionKey);
 
         return $data;
 
-        $wxData['session_key'];
-        var_dump($wxData);exit;
+//        $wxData['session_key'];
+//        var_dump($wxData);exit;
     }
 
     function third($request){
