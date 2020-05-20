@@ -30,6 +30,12 @@ class LoginCtrl extends BaseCtrl {
         return $this->out($rs['code'],$rs['msg']);
     }
 
+    function wxLittleGetSessionInfo($request){
+        $code = $request['code'];
+        $WxLittleLib = new WxLittleLib();
+        $WxLittleLib->getSession($code);
+    }
+
     function third($request){
         $thirdId = $request['thirdId'];
         $type = $request['type'];
