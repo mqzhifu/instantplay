@@ -53,77 +53,78 @@ class IndexCtrl extends BaseCtrl  {
     }
 
     function getBannerList(){
-        out_ajax(200,[]);
+        $data = BannerModel::db()->getAll();
+        out_ajax(200,$data);
     }
 
-    function getUserTypeDesc(){
-        $rs = UserModel::getTypeDesc();
-        return $this->out(200,$rs);
+    function getCategoryList(){}
+
+    function getRecommendProductList(){
+        $data = ProductModel::getRecommendList();
+        out_ajax(200,$data);
     }
     //    $keyword:目前仅支持UID
     function search($keyword){
-        $rs = $this->systemService->search($this->uid,$keyword);
-        return $this->out($rs['code'],$rs['msg']);
+        $data = ProductModel::search($keyword);
+        out_ajax(200,$data);
     }
 
-    function getAppVersionInfo($versionCode = 0){
-
-        if($versionCode){
-            $appInfo = AppVersionModel::db()->getRow(" version_code =  $versionCode ");
-//            var_dump($appInfo);
-            if(!$appInfo){
-                return $this->out(1023);
-            }
-        }else{
-            $appInfo = AppVersionModel::db()->getRow(" 1 order by version_code desc limit 1");
-//            var_dump($appInfo);
-        }
-        return $this->out(200,$appInfo);
-    }
-
-    function cntLog($category,$type,$memo){
-        if (!in_array($category, CntActionLogModel::getCategories())) {
-            return $this->out(8311,$GLOBALS['code'][8311]);
-        }
-
-        if (!in_array($type, CntActionLogModel::getTypes())) {
-            return $this->out(8312,$GLOBALS['code'][8312]);
-        }
-        $data = array(
-            'category'=>$category,
-            'type'=>$type,
-            'memo'=>$memo,
-            'a_time'=>time(),
-            'uid'=>$this->uid,
-        );
-
-        $rs = CntActionLogModel::db()->add($data);
-        return $this->out(200,$rs);
-    }
-
-
-    //获取APP_UI配置（3级）;
-    public function getUiShowConfig(){
-        $root = AppUiConfigModel::db()->getAll(" pid = 0 ");
-        foreach ($root as $k=>$v) {
-            $sub = AppUiConfigModel::db()->getAll( " pid = {$v['id']} ");
-            foreach ($sub as $k2=>$v2) {
-                $three = AppUiConfigModel::db()->getAll( " pid = {$v2['id']} ");
-                $sub[$k2]['sub'] = $three;
-                if(empty($sub[$k2]['sub'])){
-                    unset($sub[$k2]['sub']);
-                }
-                foreach ($three as $k3=>$v3){
-                    if(arrKeyIssetAndExist($v3,'dir_name')){
-                        $four = AppUiConfigModel::db()->getAll( " pid = {$v3['id']} ");
-                        $sub[$k2][$k3]['sub'] = $four;
-                    }
-                }
-            }
-            $root[$k]['sub'] = $sub;
-        }
-        return $this->out(200, $root);
-    }
+//    function getAppVersionInfo($versionCode = 0){
+//
+//        if($versionCode){
+//            $appInfo = AppVersionModel::db()->getRow(" version_code =  $versionCode ");
+//            if(!$appInfo){
+//                return $this->out(1023);
+//            }
+//        }else{
+//            $appInfo = AppVersionModel::db()->getRow(" 1 order by version_code desc limit 1");
+//        }
+//        return $this->out(200,$appInfo);
+//    }
+//
+//    function cntLog($category,$type,$memo){
+//        if (!in_array($category, CntActionLogModel::getCategories())) {
+//            return $this->out(8311,$GLOBALS['code'][8311]);
+//        }
+//
+//        if (!in_array($type, CntActionLogModel::getTypes())) {
+//            return $this->out(8312,$GLOBALS['code'][8312]);
+//        }
+//        $data = array(
+//            'category'=>$category,
+//            'type'=>$type,
+//            'memo'=>$memo,
+//            'a_time'=>time(),
+//            'uid'=>$this->uid,
+//        );
+//
+//        $rs = CntActionLogModel::db()->add($data);
+//        return $this->out(200,$rs);
+//    }
+//
+//
+//    //获取APP_UI配置（3级）;
+//    public function getUiShowConfig(){
+//        $root = AppUiConfigModel::db()->getAll(" pid = 0 ");
+//        foreach ($root as $k=>$v) {
+//            $sub = AppUiConfigModel::db()->getAll( " pid = {$v['id']} ");
+//            foreach ($sub as $k2=>$v2) {
+//                $three = AppUiConfigModel::db()->getAll( " pid = {$v2['id']} ");
+//                $sub[$k2]['sub'] = $three;
+//                if(empty($sub[$k2]['sub'])){
+//                    unset($sub[$k2]['sub']);
+//                }
+//                foreach ($three as $k3=>$v3){
+//                    if(arrKeyIssetAndExist($v3,'dir_name')){
+//                        $four = AppUiConfigModel::db()->getAll( " pid = {$v3['id']} ");
+//                        $sub[$k2][$k3]['sub'] = $four;
+//                    }
+//                }
+//            }
+//            $root[$k]['sub'] = $sub;
+//        }
+//        return $this->out(200, $root);
+//    }
 
 
 }

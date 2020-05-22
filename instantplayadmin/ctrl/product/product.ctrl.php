@@ -9,6 +9,7 @@ class ProductCtrl extends BaseCtrl{
         $statusSelectOptionHtml = ProductModel::getStatusSelectOptionHtml();
         $this->assign("statusSelectOptionHtml",$statusSelectOptionHtml);
         $this->assign("categoryOptions", ProductCategoryModel::getSelectOptionHtml());
+        $this->assign("recommendOptions", ProductModel::getRecommendOptionHtml());
         $this->display("/product/product_list.html");
     }
 
@@ -203,6 +204,12 @@ class ProductCtrl extends BaseCtrl{
                 }
 
                 $attributeArr = ProductModel::attrParaParserToName($v['attribute']);
+
+                $recommendBnt = "";
+                if($v['recommend'] == ProductModel::RECOMMEND_FALSE){
+                    $recommendBnt =   '<button class="btn btn-xs default blue-hoki recommendone margin-bottom-5" data-id="'.$v['id'].'" ><i class="fa fa-scissors"></i>  设为推荐</button>';
+                }
+
                 $row = array(
                     '<input type="checkbox" name="id[]" value="'.$v['id'].'">',
                     $v['id'],
@@ -223,13 +230,15 @@ class ProductCtrl extends BaseCtrl{
                     $v['factory_uid'],
                     $v['pv'],
                     $v['uv'],
-                    $v['recommend'],
+                   "<input data-id='{$v['id']}'  value='{$v['sort']}' type='input' onblur='upSort(this)' />",
+                    ProductModel::RECOMMEND[$v['recommend']],
                     get_default_date($v['a_time']),
                     '<a href="/product/no/product/detail/id='.$v['id'].'" class="btn blue btn-xs margin-bottom-5" data-id="'.$v['id'].'"><i class="fa fa-file-o"></i> 详情 </a>'.
                     '<button class="btn btn-xs default '.$statusCssColor.' btn blue upstatus btn-xs margin-bottom-5" data-id="'.$v['id'].'" data-type="'.$type.'"><i class="fa fa-link"></i>'.$statusBnt.'</button>'.
                     '<a href="/product/no/goods/add/pid='.$v['id'].'" class="btn purple btn-xs btn blue btn-xs margin-bottom-5"><i class="fa fa-plus"></i>   </i> 添加商品 </a>'.
-                    '<button class="btn btn-xs default dark delone margin-bottom-5" data-id="'.$v['id'].'" ><i class="fa fa-scissors"></i>  删除</button>'.
-                    '<a href="" class="btn yellow btn-xs margin-bottom-5" data-id="'.$v['id'].'"><i class="fa fa-edit"></i> 编辑 </a>',
+//                    '<button class="btn btn-xs default dark delone margin-bottom-5" data-id="'.$v['id'].'" ><i class="fa fa-scissors"></i>  删除</button>'.
+                    '<a href="" class="btn yellow btn-xs margin-bottom-5" data-id="'.$v['id'].'"><i class="fa fa-edit"></i> 编辑 </a>'.
+                   $recommendBnt
 
                 );
 
@@ -242,6 +251,11 @@ class ProductCtrl extends BaseCtrl{
 
         echo json_encode($records);
         exit;
+    }
+
+    function recommendOne(){
+        $id = _g("id");
+        ProductModel::db()->upById($id,array('recommend'=>ProductModel::RECOMMEND_TRUE));
     }
 
     function delOne(){
@@ -274,7 +288,11 @@ class ProductCtrl extends BaseCtrl{
         return $where;
     }
 
-
+    function upSort(){
+        $sort = _g("sort");
+        $id = _g("id");
+        ProductModel::db()->upById($id,array('sort'=>$sort));
+    }
 
 
     function upstatus(){

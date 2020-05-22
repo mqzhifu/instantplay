@@ -165,8 +165,13 @@ class ProductModel {
         return $addId;
     }
 
-    function getRecommend(){
+    function getRecommendList(){
 	    return self::db()->getAll(" recommend = ".self::RECOMMEND_TRUE . " order by sort desc");
+    }
+
+    function search($keyword){
+        $data = self::db()->getAll(" title like '%$keyword%' or `desc` like '%$keyword%' ");
+        return $data;
     }
 
 }

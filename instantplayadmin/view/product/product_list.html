@@ -105,6 +105,9 @@
                                             uv
                                         </th>
 
+                                        <th>
+                                            排序
+                                        </th>
                                         <th width="5%">
                                             推荐
                                         </th>
@@ -130,8 +133,8 @@
                                             <!--<input type="text" class="form-control form-filter input-sm" name="ctrlName" >-->
                                         <!--</td>-->
                                         <td>
-                                            <input type="text" class="form-control form-filter input-sm" name="goods_total_from" >
-                                            <input type="text" class="form-control form-filter input-sm" name="goods_total_to" >
+                                            <!--<input type="text" class="form-control form-filter input-sm" name="goods_total_from" >-->
+                                            <!--<input type="text" class="form-control form-filter input-sm" name="goods_total_to" >-->
                                         </td>
 
                                         <td></td>
@@ -169,7 +172,17 @@
                                             <input type="text" class="form-control form-filter input-sm" name="uv_from" >
                                             <input type="text" class="form-control form-filter input-sm" name="uv_to" >
                                         </td>
-                                        <td></td>
+                                        <td>
+                                            <input type="text" class="form-control form-filter input-sm" name="sort" >
+                                        </td>
+                                        <td>
+
+                                            <select>
+                                                <option value="">请选择</option>
+                                                {$recommendOptions}
+                                            </select>
+
+                                        </td>
                                         <td>
                                             <div class="input-group date form_datetime margin-bottom-5">
                                                 <input type="text" class="form-control form-filter input-sm" style="height: 34px" readonly name="from" id="from" placeholder="From">
@@ -337,13 +350,30 @@
 
 <script>
 
-    $("#datatable_products").on("click",".delone",function(){
+    // $("#datatable_products").on("click",".delone",function(){
+    //     var id = $(this).attr("data-id");
+    //     bootbox.confirm("Are you sure?", function(result) {
+    //         if(result == true){
+    //             $.ajax({
+    //                 type: 'GET',
+    //                 url: "/product/no/product/delOne/id="+id ,
+    //                 dataType: 'json',
+    //                 success: function(data){
+    //                     location.reload();
+    //                 }
+    //
+    //             });
+    //         }
+    //     });
+    // });
+
+    $("#datatable_products").on("click",".recommendone",function(){
         var id = $(this).attr("data-id");
         bootbox.confirm("Are you sure?", function(result) {
             if(result == true){
                 $.ajax({
                     type: 'GET',
-                    url: "/user/delOne/uid="+id ,
+                    url: "/product/no/product/recommendOne/id="+id ,
                     dataType: 'json',
                     success: function(data){
                         location.reload();
@@ -353,6 +383,7 @@
             }
         });
     });
+
 
 
     $("#datatable_products").on("click",".upstatus",function(){
@@ -380,6 +411,18 @@
 
     });
 
+    function upSort(obj){
+        var sort = $(obj).val();
+        var id = $(obj).attr("data-id");
+        $.ajax({
+            type: 'post',
+            url:"/product/no/product/upSort/",
+            data:"id="+id+"&sort="+sort,
+            success: function(data){
+                // location.reload();
+            }
+        });
+    }
 
     if (!jQuery().datetimepicker) {
         alert(333);

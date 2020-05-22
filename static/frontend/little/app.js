@@ -120,13 +120,15 @@ App({
     promiseResolve : null,
     serverUrl : {
       "login":"login/wxLittleLoginByCode/",
-      "getBannerList":"index/getBannerList/"
+      "getBannerList":"index/getBannerList/",
+      "search":"index/search"
     },
     pageData :{
       'index':{
         "getBannerList":null,
         'getCategoryList':null,
-        'getRecommendProductList':null
+        'getRecommendProductList':null,
+        'search':null
       }
     }
   }
