@@ -41,6 +41,7 @@ class LoginCtrl extends BaseCtrl {
 
         $loginData = array('thirdId'=>$openId,'type'=>UserModel::$_type_wechat);
         $loginRs = $this->third($loginData);
+        var_dump($loginRs);
         if($loginRs['code'] == 200){
             out_ajax(200,$loginRs['msg']);
         }

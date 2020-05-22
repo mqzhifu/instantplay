@@ -52,6 +52,10 @@ class IndexCtrl extends BaseCtrl  {
         return $this->out(200,"PING OK !");
     }
 
+    function getBannerList(){
+        out_ajax(200,[]);
+    }
+
     function getUserTypeDesc(){
         $rs = UserModel::getTypeDesc();
         return $this->out(200,$rs);

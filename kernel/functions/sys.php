@@ -274,6 +274,7 @@ function out_ajax($code = 500,$msg = "",$appKey = APP_NAME){
         $msg = $GLOBALS['code'][$code];
     }
     echo json_encode(array('code'=>$code,'msg'=>$msg));
+    exit;
 }
 //输出
 function out($info ,$br = 1){

@@ -1,11 +1,56 @@
-.git	���ԣ��汾����Ϣ����Ҫɾ��
-.idea	IDA�༭���ļ�����Ҫ����汾��
-.gitignore	���ԣ���Ҫ�����ǲ�����汾���ļ��б�
-api	��Ŀ����Ҫ��ǰ�˽ӿ�
-backup	����
-configcenter	�������ģ����������ļ���Ϣ����ЩĿ¼
-doc	�ļ�˵����DB
-instantplayadmin	��Ŀ����̨
-kernel	��Ŀ�����
-static	һЩ��̬��Դ���磺JS APP�� CSS��
-storage	һЩ�仯�ľ�̬�ļ����磺log smarty�������ļ� session�ļ���
+﻿.git	忽略，版本库信息，不要删除
+.idea	IDA编辑器文件，不要纳入版本库
+.gitignore	忽略，不要动，是不纳入版本库文件列表
+.gitlab-ci.yml CICD使用，忽略，不删除就行
+
+api	前端API接口，项目，主要是前端接口（小程序、H5）
+backup	忽略，旧项目代码
+configcenter	配置中心，所有配置文件信息均在些目录
+doc	文件说明，DB，初始化脚本
+instantplayadmin	项目，后台
+	ctrl		所有控制器文件
+	model		所有模型层DB文件
+	shell		所有后台脚本文件
+	view		主要是模板静态文件，用于输出HTML
+	.htaccess   apache的rewrite 单入口跳转配置文件
+	nginx.conf  nginx 单入口跳转配置文件
+	shell.php   后台脚本，入口文件
+	index.php   项目入口文件
+	ws.php      websocket 入口 文件
+	env.php     当前环境配置，这个文件重点，决定了读取哪个环境的配置信息
+kernel	项目，框架
+    functions   公众函数
+        client      客户端
+        datetime    日期
+        path_file   文件目录
+        str_arr     字符串和数组
+        sys         系统
+        url         获取URL
+    lib         公共类库
+    plugins     3方插件类库
+    service     服务化封闭的类库
+static	所有静态资源，如：JS APP包 CSS等，头像上传等等
+    assets      后台框架前端资源
+    download    日常需要下载的一些东西，如APK
+    images      一些前端使用的公共图片
+    frontend    前端代码项目
+    upload      各种用户/管理员人为上传的图片
+        instantplayadmin    项目名
+            dev         开发环境
+                agent               代理
+                avatar              用户头像
+                banner              首页轮播图
+                category_attr_para  商品属性参数
+                product             产品
+
+storage	一些变化的静态文件，如：log smarty编译后的文件 session文件等
+    log     项目所有日志
+        api     项目名
+            access  访问日志
+            error   错误日志
+            exception   异常日志
+            fatal   严重错误-终止日志
+            response    响应日志
+    session     会话日志
+    tb_product  1688爬虫数据源
+    view_c  后台编译后的，输出HTML，临时文件
