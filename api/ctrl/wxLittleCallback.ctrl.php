@@ -1,6 +1,13 @@
 <?php
 class WxLittleCallbackCtrl{
+    public $_msgEncodingAESKey = "";
+    public $_msgToken = "";
 
+    function __construct(){
+        $config = ConfigCenter::get(APP_NAME,"wx");
+        $this->_msgEncodingAESKey = $config['little']['msgEncodingAESKey'];
+        $this->_msgToken = $config['little']['msgToken'];
+    }
     function receive(){
         $this->checkSignature();
     }
@@ -11,7 +18,7 @@ class WxLittleCallbackCtrl{
         $timestamp = $_GET["timestamp"];
         $nonce = $_GET["nonce"];
 
-        $token = TOKEN;
+        $token = $this->_msgToken;
         $tmpArr = array($token, $timestamp, $nonce);
         sort($tmpArr, SORT_STRING);
         $tmpStr = implode( $tmpArr );
@@ -24,3 +31,4 @@ class WxLittleCallbackCtrl{
         }
     }
 }
+
