@@ -1,5 +1,5 @@
 <?php
-class WxLittleCallback{
+class WxLittleCallbackCtrl{
 
     function receive(){
         $this->checkSignature();
