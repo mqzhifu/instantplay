@@ -9,7 +9,8 @@ class WxLittleCallbackCtrl{
         $this->_msgToken = $config['little']['msgToken'];
     }
     function receive(){
-        $this->checkSignature();
+        $rs = $this->checkSignature();
+        echo $_GET['echostr'];exit;
     }
 
     private function checkSignature()
@@ -31,4 +32,3 @@ class WxLittleCallbackCtrl{
         }
     }
 }
-
