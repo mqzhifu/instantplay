@@ -1,0 +1,18 @@
+目前，有两个项目目录，api 和 instantplayadmin
+
+两个项目的目录下都有一个env.php，在doc 目录下有一个 init_env.php， 初始化的时候，只需要：php init_env.php local
+然后，去配置中心目录configcenter ，对应的项目目录，env目录，local目录，修改mysql redis domain 配置即可
+
+数据库的初始化：先进入mysql ，执行 create database instantplay 。然后退出来，还是doc目录，chmod 777 import_mysql.sh，然后执行 ./import_mysql.sh
+
+
+api:是给小程序和H5提供数据接口
+instantplayadmin:是后台管理页面
+
+
+instantplayadmin:后台，因为没有前端，用的是开源的一个旧项目，得写JS代码+HTML+PHP。
+                菜单的配置在 menu 表中。
+                默认用户名密码：mqzhifu mqzhifu
+                框架是单入口文件，如果是apache 记得打开rewrite ，如果是nginx 记得把 nginx.conf 里的配置加进入
+                ctrl 下的，每一个目录，对应的是菜单，里面是具体的执行代码。
+                
