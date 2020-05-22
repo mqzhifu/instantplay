@@ -53,6 +53,8 @@ static	所有静态资源，如：JS APP包 CSS等，头像上传等等
     download    日常需要下载的一些东西，如APK
     images      一些前端使用的公共图片
     frontend    前端代码项目
+        little      小程序项目
+            app.js      入口基础，这里有各种JS基方法，还有全局数据（serverUrl serverHost），登陆流程
     upload      各种用户/管理员人为上传的图片
         instantplayadmin    项目名
             dev         开发环境
