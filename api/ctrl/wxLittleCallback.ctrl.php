@@ -5,7 +5,7 @@ class WxLittleCallbackCtrl{
 
     function __construct(){
         $config = ConfigCenter::get(APP_NAME,"wx");
-        $this->_msgEncodingAESKey = $config['little']['msgEncodingAESKey'];
+        $this->_msgEncodingAESKey = $config['little']['msgEncodingAESKey']; 
         $this->_msgToken = $config['little']['msgToken'];
     }
     function receive(){
