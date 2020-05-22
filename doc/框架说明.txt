@@ -6,6 +6,25 @@
 api	前端API接口，项目，主要是前端接口（小程序、H5）
 backup	忽略，旧项目代码
 configcenter	配置中心，所有配置文件信息均在些目录
+    api     项目名称
+        env
+            dev     开发环境
+                domain  域名
+                mysql   mysql数据库
+                redis   redis缓存
+                server  长连接相关
+            local   本地环境
+            pre     预发布环境
+            release 线上环境
+         lang   语言包
+         protobuf_class     protobuf生成类
+         protobuf_config    protobuf描述文件
+         api.php       与前端定义接口
+         constant.php   常量
+         err_code.php   错误码
+         main.php       一些非常量的配置
+         rediskey       redisKey的统一配置
+         wx.php         微信配置相关
 doc	文件说明，DB，初始化脚本
 instantplayadmin	项目，后台
 	ctrl		所有控制器文件
