@@ -15,4 +15,3 @@ instantplayadmin:后台，因为没有前端，用的是开源的一个旧项目
                 默认用户名密码：mqzhifu mqzhifu
                 框架是单入口文件，如果是apache 记得打开rewrite ，如果是nginx 记得把 nginx.conf 里的配置加进入
                 ctrl 下的，每一个目录，对应的是菜单，里面是具体的执行代码。
-                
