@@ -12,7 +12,7 @@ class WxLittleCallbackCtrl{
         $rs = $this->checkSignature();
         echo $_GET['echostr'];exit;
     }
-  
+
     private function checkSignature()
     {
         $signature = $_GET["signature"];
