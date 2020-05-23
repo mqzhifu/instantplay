@@ -17,13 +17,84 @@ class chartCtrl extends BaseCtrl{
 
     }
 
+    function insertUserTestData(){
+//        UserModel::db()->delete(" id > 1 limit 100000");
+
+        $year = _g("year");
+        $month = _g("month");
+
+        $rand = rand(1,31);
+        $ym = $year . "-" .$month ."-";
+        for($i=1;$i<=$rand;$i++){
+
+            $r = rand(1,24);
+            $ymd = $ym . $i . " $r:01:01";
+            $unixTime = strtotime($ymd);
+            for($j=1;$j<=100;$j++){
+                $data = array('nickname'=>$i ."-".$j , 'a_time'=>$unixTime);
+                UserModel::db()->add($data);
+            }
+        }
+    }
+
     function getUserByYearMonth(){
         $type = _g("type");
         $year = _g("year");
         $month = _g("month");
 
-        $sql = "select * from user group by ";
-        $data = UserModel::db()->getAllBySQL();
+        if(!$year){
+            exit("year is null");
+        }
+
+        if(!$month){
+            exit("month is null");
+        }
+
+
+        $lastDay = get_month_last_day($year,$month);
+        $start = strtotime($year . "-". $month . "-1" );
+        $end = strtotime($year . "-". $month . "-$lastDay" );
+
+
+        $sql = " SELECT COUNT(a_time) as num, FROM_UNIXTIME(a_time,'%c-%e')  AS md  FROM USER where a_time >=  $start and a_time<= $end  GROUP BY  FROM_UNIXTIME(a_time,'%Y-%m-%d')   ";
+        $data = UserModel::db()->getAllBySQL($sql);
+        if(!$data){
+            out_ajax(200,null);
+        }
+
+        $list = null;
+        if(count($data) == $lastDay){
+            foreach ($data as $k=>$v){
+                $list[] = [$v['ymd'], $v['num']];
+            }
+            out_ajax(200,$data);
+        }
+
+//        var_dump($data);
+//        echo "<br/>";
+
+        for($i=1;$i<=$lastDay;$i++){
+            $date = ($month . "-$i" );
+//            $list[$date] = 0;
+//            out($date);
+            $f = 0;
+            foreach ($data as $k=>$v){
+                if($v['md'] == $date){
+                    $f = [$v['md'], $v['num']];
+//                    $list[$date] = $v['num'];
+                    break;
+                }
+            }
+            if(!$f){
+                $list[] = [$date,0];
+            }else{
+                $list[] =  $f;
+            }
+        }
+//        var_dump($list);exit;
+
+        out_ajax(200,$list);
+
     }
 
 

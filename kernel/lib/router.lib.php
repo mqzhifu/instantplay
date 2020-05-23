@@ -8,7 +8,7 @@ class RouterLib{
     public $app = null;
     public $para = null;
     public $requestId = 0;
-
+    public $ctrlFilePath = "";
 
     public $clientHeader = null;
 
@@ -97,6 +97,8 @@ class RouterLib{
 
         $ctrl_file = ($dir . $ctrl .C_EXT);
 
+        $this->ctrlFilePath = $ctrl_file;
+
 		if( !file_exists($ctrl_file))
             return out_pc(9202,'ctrl文件不存在:'.$ctrl_file,KERNEL_NAME);
 
@@ -126,6 +128,7 @@ class RouterLib{
         }
         $data["ctrl"] =$this->ctrl;
         $data["ac"] =$this->ac;
+        $data['ctrlFilePath'] = $this->ctrlFilePath;
         $this->para = $data;
         //反射，根据POST的KEY-VALUE，对应到方法的参数上
 //	    if($this->reflection){

@@ -58,7 +58,9 @@ class BaseCtrl{
         $this->init_css_js();
         $this->assign("uname",$this->_sess->getValue('uname'));
 
-
+        $ctrlFilePath = explode("/",$request['ctrlFilePath']);
+        $ctrlFilePath = $ctrlFilePath[count($ctrlFilePath) -2];
+        $this->backUrl =DS .$ctrlFilePath.DS ."no". DS . substr(get_called_class(),0,strlen(get_called_class())-4) . DS . "index".DS;
         //实例化 用户 服务 控制器
 //        $this->userService = new UserService();
 //        $this->msgService = new MsgService();

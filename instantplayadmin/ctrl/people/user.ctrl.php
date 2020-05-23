@@ -124,7 +124,7 @@ class UserCtrl extends BaseCtrl{
                 'birthday'=> _g('birthday'),
                 'status'=>_g('status'),
                 'type'=>_g('type'),
-                'third_uid'=>_g('third_uid'),
+//                'third_uid'=>_g('third_uid'),
                 'a_time'=>time(),
                 'city_code'=> _g('city'),
                 'county_code'=> _g('county'),
@@ -142,7 +142,7 @@ class UserCtrl extends BaseCtrl{
 
             $newId = UserModel::db()->add($data);
 
-            var_dump($newId);exit;
+            $this->ok("成功",$this->backUrl);
 
         }
 
