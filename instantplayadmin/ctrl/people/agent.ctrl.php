@@ -5,6 +5,10 @@ class AgentCtrl extends BaseCtrl{
             $this->getList();
         }
 
+        $type = _g("type");
+        if($type == 2){
+            exit("暂未开发");
+        }
         $this->addJs('/assets/global/plugins/jquery-validation/js/jquery.validate.min.js');
         $this->addJs('/assets/global/plugins/jquery-validation/js/additional-methods.min.js');
 
@@ -122,7 +126,8 @@ class AgentCtrl extends BaseCtrl{
                     get_default_date($v['a_time']),
                     '<a href="/people/no/agent/detail/id='.$v['id'].'" class="btn blue btn-xs margin-bottom-5"><i class="fa fa-file-o"></i> 详情 </a>'.
                     '<button class="btn btn-xs default red upstatus margin-bottom-5"  data-id="'.$v['id'].'" ><i class="fa fa-female"></i> 审核</button>'. "&nbsp;".
-                    '<button class="btn btn-xs default yellow delone" data-id="'.$v['id'].'" ><i class="fa fa-scissors"></i> 删除</button>',
+                    '<a href="" class="btn yellow btn-xs margin-bottom-5 editone" data-id="'.$v['id'].'"><i class="fa fa-edit"></i> 编辑 </a>',
+//                    '<button class="btn btn-xs default yellow delone" data-id="'.$v['id'].'" ><i class="fa fa-trash-o"></i>  删除</button>',
                 );
 
                 $records["data"][] = $row;

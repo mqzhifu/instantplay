@@ -4,6 +4,11 @@ storage/session/*
 storage/view_c/*
 storage/product_tb/*
 
+
+configcenter/api/env/local
+configcenter/instantplayadmin/env/local
+
+
 static/upload/
 
 kernel/plugins/structure/testData

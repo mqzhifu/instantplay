@@ -1,12 +1,29 @@
 <?php
-class indexCtrl extends BaseCtrl{
+class chartCtrl extends BaseCtrl{
 
     function index(){
-        $this->setTitle('test');
 
-        $this->addHookJS("/index/index_hook.html");
-        $this->display("/index/index.html");
+//        $this->setTitle('test');
+//
 
+
+        $yearList = get_year_list_range(2019,2021);
+        $monthList = get_month_list();
+        $this->assign("yearList",json_encode($yearList));
+        $this->assign("monthList",json_encode($monthList));
+
+        $this->addHookJS("/index/chart_hook.html");
+        $this->display("/index/chart.html");
+
+    }
+
+    function getUserByYearMonth(){
+        $type = _g("type");
+        $year = _g("year");
+        $month = _g("month");
+
+        $sql = "select * from user group by ";
+        $data = UserModel::db()->getAllBySQL();
     }
 
 
@@ -108,8 +125,8 @@ class indexCtrl extends BaseCtrl{
 
     }
 
-    function chart(){
-        $this->display("/index/chart.html");
-    }
+//    function chart(){
+//        $this->display("/index/chart.html");
+//    }
 
 }

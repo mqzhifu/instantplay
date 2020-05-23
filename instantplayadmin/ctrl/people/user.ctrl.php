@@ -16,17 +16,17 @@ class UserCtrl extends BaseCtrl{
 
         $where =" uid = $id limit 1000";
 
-        UserLogModel::db()->delete($where);
-        OrderModel::db()->delete($where);
-        MsgModel::db()->delete("from_uid = $id or to_uid = $id");
-        UserCollectionModel::db()->delete($where);
-        UserFeedbackModel::db()->delete($where);
-        UserProductLikedModel::db()->delete($where);
-        UserCommentModel::db()->delete($where);
-        VerifiercodeModel::db()->delete($where);
-
-
-        UserModel::db()->delById($id);
+//        UserLogModel::db()->delete($where);
+//        OrderModel::db()->delete($where);
+//        MsgModel::db()->delete("from_uid = $id or to_uid = $id");
+//        UserCollectionModel::db()->delete($where);
+//        UserFeedbackModel::db()->delete($where);
+//        UserProductLikedModel::db()->delete($where);
+//        UserCommentModel::db()->delete($where);
+//        VerifiercodeModel::db()->delete($where);
+//
+//
+//        UserModel::db()->delById($id);
     }
 
     function getList(){
@@ -95,7 +95,8 @@ class UserCtrl extends BaseCtrl{
                     $v['wx_open_id'],
                     $v['consume_total'],
                     '<a href="/people/no/user/detail/id='.$v['id'].'" class="btn blue btn-xs margin-bottom-5"><i class="fa fa-file-o"></i> 详情 </a>'.
-                    '<button class="btn btn-xs default yellow delone" data-id="'.$v['id'].'" ><i class="fa fa-scissors"></i>  删除</button>',
+                    '<a href="" class="btn yellow btn-xs margin-bottom-5 editone" data-id="'.$v['id'].'"><i class="fa fa-edit"></i> 编辑 </a>',
+//                    '<button class="btn btn-xs default yellow delone" data-id="'.$v['id'].'" ><i class="fa fa-trash-o"></i>  删除</button>',
                 );
 
                 $records["data"][] = $row;

@@ -23,6 +23,27 @@ function get_week_info($gdate = ""){
     $last_en = date('Y-m-d',strtotime("$st - 1 days"));
     return array('start_date'=>$st,'end_date'=> $en,'last_start_date'=> $last_st,'last_end_date'=>$last_en);//返回开始和结束日期
 }
+
+function get_year_list_range($start,$end){
+    $list = null;
+    for ($i=$start;$i<=$end;$i++){
+        $list[] = $i;
+    }
+    return $list;
+}
+
+function get_month_list($zero = 0){
+    $list = null;
+    for ($i=1;$i<=12;$i++){
+        if($i < 10 && $zero){
+            $list[] = "0".$i;
+        }else{
+            $list[] = $i;
+        }
+    }
+    return $list;
+}
+
 //获取一个月的最后一天
 function get_month_last_day($year,$month){
     if(substr($month,0,1) === 0)
