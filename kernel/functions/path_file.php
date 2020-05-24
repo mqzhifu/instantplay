@@ -57,6 +57,38 @@ function get_dir($directory){
     $mydir->close();
     return $rs;
 }
+//取出一个文件夹及子文件夹下的所有文件，但不包括子文件夹的路径信息
+function scan_file($path) {
+    global $result;
+    $files = scandir($path);
+    foreach ($files as $file) {
+        if ($file != '.' && $file != '..') {
+            if (is_dir($path . '/' . $file)) {
+                scan_file($path . '/' . $file);
+            } else {
+                $result[] = basename($file);
+            }
+        }
+    }
+    return $result;
+}
+
+function my_dir($dir) {
+    $files = [];
+    if(@$handle = opendir($dir)) {
+        while(($file = readdir($handle)) !== false) {
+            if($file != ".." && $file != ".") {
+                if(is_dir($dir . "/" . $file)) { //如果是子文件夹，进行递归
+                    $files[$file] = my_dir($dir . "/" . $file);
+                } else {
+                    $files[] = $file;
+                }
+            }
+        }
+        closedir($handle);
+    }
+    return $files;
+}
 
 //取得文件扩展名
 function get_file_ext($path){

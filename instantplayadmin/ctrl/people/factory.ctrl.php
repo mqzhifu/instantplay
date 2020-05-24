@@ -37,7 +37,7 @@ class FactoryCtrl extends BaseCtrl{
             );
 
             $uploadService = new UploadService();
-            $uploadRs = $uploadService->agent('pic');
+            $uploadRs = $uploadService->factory('pic');
             if($uploadRs['code'] != 200){
                 exit(" uploadService->product error ".json_encode($uploadRs));
             }

@@ -53,6 +53,7 @@ class BaseCtrl{
 
         ConfigCenter::get(APP_NAME,"err_code");
         ConfigCenter::get(APP_NAME,"rediskey");
+        ConfigCenter::get(APP_NAME,"img");
 
         if ($this->_adminid) {
             $role_id = AdminUserModel::db()->getRowById($this->_adminid)['role_id'];

@@ -51,6 +51,12 @@ class UploadService
         return $rs;
     }
 
+    function factory($postInputName){
+        $lib = new ImageUpLoadLib();
+        $rs = $lib->upLoadOneFile($postInputName,'factory',array('png','jpg','bmp'),0);
+        return $rs;
+    }
+
 
 
 
