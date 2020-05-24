@@ -18,13 +18,13 @@
                                 <i class="fa fa-gift"></i>添加反馈
                             </div>
                             <div class="actions">
-                                <a href="{$this->backUrl}" class="btn btn-default btn-sm">
+                                <a href="{$this->_backListUrl}" class="btn btn-default btn-sm">
                                     <i class="fa fa-arrow-left"></i> 返回列表 </a>
                             </div>
                         </div>
                         <div class="portlet-body form">
                             <!-- BEGIN FORM-->
-                            <form action="/people/no/userFeedback/add/opt=1" method="post" id="form_sample_3" class="form-horizontal" enctype="multipart/form-data">
+                            <form action="{$this->_addPostUrl}" method="post" id="form_sample_3" class="form-horizontal" enctype="multipart/form-data">
 
                                 <div class="form-body">
 
@@ -43,47 +43,8 @@
                                         </div>
                                     </div>
 
-
-                                    <div class="form-group">
-                                        <label class="control-label col-md-3">uid  <span class="required">
-										* </span>
-                                        </label>
-                                        <div class="col-md-4">
-                                            <div class="input-icon right">
-                                                <i class="fa"></i>
-                                                <input type="text" name="uid"  class="form-control" value="" />
-                                            </div>
-                                        </div>
-                                    </div>
-
-
-                                    <div class="form-group">
-                                        <label class="control-label col-md-3">title <span class="required">
-										* </span>
-                                        </label>
-                                        <div class="col-md-4">
-                                            <div class="input-icon right">
-                                                <i class="fa"></i>
-                                                <input type="text" name="title"  class="form-control" value="" />
-                                            </div>
-                                        </div>
-                                    </div>
-
-
-                                    <div class="form-group">
-                                        <label class="control-label col-md-3">内容 <span class="required">
-										* </span>
-                                        </label>
-                                        <div class="col-md-4">
-                                            <div class="input-icon right">
-                                                <i class="fa"></i>
-                                                <input type="text" name="content"  class="form-control" value="" />
-                                            </div>
-                                        </div>
-                                    </div>
-
                                     <div class="form-group last">
-                                        <label class="control-label col-md-3">头像</label>
+                                        <label class="control-label col-md-3">图片</label>
                                         <div class="col-md-9">
                                             <div class="fileinput fileinput-new" data-provides="fileinput">
                                                 <div class="fileinput-new thumbnail" style="width: 200px; height: 150px;">
@@ -110,6 +71,60 @@
                                             <!--</div>-->
                                         </div>
                                     </div>
+
+
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3">uid  <span class="required">
+										* </span>
+                                        </label>
+                                        <div class="col-md-4">
+                                            <div class="input-icon right">
+                                                <i class="fa"></i>
+                                                <input type="text" name="uid"  class="form-control" value="" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3">手机号 <span class="required">
+										* </span>
+                                        </label>
+                                        <div class="col-md-4">
+                                            <div class="input-icon right">
+                                                <i class="fa"></i>
+                                                <input type="text" name="mobile"  class="form-control" value="" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3">标题 <span class="required">
+										* </span>
+                                        </label>
+                                        <div class="col-md-4">
+                                            <div class="input-icon right">
+                                                <i class="fa"></i>
+                                                <input type="text" name="title"  class="form-control" value="" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3">内容 <span class="required">
+										* </span>
+                                        </label>
+                                        <div class="col-md-4">
+                                            <div class="input-icon right">
+                                                <i class="fa"></i>
+                                                <input type="text" name="content"  class="form-control" value="" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+
 
 
                                 </div>

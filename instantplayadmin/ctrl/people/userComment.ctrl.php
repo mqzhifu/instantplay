@@ -81,57 +81,34 @@ class UserCommentCtrl extends BaseCtrl{
     function add(){
         if(_g('opt')){
             $data =array(
-                'uname'=> _g('uname'),
-                'realname'=> _g('realname'),
-                'nickname'=> _g('nickname'),
-                'mobile'=> _g('mobile'),
-                'sex'=> _g('sex'),
-                'email'=> _g('email'),
-                'birthday'=> _g('birthday'),
-                'status'=>_g('status'),
-                'type'=>_g('type'),
-                'third_uid'=>_g('third_uid'),
+                'pid'=> _g('pid'),
+                'gid'=> _g('gid'),
+                'uid'=> _g('uid'),
+                'title'=> _g('title'),
+                'content'=> _g('content'),
                 'a_time'=>time(),
-                'city_code'=> _g('city'),
-                'county_code'=> _g('county'),
-                'town_code'=> _g('street'),
-                'province_code'=> _g('province'),
             );
 
             $uploadService = new UploadService();
-            $uploadRs = $uploadService->avatar('pic');
-            if($uploadRs['code'] != 200){
-                exit(" uploadService->avatar error ".json_encode($uploadRs));
+            $uploadRs = $uploadService->comment('pic');
+            if($uploadRs['code'] == 200){
+                $data['pic'] = $uploadRs['msg'];
+//                exit(" uploadService->avatar error ".json_encode($uploadRs));
             }
 
-            $data['avatar'] = $uploadRs['msg'];
-
-            $newId = UserModel::db()->add($data);
-
-            var_dump($newId);exit;
+            $newId = UserCommentModel::db()->add($data);
+            $this->ok($newId,$this->_addUrl,$this->_backListUrl);
 
         }
 
-        $cityJs = json_encode(AreaCityModel::getJsSelectOptions());
-        $countryJs = json_encode(AreaCountyModel::getJsSelectOptions());
-
-
-
-        $this->assign("provinceOption",AreaProvinceModel::getSelectOptionsHtml());
-        $this->assign("cityJs",$cityJs);
-        $this->assign("countyJs",$countryJs);
-
-        $this->assign("sexOption",UserModel::getSexOptions());
-        $this->assign("typeOption",UserModel::getTypeOptions());
-        $this->assign("statusOpen",UserModel::STATUS_DESC);
+//        $this->assign("sexOption",UserModel::getSexOptions());
 
         $this->addJs('/assets/global/plugins/jquery-validation/js/jquery.validate.min.js');
         $this->addJs('/assets/global/plugins/jquery-validation/js/additional-methods.min.js');
 
-        $this->addHookJS("/people/user_add_hook.html");
-        $this->addHookJS("/layout/place.js.html");
+        $this->addHookJS("/people/user_comment_add_hook.html");
         $this->addHookJS("/layout/file_upload.js.html");
-        $this->display("/people/user_add.html");
+        $this->display("/people/user_comment_add.html");
     }
 
     function detail(){

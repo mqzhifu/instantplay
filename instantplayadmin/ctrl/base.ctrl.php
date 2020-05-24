@@ -8,6 +8,12 @@ class BaseCtrl{
     public $_assign = array();
     public $_adminid = "";
     public $_request = null;
+
+
+    public $_backListUrl = null;
+    public $_addPostUrl = null;
+    public $_addUrl = null;
+
     function __construct($request){
         $this->_request = $request;
         //接口配置信息
@@ -60,7 +66,9 @@ class BaseCtrl{
 
         $ctrlFilePath = explode("/",$request['ctrlFilePath']);
         $ctrlFilePath = $ctrlFilePath[count($ctrlFilePath) -2];
-        $this->backUrl =DS .$ctrlFilePath.DS ."no". DS . substr(get_called_class(),0,strlen(get_called_class())-4) . DS . "index".DS;
+        $this->_backListUrl =DS .$ctrlFilePath.DS ."no". DS . substr(get_called_class(),0,strlen(get_called_class())-4) . DS . "index".DS;
+        $this->_addPostUrl =DS .$ctrlFilePath.DS ."no". DS . substr(get_called_class(),0,strlen(get_called_class())-4) . DS . "add".DS ."opt=1";
+        $this->_addUrl =DS .$ctrlFilePath.DS ."no". DS . substr(get_called_class(),0,strlen(get_called_class())-4) . DS . "add".DS ;
         //实例化 用户 服务 控制器
 //        $this->userService = new UserService();
 //        $this->msgService = new MsgService();
@@ -226,9 +234,10 @@ class BaseCtrl{
         exit;
     }
 
-    function ok($msg = "",$backUrl = ""){
+    function ok($msg = "",$backUrl = "",$backListUrl = ""){
         $this->assign("msg",$msg);
         $this->assign("backUrl",$backUrl);
+        $this->assign("backListUrl",$backListUrl);
 
         $this->display("layout/success.html");
         exit;

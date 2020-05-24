@@ -45,6 +45,12 @@ class UploadService
         return $rs;
     }
 
+    function comment($postInputName){
+        $lib = new ImageUpLoadLib();
+        $rs = $lib->upLoadOneFile($postInputName,'comment',array('png','jpg','bmp'),0);
+        return $rs;
+    }
+
 
 
 

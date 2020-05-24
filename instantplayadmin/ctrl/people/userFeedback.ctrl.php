@@ -77,22 +77,23 @@ class UserFeedbackCtrl extends BaseCtrl{
     function add(){
         if(_g('opt')){
             $data =array(
-                'uname'=> _g('uid'),
-                'realname'=> _g('title'),
-                'nickname'=> _g('content'),
+                'uid'=> _g('uid'),
+                'title'=> _g('title'),
+                'content'=> _g('content'),
+                'mobile'=>_g("mobile"),
+                'a_time'=>time(),
             );
 
             $uploadService = new UploadService();
-            $uploadRs = $uploadService->avatar('pic');
-            if($uploadRs['code'] != 200){
-                exit(" uploadService->avatar error ".json_encode($uploadRs));
+            $uploadRs = $uploadService->feedback('pic');
+            if($uploadRs['code'] == 200){
+                $data['pics'] = $uploadRs['msg'];
+//                exit(" uploadService->avatar error ".json_encode($uploadRs));
             }
 
-            $data['avatar'] = $uploadRs['msg'];
+            $newId = UserFeedbackModel::db()->add($data);
 
-            $newId = UserModel::db()->add($data);
-
-            var_dump($newId);exit;
+            $this->ok($newId,$this->_addUrl,$this->_backListUrl);
 
         }
 
@@ -114,7 +115,9 @@ class UserFeedbackCtrl extends BaseCtrl{
         $this->assign("statusOptions", UserFeedbackModel::getStatusOptions());
 
 
-//        $this->addHookJS("/layout/place.js.html");
+//        $this->addHookJS("/people/user_add_hook.html");
+//        $this->addHookJS("/layout/file_upload.js.html");
+
         $this->addHookJS("/people/user_feedback_add_hook.html");
         $this->addHookJS("/layout/file_upload.js.html");
         $this->display("/people/user_feedback_add.html");
