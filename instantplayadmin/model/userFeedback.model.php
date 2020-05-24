@@ -28,5 +28,13 @@ class UserFeedbackModel {
         return $list;
     }
 
+    static function getStatusOptions(){
+        $html = "";
+        foreach (self::STATUS as $k=>$v) {
+            $html .= "<option value={$k}>{$v}</option>";
+        }
+        return $html;
+    }
+
 
 }

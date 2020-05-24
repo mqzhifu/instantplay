@@ -5,9 +5,7 @@ class UserFeedbackCtrl extends BaseCtrl{
             $this->getList();
         }
 
-//        $this->assign("typeOptions",UserModel::getTypeOptions());
-//        $this->assign("sexOptions", UserModel::getSexOptions());
-
+        $this->assign("statusOptions", UserFeedbackModel::getStatusOptions());
         $this->display("/people/user_feedback_list.html");
     }
 
@@ -79,21 +77,9 @@ class UserFeedbackCtrl extends BaseCtrl{
     function add(){
         if(_g('opt')){
             $data =array(
-                'uname'=> _g('uname'),
-                'realname'=> _g('realname'),
-                'nickname'=> _g('nickname'),
-                'mobile'=> _g('mobile'),
-                'sex'=> _g('sex'),
-                'email'=> _g('email'),
-                'birthday'=> _g('birthday'),
-                'status'=>_g('status'),
-                'type'=>_g('type'),
-                'third_uid'=>_g('third_uid'),
-                'a_time'=>time(),
-                'city_code'=> _g('city'),
-                'county_code'=> _g('county'),
-                'town_code'=> _g('street'),
-                'province_code'=> _g('province'),
+                'uname'=> _g('uid'),
+                'realname'=> _g('title'),
+                'nickname'=> _g('content'),
             );
 
             $uploadService = new UploadService();
@@ -110,26 +96,28 @@ class UserFeedbackCtrl extends BaseCtrl{
 
         }
 
-        $cityJs = json_encode(AreaCityModel::getJsSelectOptions());
-        $countryJs = json_encode(AreaCountyModel::getJsSelectOptions());
-
-
-
-        $this->assign("provinceOption",AreaProvinceModel::getSelectOptionsHtml());
-        $this->assign("cityJs",$cityJs);
-        $this->assign("countyJs",$countryJs);
-
-        $this->assign("sexOption",UserModel::getSexOptions());
-        $this->assign("typeOption",UserModel::getTypeOptions());
-        $this->assign("statusOpen",UserModel::STATUS_DESC);
+//        $cityJs = json_encode(AreaCityModel::getJsSelectOptions());
+//        $countryJs = json_encode(AreaCountyModel::getJsSelectOptions());
+//
+//        $this->assign("provinceOption",AreaProvinceModel::getSelectOptionsHtml());
+//        $this->assign("cityJs",$cityJs);
+//        $this->assign("countyJs",$countryJs);
+//
+//        $this->assign("sexOption",UserModel::getSexOptions());
+//        $this->assign("typeOption",UserModel::getTypeOptions());
+//        $this->assign("statusOpen",UserModel::STATUS_DESC);
 
         $this->addJs('/assets/global/plugins/jquery-validation/js/jquery.validate.min.js');
         $this->addJs('/assets/global/plugins/jquery-validation/js/additional-methods.min.js');
 
-        $this->addHookJS("/people/user_add_hook.html");
-        $this->addHookJS("/layout/place.js.html");
+
+        $this->assign("statusOptions", UserFeedbackModel::getStatusOptions());
+
+
+//        $this->addHookJS("/layout/place.js.html");
+        $this->addHookJS("/people/user_feedback_add_hook.html");
         $this->addHookJS("/layout/file_upload.js.html");
-        $this->display("/people/user_add.html");
+        $this->display("/people/user_feedback_add.html");
     }
 
     function detail(){

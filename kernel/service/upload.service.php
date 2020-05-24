@@ -39,6 +39,14 @@ class UploadService
         return $rs;
     }
 
+    function feedback($postInputName){
+        $lib = new ImageUpLoadLib();
+        $rs = $lib->upLoadOneFile($postInputName,'feedback',array('png','jpg','bmp'),0);
+        return $rs;
+    }
+
+
+
 
 
 
